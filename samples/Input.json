@@ -1,0 +1,9 @@
+{"time":"2011-01-03T18:16:00Z","device":"Device1","Signal1":9.95,"Signal2":30.6,"Signal3":41.7}
+{"time":"2011-01-04T18:16:00Z","device":"Device1","Signal1":19.95,"Signal2":40.6,"Signal3":43.7}
+{"time":"2011-01-05T18:16:00Z","device":"Device1","Signal1":29.95,"Signal2":50.6,"Signal3":49.7}
+{"time":"2011-01-06T18:16:00Z","device":"Device2","Signal1":39.95,"Signal2":60.6,"Signal3":22.7}
+{"time":"2011-01-07T18:16:00Z","device":"Device2","Signal1":49.95,"Signal2":70.6,"Signal3":42.7}
+{"time":"2011-01-08T18:16:00Z","device":"Device2","Signal1":59.95,"Signal2":80.6,"Signal3":82.7}
+{"time":"2011-01-09T18:16:00Z","device":"Device3","Signal1":69.95,"Signal2":90.6,"Signal3":12.7}
+{"time":"2011-01-10T18:16:00Z","device":"Device3","Signal1":79.95,"Signal2":21.6,"Signal3":22.7}
+{"time":"2011-01-11T18:16:00Z","device":"Device3","Signal1":89.95,"Signal2":29.6,"Signal3":32.7}

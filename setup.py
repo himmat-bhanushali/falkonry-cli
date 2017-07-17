@@ -5,7 +5,7 @@ setup(
     version='1.0.0',
     py_modules=['falkonry'],
     install_requires=[
-        'Click',
+        'cmd2',
         'falkonryClient'
     ],
     entry_points='''
