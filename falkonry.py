@@ -39,6 +39,8 @@ class REPL(Cmd):
             print_error("Please pass host url")
         if opts.token is None:
             print_error("Please pass token")
+        if opts.host.find("https://") == -1:
+            opts.host = "https://" + opts.host
         #if validate_login('https://dev.falkonry.ai', 'ffwaqz371ae52m4j2f7e3o408b2bf1cv'):
         #if validate_login('https://localhost:8080', 'lmm3orvm1yaa4j1y5b78i8f870fhon6z'):
         if validate_login(opts.host,opts.token):
