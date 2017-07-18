@@ -35,15 +35,15 @@ class REPL(Cmd):
              ])
     def do_login(self, arg, opts=None):
         """login to the falkonry"""
-        if opts.host is None:
+        '''if opts.host is None:
             print_error("Please pass host url")
         if opts.token is None:
             print_error("Please pass token")
         if opts.host.find("https://") == -1:
-            opts.host = "https://" + opts.host
+            opts.host = "https://" + opts.host'''
         #if validate_login('https://dev.falkonry.ai', 'ffwaqz371ae52m4j2f7e3o408b2bf1cv'):
-        #if validate_login('https://localhost:8080', 'lmm3orvm1yaa4j1y5b78i8f870fhon6z'):
-        if validate_login(opts.host,opts.token):
+        if validate_login('https://localhost:8080', 'lmm3orvm1yaa4j1y5b78i8f870fhon6z'):
+        #if validate_login(opts.host,opts.token):
             print_success("logged in to falkonry")
 
     def do_logout(self, line):
@@ -355,13 +355,16 @@ class REPL(Cmd):
         """ add facts to assessment"""
         if check_login():
             try:
+                if opts.path is None:
+                    print_error("Please pass facts data file path")
+                    return
                 if check_default_assessment():
                     file_extension = get_file_extension(opts.path)
                     if file_extension != ".csv" and file_extension != ".json":
                         print_error("Only CSV or JSON file is accepted.")
                         return
                     data = io.open(opts.path)
-                    response = _falkonry.add_facts_stream(_datastreamId, file_extension.split(".")[1], {}, data)
+                    response = _falkonry.add_facts_stream(_assessmentId, file_extension.split(".")[1], {}, data)
                     print_info(str(response))
                 return
             except Exception as error:
