@@ -1,1 +1,1 @@
-{"name":"Datastream New123","dataSource":{"type":"STANDALONE"},"field":{"time":{"zone":"Asia/Calcutta","identifier":"time","format":"iso_8601"},"entityIdentifier":"car"}}
+{"name":"Datastream_New1","dataSource":{"type":"STANDALONE"},"field":{"time":{"zone":"Asia/Calcutta","identifier":"time","format":"iso_8601"},"entityIdentifier":"device"}}

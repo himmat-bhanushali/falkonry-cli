@@ -5,6 +5,7 @@ import io
 import os
 import datetime
 
+
 from cmd2 import Cmd,make_option,options
 from falkonryclient import client as Falkonry
 from falkonryclient.helper import schema as Schemas
@@ -33,15 +34,14 @@ class REPL(Cmd):
     @options([make_option('--host', help="host url"),
               make_option('--token',help="auth token")
              ])
-    def do_login(self, arg, opts=None):
+    def do_login(self, args, opts=None):
         """login to the falkonry"""
-        if opts.host is None:
-            print_error("Please pass host url")
-        if opts.token is None:
-            print_error("Please pass token")
+        if (opts.host is None or opts.host =="") or (opts.token is None or opts.token ==""):
+            print_error("Please pass host url and token")
+            return
         if opts.host.find("https://") == -1:
             opts.host = "https://" + opts.host
-        #if validate_login('https://dev.falkonry.ai', 'ffwaqz371ae52m4j2f7e3o408b2bf1cv'):
+        #if validate_login('https://sandbox.falkonry.ai', '6aa4wwg6go7l8mab0lwb01nyjp7mq10t'):
         #if validate_login('https://localhost:8080', 'lmm3orvm1yaa4j1y5b78i8f870fhon6z'):
         if validate_login(opts.host,opts.token):
             print_success("logged in to falkonry")
@@ -57,6 +57,10 @@ class REPL(Cmd):
         """get login details"""
         if check_login():
             print_info('Host : ' + _falkonry.host + "\n" + 'Token : ' +_falkonry.token)
+
+    def do_exit(self, line):
+        """exit the falkonry shell"""
+        quit()
 
     def do_datastream_get_list(self, line):
         """list datastreams"""
@@ -120,6 +124,52 @@ class REPL(Cmd):
                     print_error("Please set the default datastream again")
         return
 
+    def do_datastream_get_entity_meta(self, line):
+        """get entitymeta of datastream"""
+        global _datastreamId
+        if check_login():
+            if _datastreamId is None:
+                print_error("No default datastream set")
+                return
+            else:
+                try:
+                    entityMeta = _falkonry.get_entity_meta(_datastreamId)
+                    print_info("Entity Meta of datastream: " + _datastreamId)
+                    for entity in entityMeta:
+                        print_info("Entity Label : " + entity.get_label() + ". Entity Id : " + entity.get_sourceId())
+                except Exception as error:
+                    handle_error(error)
+        return
+
+    @options([make_option('--path', help="file path of entity meta request")])
+    def do_datastream_post_entity_meta(self, arg,opts=None):
+        """post entitymeta of datastream"""
+        global _datastreamId
+        if check_login():
+            if _datastreamId is None:
+                print_error("No default datastream set")
+                return
+            else:
+                try:
+                    if opts.path is None:
+                        print_error("Please pass json file path for posting entity meta")
+                        return
+                    try:
+                        file_extension = get_file_extension(opts.path)
+                        if file_extension != ".json":
+                            print_error("Only JSON file is accepted.")
+                            return
+                        with open(opts.path) as data_file:
+                            data = json.load(data_file)
+                    except Exception as error:
+                        print_error("Error in reading file." + str(error))
+                        return
+                    entityMeta = _falkonry.add_entity_meta(_datastreamId, {}, data)
+                    print_info("Entity Meta successfully added to datastream: " + _datastreamId)
+                except Exception as error:
+                    handle_error(error)
+        return
+
     @options([make_option('--path', help="file path of request")])
     def do_datastream_create(self,  arg, opts=None):
         """create datastream"""
@@ -169,7 +219,8 @@ class REPL(Cmd):
             try:
                 if check_default_datastream():
                     print_info("Turning on Live monitoring for datastream : " + _datastreamId)
-                    _falkonry.on_datastream(_datastreamId)
+                    res = _falkonry.on_datastream(_datastreamId)
+                    print_success("Datastream is ON for live monitoring")
                 return
             except Exception as error:
                 handle_error(error)
@@ -325,6 +376,8 @@ class REPL(Cmd):
                 if check_default_datastream():
                     global _assessmentId
                     assessmentObj = _falkonry.get_assessment(opts.id)
+                    if assessmentObj.get_datastream() != _datastreamId:
+                        print_error("Assessment id : " + opts.id + " does not belong to default datastream")
                     _assessmentId = opts.id
                     print_success("Default assessment set : "+ opts.id)
                 return
@@ -372,29 +425,81 @@ class REPL(Cmd):
                 return
         return
 
-
-    '''@options([make_option('--path', help="file path to write output")])
-    @options([make_option('--trackerId', help="tracker id of the previous output request")])
-    @options([make_option('--modelIndex', help="index of the model of which output needs to be fetched ")])
-    @options([make_option('--startTime', help="startTime of the output range")])
-    @options([make_option('--endTime', help="endTime of the output range")])'''
+    @options([make_option('--path', help="file path to write output"),
+              make_option('--trackerId', help="tracker id of the previous output request"),
+              make_option('--modelIndex', help="index of the model of which output needs to be fetched "),
+              make_option('--startTime', help="startTime of the output range"),
+              make_option('--endTime', help="endTime of the output range"),
+              make_option('--format', help="format of the output. For csv pass text/csv. For JSON output pass application/json")])
     def do_assessment_get_historical_output(self, arg, opts=None):
         """ get learn/test output of assessment"""
-        '''if check_login():
+        if check_login():
             try:
                 if check_default_assessment():
-                    if opts.trackerId is None and opts.modelIndex is None:
-                        print_error("TrackerID or modelIndex is need to be passed")
-                    print_info(str(response))
+                    output_ops = {}
+                    if opts.trackerId is not None and opts.trackerId != "":
+                        output_ops['trackerId'] = opts.trackerId
+                    if opts.modelIndex is not None and opts.modelIndex != "":
+                        output_ops['modelIndex'] = opts.modelIndex
+                    if opts.startTime is not None and opts.startTime != "":
+                        output_ops['startTime'] = opts.startTime
+                    if opts.endTime is not None and opts.endTime != "":
+                        output_ops['endTime'] = opts.endTime
+                    if opts.format is not None and opts.format != "":
+                        if opts.format != "application/json" and opts.format != "text/csv":
+                            print_error("Unsupported response format. Only supported format are : application/json ,text/csv")
+                            return
+                        output_ops['format'] = opts.format
+                    if (opts.trackerId is None or opts.trackerId =="") and (opts.startTime is None or opts.startTime == ""):
+                        print_error("TrackerID or startTime is require for fetching output data")
+                        return
+                    output_response = _falkonry.get_historical_output(_assessmentId, output_ops)
+                    if output_response.status_code == 200:
+                        if opts.path:
+                            #write response to file
+                            try:
+                                file = open(opts.path,"w")
+                                file.write(str(output_response.text))
+                                file.close()
+                                print_success("Output data is written to the file : " + opts.path)
+                            except Exception as fileError:
+                                handle_error(fileError)
+                        else:
+                            print_info("==================================================================================================================")
+                            print_info(str(output_response.text))
+                            print_info("==================================================================================================================")
+                    if output_response.status_code == 202:
+                        print_success(str(output_response.text))
+                        json_resp = json.loads(str(output_response.text))
+                        print_success("Falkonry is generating your output. Please try following command in some time.")
+                        print_success("assessment_get_historical_output --trackerId="+json_resp['__$id'])
+                    return
                 return
             except Exception as error:
-                errorObj = json.loads(error.message)
-                print_error(errorObj['message'])
-                return'''
+                handle_error(error)
+                return
         return
 
+    @options([make_option('--format', help="format of the output. For csv pass text/csv. For JSON output pass application/json")])
     def do_assessment_output_listen(self, arg, opts=None):
         """ get live output of assessment"""
+        if check_login():
+            try:
+                if not check_default_assessment():
+                   return
+                output_ops = {}
+                if opts.format is not None and opts.format != "":
+                    if opts.format != "application/json" and opts.format != "text/csv":
+                        print_error("Unsupported response format. Only supported format are : application/json ,text/csv")
+                        return
+                    output_ops['format'] = opts.format
+                output_response = _falkonry.get_output(_assessmentId, output_ops)
+                print_info("Fetching live assessments : ")
+                for event in output_response.events():
+                    print_info(json.dumps(json.loads(event.data)))
+            except Exception as error:
+                handle_error(error)
+                return
         return
 
 
@@ -489,8 +594,7 @@ def check_default_datastream():
                 return True
             except Exception as error:
                 _datastreamId = None;
-                errorObj = json.loads(error.message)
-                print_error(errorObj['message'])
+                handle_error(error)
                 print_error("Please set the default datastream again")
                 return False
     return
@@ -509,8 +613,7 @@ def check_default_assessment():
                 return True
             except Exception as error:
                 _assessmentId = None;
-                errorObj = json.loads(error.message)
-                print_error(errorObj['message'])
+                handle_error(error)
                 print_error("Please set the default assessment again")
                 return False
     return
