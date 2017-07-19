@@ -35,15 +35,15 @@ class REPL(Cmd):
              ])
     def do_login(self, arg, opts=None):
         """login to the falkonry"""
-        '''if opts.host is None:
+        if opts.host is None:
             print_error("Please pass host url")
         if opts.token is None:
             print_error("Please pass token")
         if opts.host.find("https://") == -1:
-            opts.host = "https://" + opts.host'''
+            opts.host = "https://" + opts.host
         #if validate_login('https://dev.falkonry.ai', 'ffwaqz371ae52m4j2f7e3o408b2bf1cv'):
-        if validate_login('https://localhost:8080', 'lmm3orvm1yaa4j1y5b78i8f870fhon6z'):
-        #if validate_login(opts.host,opts.token):
+        #if validate_login('https://localhost:8080', 'lmm3orvm1yaa4j1y5b78i8f870fhon6z'):
+        if validate_login(opts.host,opts.token):
             print_success("logged in to falkonry")
 
     def do_logout(self, line):
@@ -181,7 +181,7 @@ class REPL(Cmd):
         global _datastreamId
         if check_login():
             try:
-                if check_default_datastream(""):
+                if check_default_datastream():
                     print_info("Turning off Live monitoring for datastream : " + _datastreamId)
                     _falkonry.off_datastream(_datastreamId)
                 return
