@@ -14,89 +14,89 @@ $ pip install falkonry-cli
 ```
 ## Requirements
 ```
-    * Supported Python : Python 2.7
-    * Supported Platform : MacOS / Windows 7 or higher/ Ubuntu 14.0 or higher 
+* Supported Python: Python 2.7
+* Supported Platform : MacOS / Windows 7 or higher/ Ubuntu 14.0 or higher
 ```
 ## Features Supported
 #### Utility features
 ```
-    * help
-    * history
-    * login
-    * logout
-    * login_details
-    * quit
-    * exit
+* help
+* history
+* login
+* logout
+* login_details
+* quit
+* exit
 ```
-#### Falkonry specidifc features (You need to login for using any of the below features)
+#### Falkonry specific features (You need to log in for using any of the below features)
 ```
-    * Create Datastream for narrow/historian style data from a single entity
-    * Create Datastream for narrow/historian style data from a multiple entities
-    * Create Datastream for wide style data from a single entity
-    * Create Datastream for wide style data from a multiple entities
-    * Retrieve Datastreams
-    * Retrieve Datastream by Id
-    * Delete Datastream
-    * Set default Datastream
-    * Get default Datastream
-    * Add EntityMeta to a Datastream
-    * Get EntityMeta of a Datastream
-    * Add historical input data to Datastream
-    * Add live input data to Datastream
-    * Create Assessment
-    * Retrieve Assessments
-    * Retrieve Assessment by Id
-    * Delete Assessment
-    * Set default Assessment
-    * Get default Assessment
-    * Get Condition List Of Assessment
-    * Add facts data to Assessment
-    * Get Historian Output from Assessment
-    * Get Streaming Output
-    * Datastream On (Start live monitoring of datastream)
-    * Datastream Off (Stop live monitoring of datastream)
+* Create Datastream for narrow/historian style data from a single entity
+* Create Datastream for narrow/historian style data from multiple entities
+* Create Datastream for wide style data from a single entity
+* Create Datastream for wide style data from multiple entities
+* Retrieve Datastreams
+* Retrieve Datastream by Id
+* Delete Datastream
+* Set default Datastream
+* Get default Datastream
+* Add EntityMeta to a Datastream
+* Get EntityMeta of a Datastream
+* Add historical input data to Datastream
+* Add live input data to Datastream
+* Create Assessment
+* Retrieve Assessments
+* Retrieve Assessment by Id
+* Delete Assessment
+* Set default Assessment
+* Get default Assessment
+* Get Condition List Of Assessment
+* Add facts data to Assessment
+* Get Historian Output from Assessment
+* Get Streaming Output
+* Datastream On (Start live monitoring of datastream)
+* Datastream Off (Stop live monitoring of datastream)
 ```
 
 ## Quick Start
 ```
-    * Get auth token from Falkonry Service UI
-    * Type falkonry on your terminal it will land you in falkonry shell
-    * Read the examples provided for integration with various data formats
+* Get auth token from Falkonry Service UI
+* Type falkonry on your terminal it will land you in falkonry shell
+* Read the examples provided for integration with various data formats
 ```
 
-## Examples 
+## Examples
 
 #### Run Falkonry CLI
-Type "falkonry" in command prompt/terminal it will land you in falkonry shell.
+Type "falkonry" in command prompt/terminal it will land you in the falkonry shell.
 ```
 user$ falkonry
 Welcome to Falkonry Shell !!!
-falkonry>> 
+falkonry>>
 ```
 #### Help
-For help type either "help" or "?". After this all the avaialble functions will be displayed on console.
+For help type either "help" or "?". After this, all the available functions will be displayed on the console.
 ```
 falkonry>> help
 
 Documented commands (type help <topic>):
 ========================================
-_relative_load                    datastream_get_by_id             logout   
-assessment_add_facts              datastream_get_entity_meta       py       
-assessment_create                 datastream_get_list              pyscript 
-assessment_default_get            datastream_add_entity_meta      quit     
-assessment_default_set            datastream_add_historical_data  run      
-assessment_delete                 datastream_add_live_data        save     
-assessment_get_by_id              datastream_start_live            set      
-assessment_get_historical_output  datastream_stop_live             shell    
-assessment_get_list               edit                             shortcuts
-assessment_output_listen          exit                             show     
-cmdenvironment                    help                           
-datastream_create                 history                        
-datastream_default_get            load                           
-datastream_default_set            login                          
-datastream_delete                 login_details                  
+_relative_load datastream_get_by_id logout
+assessment_add_facts datastream_get_entity_meta py
+assessment_create datastream_get_list pyscript
+assessment_default_get datastream_add_entity_meta quit
+assessment_default_set datastream_add_historical_data run
+assessment_delete datastream_add_live_data save
+assessment_get_by_id datastream_start_live set
+assessment_get_historical_output datastream_stop_live shell
+assessment_get_list edit shortcuts
+assessment_output_listen exit show
+cmdenvironment help
+datastream_create history
+datastream_default_get load
+datastream_default_set login
+datastream_delete login_details
 
-falkonry>> 
+falkonry>>
 ```
 
 for getting help on particular topic type "help <topic>" or "? <topic>"
@@ -107,15 +107,15 @@ login to the falkonry
 Usage: login [options] arg
 
 Options:
-  -h, --help     show this help message and exit
-  --host=HOST    host url
-  --token=TOKEN  auth token
+-h, --help show this help message and exit
+--host=HOST host url
+--token=TOKEN auth token
 
 falkonry>>
 ```
 
 #### history
-For going thorugh the history of commands in the current session type "history"
+For going through the history of commands in the current session type "history"
 ```
 falkonry>> history
 -------------------------[1]
@@ -126,11 +126,11 @@ falkonry>>
 ```
 
 #### login
-For login use host and authorizatoken token.
+For login use host and authorization token.
 ```
 falkonry>> login --host=https://localhost:8080 --token=el7rvvqx2xr6v5-30qba1dl0pu36pi
 logged in to falkonry
-falkonry>> 
+falkonry>>
 ```
 If wrong url or token is passed appropriate error will be displayed.
 
@@ -140,7 +140,7 @@ For login details type "login_details"
 falkonry>> login_details
 Host : https://localhost:8080
 Token : el7rvvqx2xr6v5-30qba1dl0pu36pi
-falkonry>> 
+falkonry>>
 ```
 
 #### logout
@@ -159,40 +159,40 @@ user$
 ```
 
 #### Create Datastream for narrow/historian style data from a single entity
-    
+
 Data :
 
 ```
-    {"time" :"2016-03-01 01:01:01", "tag" : "signal1", "value" : 3.4}
-    {"time" :"2016-03-01 01:01:02", "tag" : "signal2", "value" : 9.3}
+{"time" :"2016-03-01 01:01:01", "tag" : "signal1", "value" : 3.4}
+{"time" :"2016-03-01 01:01:02", "tag" : "signal2", "value" : 9.3}
 
-    or
+or
 
-    time, tag, value
-    2016-03-01 01:01:01, signal1, 3.4
-    2016-03-01 01:01:02, signal2, 9.3
+time, tag, value
+2016-03-01 01:01:01, signal1, 3.4
+2016-03-01 01:01:02, signal2, 9.3
 
 ```
 Sample JSONFile:
 ```
 {
-  "name": "Test DS",
-  "dataSource": {
-    "type": "STANDALONE"
-  },
-  "field": {
-    "time": {
-      "zone": "Asia/Calcutta",
-      "identifier": "time",
-      "format": "YYYY-MM-DD HH:mm:ss"
-    },
-    "signal": {
-      "tagIdentifier": "tag",
-      "valueIdentifier": "value",
-      "delimiter": null,
-      "isSignalPrefix": false
-    }
-  }
+"name": "Test DS",
+"dataSource": {
+"type": "STANDALONE"
+},
+"field": {
+"time": {
+"zone": "Asia/Calcutta",
+"identifier": "time",
+"format": "YYYY-MM-DD HH:mm:ss"
+},
+"signal": {
+"tagIdentifier": "tag",
+"valueIdentifier": "value",
+"delimiter": null,
+"isSignalPrefix": false
+}
+}
 }
 ```
 
@@ -204,44 +204,44 @@ falkonry>>
 ```
 
 #### Create Datastream for narrow/historian style data from multiple things
-    
+
 Data :
 
 ```
-    {"time" :"2016-03-01 01:01:01", "tag" : "signal1_thing1", "value" : 3.4}
-    {"time" :"2016-03-01 01:01:01", "tag" : "signal2_thing1", "value" : 1.4}
-    {"time" :"2016-03-01 01:01:02", "tag" : "signal1_thing2", "value" : 9.3}
-    {"time" :"2016-03-01 01:01:02", "tag" : "signal2_thing2", "value" : 4.3}
+{"time" :"2016-03-01 01:01:01", "tag" : "signal1_thing1", "value" : 3.4}
+{"time" :"2016-03-01 01:01:01", "tag" : "signal2_thing1", "value" : 1.4}
+{"time" :"2016-03-01 01:01:02", "tag" : "signal1_thing2", "value" : 9.3}
+{"time" :"2016-03-01 01:01:02", "tag" : "signal2_thing2", "value" : 4.3}
 
-    or
+or
 
-    time, tag, value
-    2016-03-01 01:01:01, signal1_thing1, 3.4
-    2016-03-01 01:01:01, signal2_thing1, 1.4
-    2016-03-01 01:01:02, signal1_thing2, 9.3
-    2016-03-01 01:01:02, signal2_thing2, 4.3
+time, tag, value
+2016-03-01 01:01:01, signal1_thing1, 3.4
+2016-03-01 01:01:01, signal2_thing1, 1.4
+2016-03-01 01:01:02, signal1_thing2, 9.3
+2016-03-01 01:01:02, signal2_thing2, 4.3
 ```
 
 Sample JSONFile:
 ```
 {
-  "name": "Test DS",
-  "dataSource": {
-    "type": "STANDALONE"
-  },
-  "field": {
-    "time": {
-      "zone": "Asia/Calcutta",
-      "identifier": "time",
-      "format": "YYYY-MM-DD HH:mm:ss"
-    },
-    "signal": {
-      "tagIdentifier": "tag",
-      "valueIdentifier": "value",
-      "delimiter": "_",
-      "isSignalPrefix": true
-    }
-  }
+"name": "Test DS",
+"dataSource": {
+"type": "STANDALONE"
+},
+"field": {
+"time": {
+"zone": "Asia/Calcutta",
+"identifier": "time",
+"format": "YYYY-MM-DD HH:mm:ss"
+},
+"signal": {
+"tagIdentifier": "tag",
+"valueIdentifier": "value",
+"delimiter": "_",
+"isSignalPrefix": true
+}
+}
 }
 ```
 
@@ -253,73 +253,73 @@ falkonry>>
 ```
 
 #### Create Datastream for wide style data from a single entity
-   
+
 Data :
 
 ```
-    {"time":1467729675422, "signal1":41.11, "signal2":82.34, "signal3":74.63, "signal4":4.8}
-    {"time":1467729668919, "signal1":78.11, "signal2":2.33, "signal3":4.6, "signal4":9.8}
+{"time":1467729675422, "signal1":41.11, "signal2":82.34, "signal3":74.63, "signal4":4.8}
+{"time":1467729668919, "signal1":78.11, "signal2":2.33, "signal3":4.6, "signal4":9.8}
 
-    or
+or
 
-    time, signal1, signal2, signal3, signal4
-    1467729675422, 41.11, 62.34, 77.63, 4.8
-    1467729675445, 43.91, 82.64, 73.63, 3.8
+time, signal1, signal2, signal3, signal4
+1467729675422, 41.11, 62.34, 77.63, 4.8
+1467729675445, 43.91, 82.64, 73.63, 3.8
 ```
 
 Sample JSONFile:
 ```
 {
-  "name": "New Ds -1",
-  "dataSource": {
-    "type": "STANDALONE"
-  },
-  "field": {
-    "time": {
-      "zone": "Asia/Calcutta",
-      "identifier": "time",
-      "format": "millis"
-    },
-    "entityIdentifier": null
-  },
-  "inputList": [
-    {
-      "name": "signal1",
-      "valueType": {
-        "type": "Numeric"
-      },
-      "eventType": {
-        "type": "Samples"
-      }
-    },
-     {
-      "name": "Signal2",
-      "valueType": {
-        "type": "Numeric"
-      },
-      "eventType": {
-        "type": "Samples"
-      }
-    },
-     {
-      "name": "Signal3",
-      "valueType": {
-        "type": "Numeric"
-      },
-      "eventType": {
-        "type": "Samples"
-      }
-    },
-    {
-      "name": "Signal4",
-      "valueType": {
-        "type": "Numeric"
-      },
-      "eventType": {
-        "type": "Samples"
-      }
-    }
-  ]
+"name": "New Ds -1",
+"dataSource": {
+"type": "STANDALONE"
+},
+"field": {
+"time": {
+"zone": "Asia/Calcutta",
+"identifier": "time",
+"format": "millis"
+},
+"entityIdentifier": null
+},
+"inputList": [
+{
+"name": "signal1",
+"valueType": {
+"type": "Numeric"
+},
+"eventType": {
+"type": "Samples"
+}
+},
+{
+"name": "Signal2",
+"valueType": {
+"type": "Numeric"
+},
+"eventType": {
+"type": "Samples"
+}
+},
+{
+"name": "Signal3",
+"valueType": {
+"type": "Numeric"
+},
+"eventType": {
+"type": "Samples"
+}
+},
+{
+"name": "Signal4",
+"valueType": {
+"type": "Numeric"
+},
+"eventType": {
+"type": "Samples"
+}
+}
+]
 }
 ```
 
@@ -330,74 +330,74 @@ Datastream successfully created : anb109d1h7h1po
 falkonry>>
 ```
 
-#### Create Datastream for wide style data from a multiple entities
+#### Create Datastream for wide style data from multiple entities
 
 Data :
 
 ```python
-    {"time":1467729675422, "thing": "Thing1", "signal1":41.11, "signal2":82.34, "signal3":74.63, "signal4":4.8}
-    {"time":1467729668919, "thing": "Thing2", "signal1":78.11, "signal2":2.33, "signal3":4.6, "signal4":9.8}
+{"time":1467729675422, "thing": "Thing1", "signal1":41.11, "signal2":82.34, "signal3":74.63, "signal4":4.8}
+{"time":1467729668919, "thing": "Thing2", "signal1":78.11, "signal2":2.33, "signal3":4.6, "signal4":9.8}
 
-    or
+or
 
-    time, thing, signal1, signal2, signal3, signal4
-    1467729675422, thing1, 41.11, 62.34, 77.63, 4.8
-    1467729675445, thing1, 43.91, 82.64, 73.63, 3.8
+time, thing, signal1, signal2, signal3, signal4
+1467729675422, thing1, 41.11, 62.34, 77.63, 4.8
+1467729675445, thing1, 43.91, 82.64, 73.63, 3.8
 ```
 
 Sample JSONFile:
 ```
 {
-  "name": "New Ds -1",
-  "dataSource": {
-    "type": "STANDALONE"
-  },
-  "field": {
-    "time": {
-      "zone": "Asia/Calcutta",
-      "identifier": "time",
-      "format": "millis"
-    },
-    "entityIdentifier": "things"
-  },
-  "inputList": [
-    {
-      "name": "signal1",
-      "valueType": {
-        "type": "Numeric"
-      },
-      "eventType": {
-        "type": "Samples"
-      }
-    },
-     {
-      "name": "Signal2",
-      "valueType": {
-        "type": "Numeric"
-      },
-      "eventType": {
-        "type": "Samples"
-      }
-    },
-     {
-      "name": "Signal3",
-      "valueType": {
-        "type": "Numeric"
-      },
-      "eventType": {
-        "type": "Samples"
-      }
-    },
-    {
-      "name": "Signal4",
-      "valueType": {
-        "type": "Numeric"
-      },
-      "eventType": {
-        "type": "Samples"
-      }
-    }
-  ]
+"name": "New Ds -1",
+"dataSource": {
+"type": "STANDALONE"
+},
+"field": {
+"time": {
+"zone": "Asia/Calcutta",
+"identifier": "time",
+"format": "millis"
+},
+"entityIdentifier": "things"
+},
+"inputList": [
+{
+"name": "signal1",
+"valueType": {
+"type": "Numeric"
+},
+"eventType": {
+"type": "Samples"
+}
+},
+{
+"name": "Signal2",
+"valueType": {
+"type": "Numeric"
+},
+"eventType": {
+"type": "Samples"
+}
+},
+{
+"name": "Signal3",
+"valueType": {
+"type": "Numeric"
+},
+"eventType": {
+"type": "Samples"
+}
+},
+{
+"name": "Signal4",
+"valueType": {
+"type": "Numeric"
+},
+"eventType": {
+"type": "Samples"
+}
+}
+]
 }
 ```
 
@@ -409,19 +409,19 @@ falkonry>>
 ```
 
 #### Retrieve Datastreams
-    
-Fetch list of datastreams    
+
+Fetch list of datastreams
 ```
 falkonry>> datastream_get_list
 Listing Datastreams...
 ==================================================================================================================
- Datastream Name                               Id                   Created By           Live Status         
+Datastream Name Id Created By Live Status
 ==================================================================================================================
- New Ds -1                                     oii0djojxc2lxt       Tza1q4g0kw5epo       OFF             
- Example DS-1                                  5v8drr2eqtp7cy       Y36zulie5as5bu       OFF                 
- Sample Datastream                             z0cenywoi3jlxj       Tza1q4g0kw5epo       OFF                 
+New Ds -1 oii0djojxc2lxt Tza1q4g0kw5epo OFF
+Example DS-1 5v8drr2eqtp7cy Y36zulie5as5bu OFF
+Sample Datastream z0cenywoi3jlxj Tza1q4g0kw5epo OFF
 ==================================================================================================================
-falkonry>> 
+falkonry>>
 ```
 
 #### Retrieve Datastream by id
@@ -445,19 +445,19 @@ Signals: signal1, Signal2, Signal3, Signal4
 falkonry>>
 ```
 
-#### Delete Datastream by id   
+#### Delete Datastream by id
 ```
 falkonry>> datastream_delete --id=oii0djojxc2lxt
 Datastream successfully deleted : oii0djojxc2lxt
-falkonry>> 
+falkonry>>
 ```
 
 #### Set default Datastream
-You need to select default datastream for using features like adding data to datastream, adding entityMeta to datastream and all assessment related features.
+You need to select default datastream for using features like adding data to datastream, adding entity meta to datastream and all assessment related features.
 ```
 falkonry>> datastream_default_set --id=oii0djojxc2lxt
-Default datastream set : oii0djojxc2lxt
-falkonry>> 
+Default datastream set: oii0djojxc2lxt
+falkonry>>
 ```
 
 #### Get default Datastream
@@ -473,7 +473,7 @@ falkonry>>
 Sample JSONFile :
 
 ```
-     [{"sourceId": "testId","label": "testName","path": "root/path"}]
+[{"sourceId": "testId","label": "testName","path": "root/path"}]
 ```
 
 Usage :
@@ -493,18 +493,18 @@ Entity Label : testName. Entity Id : testId
 falkonry>>
 ```
 
-#### Add historical input data (json format) to a Datastream (Used for model revision) 
-    
+#### Add historical input data (json format) to a Datastream (Used for model revision)
+
 Data :
 
 ```
-    {"time" :"2016-03-01 01:01:01", "tag" : "signal1_thing1", "value" : 3.4}
-    {"time" :"2016-03-01 01:01:01", "tag" : "signal2_thing1", "value" : 1.4}
-    {"time" :"2016-03-01 01:01:02", "tag" : "signal1_thing2", "value" : 9.3}
-    {"time" :"2016-03-01 01:01:02", "tag" : "signal2_thing2", "value" : 4.3}
+{"time" :"2016-03-01 01:01:01", "tag" : "signal1_thing1", "value" : 3.4}
+{"time" :"2016-03-01 01:01:01", "tag" : "signal2_thing1", "value" : 1.4}
+{"time" :"2016-03-01 01:01:02", "tag" : "signal1_thing2", "value" : 9.3}
+{"time" :"2016-03-01 01:01:02", "tag" : "signal2_thing2", "value" : 4.3}
 ```
 
-Usage :    
+Usage :
 
 ```
 falkonry>> datastream_add_historical_data --path=/Users/user/Input.json
@@ -513,16 +513,16 @@ Default datastream set : oii0djojxc2lxt Name : New Ds -1
 falkonry>>
 ```
 
-#### Add historical input data (csv format) to a Datastream (Used for model revision) 
+#### Add historical input data (csv format) to a Datastream (Used for model revision)
 Data :
 
 ```
-    time, tag, value
-    2016-03-01 01:01:01, signal1_thing1, 3.4
-    2016-03-01 01:01:01, signal2_thing1, 1.4
+time, tag, value
+2016-03-01 01:01:01, signal1_thing1, 3.4
+2016-03-01 01:01:01, signal2_thing1, 1.4
 ```
 
-Usage :    
+Usage :
 
 ```
 falkonry>> datastream_add_historical_data --path=/Users/user/Input.csv
@@ -531,41 +531,41 @@ Default datastream set : oii0djojxc2lxt Name : New Ds -1
 falkonry>>
 ```
 
-#### Add live input data (json format) to a Datastream (Used for live monitoring) 
-    
+#### Add live input data (json format) to a Datastream (Used for live monitoring)
+
 Data :
 
 ```
-    {"time" :"2016-03-01 01:01:01", "tag" : "signal1_thing1", "value" : 3.4}
-    {"time" :"2016-03-01 01:01:01", "tag" : "signal2_thing1", "value" : 1.4}
-    {"time" :"2016-03-01 01:01:02", "tag" : "signal1_thing2", "value" : 9.3}
-    {"time" :"2016-03-01 01:01:02", "tag" : "signal2_thing2", "value" : 4.3}
+{"time" :"2016-03-01 01:01:01", "tag" : "signal1_thing1", "value" : 3.4}
+{"time" :"2016-03-01 01:01:01", "tag" : "signal2_thing1", "value" : 1.4}
+{"time" :"2016-03-01 01:01:02", "tag" : "signal1_thing2", "value" : 9.3}
+{"time" :"2016-03-01 01:01:02", "tag" : "signal2_thing2", "value" : 4.3}
 ```
 
-Usage :    
+Usage :
 
 ```
 falkonry>> datastream_add_live_data --path=/Users/user/Input.json
-Default datastream set : oii0djojxc2lxt Name :  New Ds -1
+Default datastream set : oii0djojxc2lxt Name : New Ds -1
 Data submitted successfully
 falkonry>>
 ```
 
-####  Add live data (csv format) to a Datastream (Used for live monitoring) 
-    
+#### Add live data (csv format) to a Datastream (Used for live monitoring)
+
 Data :
 
 ```
-    time, tag, value
-    2016-03-01 01:01:01, signal1_thing1, 3.4
-    2016-03-01 01:01:01, signal2_thing1, 1.4
+time, tag, value
+2016-03-01 01:01:01, signal1_thing1, 3.4
+2016-03-01 01:01:01, signal2_thing1, 1.4
 ```
 
-Usage :    
+Usage :
 
 ```
 falkonry>> datastream_add_live_data --path=/Users/user/Input.csv
-Default datastream set : oii0djojxc2lxt Name :  New Ds -1
+Default datastream set : oii0djojxc2lxt Name
 Data submitted successfully
 falkonry>>
 ```
@@ -575,12 +575,12 @@ falkonry>>
 Sample JSONFile:
 ```
 {
-  "name":"Assessment Test -1",
-  "datastream":"oii0djojxc2lxt",
-  "rate": "PT0S"
+"name":"Assessment Test -1",
+"datastream":"oii0djojxc2lxt",
+"rate": "PT0S"
 }
 ```
-Usage :    
+Usage :
 
 ```
 falkonry>> assessment_create --path=/Users/user/AssessmentRequest.json
@@ -590,24 +590,24 @@ falkonry>>
 
 #### Retrieve Assessments
 
-Usage :    
+Usage :
 
 ```
 falkonry>> assessment_get_list
 Default datastream set : oii0djojxc2lxt Name : New DS -1
 Fetching assessment list of datastream : oii0djojxc2lxt...
 ==================================================================================================================
- Assessment Name                               Id                   Created By           Live Status         
+Assessment Name Id Created By Live Status
 ==================================================================================================================
- Assessment 123                                2d6bh2xvjfcugp       Tza1q4g0kw5epo       OFF                 
- Robo Arm Test 1                               mhai7bxygkawq8       Tza1q4g0kw5epo       OFF                 
+Assessment 123 2d6bh2xvjfcugp Tza1q4g0kw5epo OFF
+Robo Arm Test 1 mhai7bxygkawq8 Tza1q4g0kw5epo OFF
 ==================================================================================================================
 falkonry>>
 ```
 
 #### Retrieve Assessment by Id
 
-Usage :    
+Usage :
 
 ```
 falkonry>> assessment_get_by_id --id=2d6bh2xvjfcugp
@@ -627,7 +627,7 @@ falkonry>>
 
 #### Delete Assessment
 
-Usage :    
+Usage :
 
 ```
 falkonry>> assessment_delete --id=2d6bh2xvjfcugp
@@ -636,12 +636,12 @@ falkonry>>
 ```
 
 #### Set default Assessment
-You need to select default assessment for using features like adding facts to assessment, retriving output data.
+You need to select default assessment for using features like adding facts to assessment, retrieving output data.
 ```
 falkonry>> assessment_default_set --id=mhai7bxygkawq8
-Default datastream set : 5kzugwm1natt0l Name : Robo Arm Test 1
-Default assessment set : mhai7bxygkawq8
-falkonry>> 
+Default datastream set: 5kzugwm1natt0l Name: Robo Arm Test 1
+Default assessment set: mhai7bxygkawq8
+falkonry>>
 ```
 
 #### Get default Assessment
@@ -653,7 +653,7 @@ falkonry>>
 ```
 
 #### Add facts data (json format) to Assessment
-    
+
 Sample JSONFile / Facts Data:
 ```
 {"time":"2011-09-08T02:22:12.702+05:30","end":"2012-09-22T17:33:25.000+05:30","device":"Device1","Assessment1":"Fouling"}
@@ -673,7 +673,7 @@ falkonry>>
 ```
 
 #### Add facts data (csv format) to Assessment
-    
+
 Sample CSVFile / Facts Data:
 ```
 "time","end","device","Assessment1"
@@ -696,16 +696,16 @@ falkonry>>
 #### Get Historian Output from Assessment (Generate output for given time range)
 Options:
 ```
-  --path=PATH           file path to write output
-  --trackerId=TRACKERID
-                        tracker id of the previous output request
-  --modelIndex=MODELINDEX
-                        index of the model of which output needs to be fetched
-  --startTime=STARTTIME
-                        startTime of the output range
-  --endTime=ENDTIME     endTime of the output range
-  --format=FORMAT       format of the output. For csv pass text/csv. For JSON
-                        output pass application/json
+--path=PATH file path to write output
+--trackerId=TRACKERID
+tracker id of the previous output request
+--modelIndex=MODELINDEX
+index of the model of which output needs to be fetched
+--startTime=STARTTIME
+startTime of the output range
+--endTime=ENDTIME endTime of the output range
+--format=FORMAT format of the output. For csv pass text/csv. For JSON
+output pass application/json
 ```
 Usage:
 1. Fetching data which is already processed
@@ -734,9 +734,9 @@ falkonry>>
 2. Fetching data which is not processed
 ```
 If data is not readily available then, a tracker id will be sent with 202 status code. While falkonry will genrate ouptut data
- Client should do timely pooling on the using same method, sending tracker id (__id) in the query params
- Once data is available server will response with 200 status code and data in json/csv format.
- 
+Client should do timely pooling on the using same method, sending tracker id (__id) in the query params
+Once data is available server will response with 200 status code and data in json/csv format.
+
 falkonry>> assessment_get_historical_output --startTime=2016-07-19T14:04:06+05:30 --format=text/csv
 Default assessment set : 743cveg32hkwl2 Name : Standalone DS
 {"status":"WAITING","assessment":"743cveg32hkwl2","datastream":"qh6rg4ce5g3p5j","outputSummary":"c8cr9bedv4y2jg","model":"r1ao169d3icdl3","pid":"A8vkl6bxn86qh0_umm1j0j08f1pbd","mode":"ANALYSIS","userEmail":"aniket.amrutkar@falkonry.com","userId":"c8s6wwrfczrwos","entities":null,"__$id":"nphnmcc81vqkgpvo","__$tenant":"A8vkl6bxn86qh0","__$createTime":1500544370048,"__id":"nphnmcc81vqkgpvo"}
@@ -784,7 +784,7 @@ Fetching live assessments :
 Usage:
 ```
 falkonry>> datastream_start_live
-Default datastream set : 5kzugwm1natt0l Name : Robo Arm Test 1
+Default datastream set: 5kzugwm1natt0l Name: Robo Arm Test 1
 Turning on Live monitoring for datastream : 5kzugwm1natt0l
 Datastream is ON for live monitoring
 falkonry>>
@@ -794,7 +794,7 @@ falkonry>>
 Usage:
 ```
 falkonry>> datastream_stop_live
-Default datastream set : 5kzugwm1natt0l Name : Robo Arm Test 1
+Default datastream set: 5kzugwm1natt0l Name : Robo Arm Test 1
 Turning off Live monitoring for datastream : 5kzugwm1natt0l
 Datastream is OFF for live monitoring
 falkonry>>
@@ -803,8 +803,8 @@ falkonry>>
 
 ## Docs
 
-   [Falkonry APIs](https://sandbox.falkonry.ai/api)
+[Falkonry APIs](https://sandbox.falkonry.ai/api)
 
 ## License
 
-  Available under [MIT License](LICENSE)
+Available under [MIT License](LICENSE)
