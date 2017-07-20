@@ -142,8 +142,8 @@ class REPL(Cmd):
         return
 
     @options([make_option('--path', help="file path of entity meta request")])
-    def do_datastream_post_entity_meta(self, arg,opts=None):
-        """post entitymeta of datastream"""
+    def do_datastream_add_entity_meta(self, arg,opts=None):
+        """add entitymeta of datastream"""
         global _datastreamId
         if check_login():
             if _datastreamId is None:
@@ -152,7 +152,7 @@ class REPL(Cmd):
             else:
                 try:
                     if opts.path is None:
-                        print_error("Please pass json file path for posting entity meta")
+                        print_error("Please pass json file path for adding entity meta")
                         return
                     try:
                         file_extension = get_file_extension(opts.path)
@@ -235,6 +235,7 @@ class REPL(Cmd):
                 if check_default_datastream():
                     print_info("Turning off Live monitoring for datastream : " + _datastreamId)
                     _falkonry.off_datastream(_datastreamId)
+                    print_success("Datastream is OFF for live monitoring")
                 return
             except Exception as error:
                 handle_error(error)
@@ -242,8 +243,8 @@ class REPL(Cmd):
         return
 
     @options([make_option('--path', help="file path of request")])
-    def do_datastream_send_historical_data(self, arg, opts=None):
-        """ send historical data to datastream for model learning """
+    def do_datastream_add_historical_data(self, arg, opts=None):
+        """ add historical data to datastream for model learning """
         if check_login():
             try:
                 if opts.path is None:
@@ -263,8 +264,8 @@ class REPL(Cmd):
                 return
 
     @options([make_option('--path', help="file path of request")])
-    def do_datastream_send_live_data(self, arg, opts=None):
-        """send live data to datastream for live monitoring """
+    def do_datastream_add_live_data(self, arg, opts=None):
+        """add live data to datastream for live monitoring """
         if check_login():
             try:
                 if opts.path is None:
@@ -672,9 +673,9 @@ def print_assessment_details(assessment_str):
     print_info("Live : " + assessment['live'])
     print_info("Rate : " + assessment['rate'])
     if len(assessment['aprioriConditionList']) ==0:
-        print_info("Apriori Condition List : N/A")
+        print_info("Condition List : N/A")
     else:
-        print_info("Apriori Condition List : " + ', '.assessment['aprioriConditionList'])
+        print_info("Apriori Condition List : " + str(', '.join(assessment['aprioriConditionList'])))
     print_info("==================================================================================================================")
 
 
