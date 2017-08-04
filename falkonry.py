@@ -41,7 +41,6 @@ class REPL(Cmd):
             return
         if opts.host.find("https://") == -1:
             opts.host = "https://" + opts.host
-        #if validate_login('https://sandbox.falkonry.ai', '6aa4wwg6go7l8mab0lwb01nyjp7mq10t'):
         #if validate_login('https://localhost:8080', 'lmm3orvm1yaa4j1y5b78i8f870fhon6z'):
         if validate_login(opts.host,opts.token):
             print_success("logged in to falkonry")
@@ -80,7 +79,7 @@ class REPL(Cmd):
     def do_datastream_get_by_id(self, arg, opts=None):
         """get datastream by id """
         if check_login():
-            if opts.id is None:
+            if opts.id is None or opts.id == "":
                 print_error("Please pass datastream id")
                 return
             print_info("Fetching Datastreams")
@@ -95,7 +94,7 @@ class REPL(Cmd):
         """set default datastream"""
         if check_login():
             try:
-                if opts.id is None:
+                if opts.id is None or opts.id == "":
                     print_error("Please pass datastream id")
                     return
                 global _datastreamId
@@ -151,7 +150,7 @@ class REPL(Cmd):
                 return
             else:
                 try:
-                    if opts.path is None:
+                    if opts.path is None or opts.path == "":
                         print_error("Please pass json file path for adding entity meta")
                         return
                     try:
@@ -175,7 +174,7 @@ class REPL(Cmd):
         """create datastream"""
         if check_login():
             try:
-                if opts.path is None:
+                if opts.path is None or opts.path == "":
                     print_error("Please pass json file path for creating datastream")
                     return
                 # read file
@@ -247,7 +246,7 @@ class REPL(Cmd):
         """ add historical data to datastream for model learning """
         if check_login():
             try:
-                if opts.path is None:
+                if opts.path is None or opts.path == "":
                     print_error("Please pass historical data file path")
                     return
                 if check_default_datastream():
@@ -268,7 +267,7 @@ class REPL(Cmd):
         """add live data to datastream for live monitoring """
         if check_login():
             try:
-                if opts.path is None:
+                if opts.path is None or opts.path == "":
                     print_error("Please pass historical data file path")
                     return
                 if check_default_datastream():
@@ -328,7 +327,7 @@ class REPL(Cmd):
         """ create assessment in default datastream"""
         if check_login():
             try:
-                if opts.path is None:
+                if opts.path is None or opts.path == "":
                     print_error("Please pass json file path for creating assessment")
                     return
                 # read file
@@ -409,7 +408,7 @@ class REPL(Cmd):
         """ add facts to assessment"""
         if check_login():
             try:
-                if opts.path is None:
+                if opts.path is None or opts.path == "":
                     print_error("Please pass facts data file path")
                     return
                 if check_default_assessment():
@@ -498,6 +497,49 @@ class REPL(Cmd):
                 print_info("Fetching live assessments : ")
                 for event in output_response.events():
                     print_info(json.dumps(json.loads(event.data)))
+            except Exception as error:
+                handle_error(error)
+                return
+        return
+
+    @options([make_option('--path', help="file path to write output"),
+              make_option('--modelIndex', help="index of the model of which facts needs to be fetched "),
+              make_option('--startTime', help="startTime of the facts range"),
+              make_option('--endTime', help="endTime of the facts range"),
+              make_option('--format', help="format of the facts data. For csv pass text/csv. For JSON output pass application/json")])
+    def do_assessment_get_facts(self, arg, opts=None):
+        """ get facts of assessment"""
+        if check_login():
+            try:
+                if not check_default_assessment():
+                   return
+                output_ops = {}
+                if opts.modelIndex is not None and opts.modelIndex != "":
+                    output_ops['modelIndex'] = opts.modelIndex
+                if opts.startTime is not None and opts.startTime != "":
+                    output_ops['startTime'] = opts.startTime
+                if opts.endTime is not None and opts.endTime != "":
+                    output_ops['endTime'] = opts.endTime
+                if opts.format is not None and opts.format != "":
+                    if opts.format != "application/json" and opts.format != "text/csv":
+                        print_error("Unsupported response format. Only supported format are : application/json ,text/csv")
+                        return
+                    output_ops['format'] = opts.format
+                output_response = _falkonry.get_facts(_assessmentId, output_ops)
+                if opts.path is not None or opts.path != "":
+                    #write response to file
+                    try:
+                        file = open(opts.path,"w")
+                        file.write(str(output_response.text))
+                        file.close()
+                        print_success("Facts data is written to the file : " + opts.path)
+                    except Exception as fileError:
+                        handle_error(fileError)
+                else:
+                    print_info("Facts Data : ")
+                    print_info("==================================================================================================================")
+                    print_info(str(output_response.text))
+                    print_info("==================================================================================================================")
             except Exception as error:
                 handle_error(error)
                 return

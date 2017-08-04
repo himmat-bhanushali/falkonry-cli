@@ -53,6 +53,7 @@ $ pip install falkonry-cli
 * Add facts data to Assessment
 * Get Historian Output from Assessment
 * Get Streaming Output
+* Get Facts Data
 * Datastream On (Start live monitoring of datastream)
 * Datastream Off (Stop live monitoring of datastream)
 ```
@@ -768,6 +769,46 @@ falkonry>>
 falkonry>> assessment_get_historical_output --trackerId=nphnmcc81vqkgpvo --format=application/json --path=/Users/user/Output.json
 Default assessment set : 743cveg32hkwl2 Name : Standalone DS
 Output data is written to the file : /Users/user/Output.json
+falkonry>>
+```
+
+
+
+#### Get Facts Data For Default Assessment
+Options:
+```
+  -h, --help            show this help message and exit
+  --path=PATH           file path to write output
+  --modelIndex=MODELINDEX
+                        index of the model of which facts needs to be fetched
+  --startTime=STARTTIME
+                        startTime of the facts range
+  --endTime=ENDTIME     endTime of the facts range
+  --format=FORMAT       format of the facts data. For csv pass text/csv. For
+                        JSON output pass application/json
+```
+Usage:
+1. Fetching facts data
+```
+falkonry>> assessment_get_facts --format=application/json --modelIndex=2
+Default assessment set : 743cveg32hkwl2 Name : Standalone DS
+Facts Data : 
+==================================================================================================================
+{"id":"zjE7gRjij2aAtn","tenant":"A8vkl6bxn86qh0","createTime":1501756952620,"type":"entities.Verification","time":1472628618962,"end":1475258391805,"entity":"UNIT-1","value":"normal","assessment":"743cveg32hkwl2","tags":["USER ADDED","Test",""],"sysCreateTime":1501756952620,"falkonry_source":"1501756363467"}
+{"id":"BdPJyBwtOia6y5","tenant":"A8vkl6bxn86qh0","createTime":1501757081175,"type":"entities.Verification","time":1475300807496,"end":1477972996029,"entity":"UNIT-1","value":"good","assessment":"743cveg32hkwl2","tags":["USER ADDED","GoodTag",""],"sysCreateTime":1501757081175,"falkonry_source":"1501756363467"}
+{"id":"4Yx5vcg7qYa1W8","tenant":"A8vkl6bxn86qh0","createTime":1501757152737,"type":"entities.Verification","time":1477972996029,"end":1483147710332,"entity":"UNIT-1","value":"failure","assessment":"743cveg32hkwl2","tags":["USER ADDED","Failed",""],"sysCreateTime":1501757152737,"falkonry_source":"1501756363467"}
+{"id":"NUR1dP3PGtI5nW","tenant":"A8vkl6bxn86qh0","createTime":1500546860111,"type":"entities.Verification","time":1500453248322,"end":1500453256182,"entity":"UNIT-1","value":"bad","assessment":"743cveg32hkwl2","tags":["USER ADDED"],"sysCreateTime":1500546860111,"falkonry_source":"1500546477175"}
+{"id":"EmdxDwHrQd4X1v","tenant":"A8vkl6bxn86qh0","createTime":1500546642589,"type":"entities.Verification","time":1500453256182,"end":1500453256896,"entity":"UNIT-1","value":"new","assessment":"743cveg32hkwl2","tags":["USER ADDED"],"sysCreateTime":1500546642589,"falkonry_source":"1500546477175"}
+{"id":"MBLD2yA0cSG2fM","tenant":"A8vkl6bxn86qh0","createTime":1500546681069,"type":"entities.Verification","time":1500453256896,"end":1500453261945,"entity":"UNIT-1","value":"normal","assessment":"743cveg32hkwl2","tags":["USER ADDED"],"sysCreateTime":1500546681069,"falkonry_source":"1500546477175"}
+==================================================================================================================
+falkonry>>
+```
+
+3. Writing facts Data to file
+```
+falkonry>> assessment_get_facts --format=application/json --modelIndex=2 --path=facts.json
+Default assessment set : 743cveg32hkwl2 Name : Standalone DS
+Facts data is written to the file : facts.json
 falkonry>>
 ```
 
