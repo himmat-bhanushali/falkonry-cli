@@ -36,13 +36,13 @@ class REPL(Cmd):
              ])
     def do_login(self, args, opts=None):
         """login to the falkonry"""
-        if (opts.host is None or opts.host =="") or (opts.token is None or opts.token ==""):
+        '''if (opts.host is None or opts.host =="") or (opts.token is None or opts.token ==""):
             print_error("Please pass host url and token")
             return
         if opts.host.find("https://") == -1:
-            opts.host = "https://" + opts.host
-        #if validate_login('https://localhost:8080', 'lmm3orvm1yaa4j1y5b78i8f870fhon6z'):
-        if validate_login(opts.host,opts.token):
+            opts.host = "https://" + opts.host'''
+        if validate_login('https://localhost:8080', 'lmm3orvm1yaa4j1y5b78i8f870fhon6z'):
+        #if validate_login(opts.host,opts.token):
             print_success("logged in to falkonry")
 
     def do_logout(self, line):
@@ -526,7 +526,7 @@ class REPL(Cmd):
                         return
                     output_ops['format'] = opts.format
                 output_response = _falkonry.get_facts(_assessmentId, output_ops)
-                if opts.path is not None or opts.path != "":
+                if opts.path is not None and opts.path != "":
                     #write response to file
                     try:
                         file = open(opts.path,"w")
@@ -537,6 +537,41 @@ class REPL(Cmd):
                         handle_error(fileError)
                 else:
                     print_info("Facts Data : ")
+                    print_info("==================================================================================================================")
+                    print_info(str(output_response.text))
+                    print_info("==================================================================================================================")
+            except Exception as error:
+                handle_error(error)
+                return
+        return
+
+
+    @options([make_option('--path', help="file path to write output"),
+              make_option('--format', help="format of the input data. For csv pass text/csv. For JSON output pass application/json")])
+    def do_datastream_get_data(self, arg, opts=None):
+        """ get data of datastream"""
+        if check_login():
+            try:
+                if not check_default_datastream():
+                   return
+                output_ops = {}
+                if opts.format is not None and opts.format != "":
+                    if opts.format != "application/json" and opts.format != "text/csv":
+                        print_error("Unsupported response format. Only supported format are : application/json ,text/csv")
+                        return
+                    output_ops['format'] = opts.format
+                output_response = _falkonry.get_datastream_data(_datastreamId, output_ops)
+                if opts.path is not None and opts.path != "":
+                    #write response to file
+                    try:
+                        file = open(opts.path,"w")
+                        file.write(str(output_response.text))
+                        file.close()
+                        print_success("Input data is written to the file : " + opts.path)
+                    except Exception as fileError:
+                        handle_error(fileError)
+                else:
+                    print_info("Input Data : ")
                     print_info("==================================================================================================================")
                     print_info(str(output_response.text))
                     print_info("==================================================================================================================")
