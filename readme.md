@@ -54,6 +54,7 @@ $ pip install falkonry-cli
 * Get Historian Output from Assessment
 * Get Streaming Output
 * Get Facts Data
+* Get Datastream Data
 * Datastream On (Start live monitoring of datastream)
 * Datastream Off (Stop live monitoring of datastream)
 ```
@@ -772,8 +773,6 @@ Output data is written to the file : /Users/user/Output.json
 falkonry>>
 ```
 
-
-
 #### Get Facts Data For Default Assessment
 Options:
 ```
@@ -804,7 +803,7 @@ Facts Data :
 falkonry>>
 ```
 
-3. Writing facts Data to file
+2. Writing facts Data to file
 ```
 falkonry>> assessment_get_facts --format=application/json --modelIndex=2 --path=facts.json
 Default assessment set : 743cveg32hkwl2 Name : Standalone DS
@@ -812,6 +811,42 @@ Facts data is written to the file : facts.json
 falkonry>>
 ```
 
+#### Get Datastream Data
+Options:
+```
+  -h, --help            show this help message and exit
+  --format=FORMAT       format of the facts data. For csv pass text/csv. For
+                        JSON output pass application/json
+```
+Usage:
+1. Fetching input data
+```
+falkonry>> datastream_get_data --format=application/json
+Default datastream set : 1scyeeoxbdh7if Name : New Standalone
+Input Data : 
+==================================================================================================================
+{"time":1294078560000,"tag":"Device1:device","value":"Device1"}
+{"time":1294091820000,"tag":"Device1:device","value":"Device1"}
+{"time":1294099380000,"tag":"Device1:device","value":"Device1"}
+{"time":1294078560000,"tag":"Device2:device","value":"Device2"}
+{"time":1294091820000,"tag":"Device2:device","value":"Device2"}
+{"time":1294099380000,"tag":"Device2:device","value":"Device2"}
+{"time":1294078560000,"tag":"Device3:device","value":"Device3"}
+{"time":1294091820000,"tag":"Device3:device","value":"Device3"}
+{"time":1294099380000,"tag":"Device3:device","value":"Device3"}
+{"time":1294078560000,"tag":"Device1:device","value":"Device1"}
+{"time":1294091820000,"tag":"Device1:device","value":"Device1"}
+==================================================================================================================
+falkonry>>
+```
+
+2. Writing input Data to file
+```
+falkonry>> datastream_get_data --format=application/json --path=input.json
+Default datastream set : 1scyeeoxbdh7if Name : New Standalone
+Input data is written to the file : input.json
+falkonry>> 
+```
 #### Get Streaming output of Assessment
 Fetch live output data
 ```
