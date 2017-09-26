@@ -32,7 +32,7 @@ class REPL(Cmd):
         print_custom("Welcome to Falkonry Shell !!!", "green")
 
     @options([make_option('--host', help="host url"),
-              make_option('--token',help="auth token")
+              make_option('--token', help="auth token")
              ])
     def do_login(self, args, opts=None):
         """login to the falkonry"""
@@ -41,8 +41,7 @@ class REPL(Cmd):
             return
         if opts.host.find("https://") == -1:
             opts.host = "https://" + opts.host'''
-        if validate_login('https://localhost:8080', 'lmm3orvm1yaa4j1y5b78i8f870fhon6z'):
-        #if validate_login(opts.host,opts.token):
+        if validate_login(opts.host, opts.token):
             print_success("logged in to falkonry")
 
     def do_logout(self, line):
