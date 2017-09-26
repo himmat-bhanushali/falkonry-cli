@@ -8,10 +8,12 @@ Falkonry CLI tool to access [Falkonry Condition Prediction](falkonry.com) APIs
 [Releases](https://github.com/Falkonry/falkonry-cli/releases)
 
 ## Installation
+Installation may require administrative privileges in some operating systems
 
 ```bash
 $ pip install falkonry-cli
 ```
+
 ## Requirements
 ```
 * Supported Python: Python 2.7
@@ -82,22 +84,21 @@ falkonry>> help
 
 Documented commands (type help <topic>):
 ========================================
-_relative_load datastream_get_by_id logout
-assessment_add_facts datastream_get_entity_meta py
-assessment_create datastream_get_list pyscript
-assessment_default_get datastream_add_entity_meta quit
-assessment_default_set datastream_add_historical_data run
-assessment_delete datastream_add_live_data save
-assessment_get_by_id datastream_start_live set
-assessment_get_historical_output datastream_stop_live shell
-assessment_get_list edit shortcuts
-assessment_output_listen exit show
-cmdenvironment help
-datastream_create history
-datastream_default_get load
-datastream_default_set login
-datastream_delete login_details
 
+_relative_load                    datastream_add_live_data    history      
+assessment_add_facts              datastream_create           load         
+assessment_create                 datastream_default_get      login        
+assessment_default_get            datastream_default_set      login_details
+assessment_default_set            datastream_delete           logout       
+assessment_delete                 datastream_get_by_id        py           
+assessment_get_by_id              datastream_get_data         pyscript     
+assessment_get_facts              datastream_get_entity_meta  quit         
+assessment_get_historical_output  datastream_get_list         run          
+assessment_get_list               datastream_start_live       save         
+assessment_output_listen          datastream_stop_live        set          
+cmdenvironment                    edit                        shell        
+datastream_add_entity_meta        exit                        shortcuts    
+datastream_add_historical_data    help                        show         
 falkonry>>
 ```
 
@@ -110,7 +111,7 @@ Usage: login [options] arg
 
 Options:
 -h, --help show this help message and exit
---host=HOST host url
+--host=HOST URL of the host
 --token=TOKEN auth token
 
 falkonry>>
