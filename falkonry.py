@@ -36,11 +36,11 @@ class REPL(Cmd):
              ])
     def do_login(self, args, opts=None):
         """login to the falkonry"""
-        '''if (opts.host is None or opts.host =="") or (opts.token is None or opts.token ==""):
+        if (opts.host is None or opts.host =="") or (opts.token is None or opts.token ==""):
             print_error("Please pass host url and token")
             return
         if opts.host.find("https://") == -1:
-            opts.host = "https://" + opts.host'''
+            opts.host = "https://" + opts.host
         if validate_login(opts.host, opts.token):
             print_success("logged in to falkonry")
 
@@ -277,7 +277,7 @@ class REPL(Cmd):
                     data = io.open(opts.path)
                     data_options = {'streaming': True, 'hasMoreData':False}
                     response = _falkonry.add_input_stream(_datastreamId, file_extension.split(".")[1], data_options, data)
-                    print_info(response)
+                    print_info(str(response))
             except Exception as error:
                 handle_error(error)
                 return
@@ -326,22 +326,24 @@ class REPL(Cmd):
         """ create assessment in default datastream"""
         if check_login():
             try:
-                if opts.path is None or opts.path == "":
-                    print_error("Please pass json file path for creating assessment")
-                    return
-                # read file
-                try:
-                    file_extension = get_file_extension(opts.path)
-                    if file_extension != ".json":
-                        print_error("Only JSON file is accepted.")
+                if check_default_datastream():
+                    if opts.path is None or opts.path == "":
+                        print_error("Please pass json file path for creating assessment")
                         return
-                    with open(opts.path) as data_file:
-                        data = json.load(data_file)
-                except Exception as error:
-                    print_error("Error in reading file." + str(error))
-                    return
-                created_assessment = _falkonry.create_assessment(data)
-                print_success("Assessment successfully created : "+ created_assessment.get_id())
+                    # read file
+                    try:
+                        file_extension = get_file_extension(opts.path)
+                        if file_extension != ".json":
+                            print_error("Only JSON file is accepted.")
+                            return
+                        with open(opts.path) as data_file:
+                            data = json.load(data_file)
+                    except Exception as error:
+                        print_error("Error in reading file." + str(error))
+                        return
+                    data['datastream'] = _datastreamId
+                    created_assessment = _falkonry.create_assessment(data)
+                    print_success("Assessment successfully created : "+ created_assessment.get_id())
                 return
             except Exception as error:
                 handle_error(error)
@@ -427,8 +429,8 @@ class REPL(Cmd):
     @options([make_option('--path', help="file path to write output"),
               make_option('--trackerId', help="tracker id of the previous output request"),
               make_option('--modelIndex', help="index of the model of which output needs to be fetched "),
-              make_option('--startTime', help="startTime of the output range"),
-              make_option('--endTime', help="endTime of the output range"),
+              make_option('--startTime', help="startTime of the output range should be in ISO8601 format 'YYYY-MM-DDTHH:mm:ss.SSSZ'"),
+              make_option('--endTime', help="endTime of the output range should be in ISO8601 format 'YYYY-MM-DDTHH:mm:ss.SSSZ'"),
               make_option('--format', help="format of the output. For csv pass text/csv. For JSON output pass application/json")])
     def do_assessment_get_historical_output(self, arg, opts=None):
         """ get learn/test output of assessment"""
@@ -503,8 +505,8 @@ class REPL(Cmd):
 
     @options([make_option('--path', help="file path to write output"),
               make_option('--modelIndex', help="index of the model of which facts needs to be fetched "),
-              make_option('--startTime', help="startTime of the facts range"),
-              make_option('--endTime', help="endTime of the facts range"),
+              make_option('--startTime', help="startTime of the facts range should be in ISO8601 format 'YYYY-MM-DDTHH:mm:ss.SSSZ'"),
+              make_option('--endTime', help="endTime of the facts range should be in ISO8601 format 'YYYY-MM-DDTHH:mm:ss.SSSZ'"),
               make_option('--format', help="format of the facts data. For csv pass text/csv. For JSON output pass application/json")])
     def do_assessment_get_facts(self, arg, opts=None):
         """ get facts of assessment"""
