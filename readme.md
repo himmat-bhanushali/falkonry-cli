@@ -1,5 +1,5 @@
 # Falkonry CLI tool
-[![Falkonry Logo](https://sandbox.falkonry.ai/img/logo.png)](http://falkonry.com/)
+[![Falkonry Logo](https://app.falkonry.ai/img/logo.png)](http://falkonry.com/)
 
 [![Build status](https://img.shields.io/travis/Falkonry/falkonry-python-client.svg?style=flat-square)](https://travis-ci.org/Falkonry/falkonry-python-client)
 
