@@ -927,7 +927,7 @@ falkonry>>
 
 ## Docs
 
-[Falkonry APIs](https://sandbox.falkonry.ai/api)
+[Falkonry APIs](https://app.falkonry.ai/api)
 
 ## License
 
