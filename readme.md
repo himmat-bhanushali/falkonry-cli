@@ -36,6 +36,7 @@ $ pip install falkonry-cli
 * Create Datastream for narrow/historian style data from multiple entities
 * Create Datastream for wide style data from a single entity
 * Create Datastream for wide style data from multiple entities
+* Create Datastream with microseconds precision
 * Retrieve Datastreams
 * Retrieve Datastream by Id
 * Delete Datastream
@@ -408,6 +409,52 @@ Usage :
 ```
 falkonry>> datastream_create --path=/Users/user/DatastreamRequest.json
 Datastream successfully created : anb109d1h7h1po
+falkonry>>
+```
+
+#### Create Datastream with microseconds precision
+
+Data :
+
+```
+{"time" :"2016-03-01 01:01:01", "tag" : "signal1", "value" : 3.4}
+{"time" :"2016-03-01 01:01:02", "tag" : "signal2", "value" : 9.3}
+
+or
+
+time, tag, value
+2016-03-01 01:01:01, signal1, 3.4
+2016-03-01 01:01:02, signal2, 9.3
+
+```
+Sample JSONFile:
+```
+{
+"name": "Test DS",
+"dataSource": {
+"type": "STANDALONE"
+},
+"field": {
+"time": {
+"zone": "Asia/Calcutta",
+"identifier": "time",
+"format": "YYYY-MM-DD HH:mm:ss"
+},
+"signal": {
+"tagIdentifier": "tag",
+"valueIdentifier": "value",
+"delimiter": null,
+"isSignalPrefix": false
+}
+},
+"timePrecision": "micro" // this is use to store your data in different date time format. You can store your data in milliseconds("millis") or microseconds("micro"). Default will be "millis"
+}
+```
+
+Usage :
+```
+falkonry>> datastream_create --path=/Users/user/DatastreamRequest.json
+Datastream successfully created : anbsivd1h7h1sd
 falkonry>>
 ```
 
@@ -880,7 +927,7 @@ falkonry>>
 
 ## Docs
 
-[Falkonry APIs](https://sandbox.falkonry.ai/api)
+[Falkonry APIs](https://app.falkonry.ai/api)
 
 ## License
 
