@@ -404,7 +404,14 @@ class REPL(Cmd):
                     print_error("Please set the default assessment again")
         return
 
-    @options([make_option('--path', help="file path of facts file")])
+    @options([make_option('--path', help="file path of facts file"),
+              make_option('--startTimeIdentifier', help="Start time identifier in the file"),
+              make_option('--endTimeIdentifier', help="End time identifier in the file"),
+              make_option('--timeFormat', help="Time format of start and endtime"),
+              make_option('--timeZone', help="Timezone"),
+              make_option('--entityIdentifier', help="should be kept empty in case of single entity datastream"),
+              make_option('--valueIdentifier', help="Value Identifier in the file")])
+
     def do_assessment_add_facts(self, arg, opts=None):
         """ add facts to assessment"""
         if check_login():
@@ -418,7 +425,22 @@ class REPL(Cmd):
                         print_error("Only CSV or JSON file is accepted.")
                         return
                     data = io.open(opts.path)
-                    response = _falkonry.add_facts_stream(_assessmentId, file_extension.split(".")[1], {}, data)
+                    options = {}
+                    if opts.startTimeIdentifier is not None and opts.startTimeIdentifier != "":
+                        options['startTimeIdentifier'] = opts.startTimeIdentifier
+                    if opts.endTimeIdentifier is not None and opts.endTimeIdentifier != "":
+                        options['endTimeIdentifier'] = opts.endTimeIdentifier
+                    if opts.timeFormat is not None and opts.timeFormat != "":
+                        options['timeFormat'] = opts.timeFormat
+                    if opts.timeZone is not None and opts.timeZone != "":
+                        options['timeZone'] = opts.timeZone
+                    if opts.entityIdentifier is not None and opts.entityIdentifier != "":
+                        options['entityIdentifier'] = opts.entityIdentifier
+                    if opts.valueIdentifier is not None and opts.valueIdentifier != "":
+                        options['valueIdentifier'] = opts.valueIdentifier
+
+
+                    response = _falkonry.add_facts_stream(_assessmentId, file_extension.split(".")[1], options, data)
                     print_info(str(response))
                 return
             except Exception as error:
