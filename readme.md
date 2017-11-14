@@ -716,7 +716,7 @@ Sample JSONFile / Facts Data:
 Usage:
 
 ```
-falkonry>> assessment_add_facts --path=/Users/user/Facts.json
+falkonry>> assessment_add_facts --path=/Users/user/Facts.json --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=iso_8601 --timeZone=GMT --entityIdentifier=device --valueIdentifier=Assessment1
 Default assessment set : mhai7bxygkawq8 Name : Robo Arm Test 1
 {u'status': u'PENDING', u'datastream': u'5kzugwm1natt0l', u'__$createTime': 1500540954245, u'__$id': u'4v64vkyawmqmf74a', u'action': u'ADD_FACT_DATA', u'__$tenant': u'el7rvvqx2xr6v5', u'assessment': u'mhai7bxygkawq8'}
 falkonry>>
@@ -737,7 +737,7 @@ Sample CSVFile / Facts Data:
 Usage:
 
 ```
-falkonry>> assessment_add_facts --path=/Users/user/Facts.csv
+falkonry>> assessment_add_facts --path=/Users/user/Facts.csv --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --entityIdentifier=device --valueIdentifier=Assessment1
 Default assessment set : mhai7bxygkawq8 Name : Robo Arm Test 1
 {u'status': u'PENDING', u'datastream': u'5kzugwm1natt0l', u'__$createTime': 1500540954245, u'__$id': u'4v64vkyawmqmf74a', u'action': u'ADD_FACT_DATA', u'__$tenant': u'el7rvvqx2xr6v5', u'assessment': u'mhai7bxygkawq8'}
 falkonry>>
