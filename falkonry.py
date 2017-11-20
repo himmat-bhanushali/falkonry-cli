@@ -410,7 +410,9 @@ class REPL(Cmd):
               make_option('--timeFormat', help="Time format of start and endtime"),
               make_option('--timeZone', help="Timezone"),
               make_option('--entityIdentifier', help="should be kept empty in case of single entity datastream"),
-              make_option('--valueIdentifier', help="Value Identifier in the file")])
+              make_option('--valueIdentifier', help="Value Identifier in the file"),
+              make_option('--tagIdentifier', help="Tag Identifier for facts being uploaded"),
+              make_option('--additionalTag', help="Tag value for all the facts being uploaded")])
 
     def do_assessment_add_facts(self, arg, opts=None):
         """ add facts to assessment"""
@@ -438,6 +440,11 @@ class REPL(Cmd):
                         options['entityIdentifier'] = opts.entityIdentifier
                     if opts.valueIdentifier is not None and opts.valueIdentifier != "":
                         options['valueIdentifier'] = opts.valueIdentifier
+                    if opts.tagIdentifier is not None and opts.tagIdentifier != "":
+                        options['tagIdentifier'] = opts.tagIdentifier
+                    if opts.additionalTag is not None and opts.additionalTag != "":
+                        options['additionalTag'] = opts.additionalTag
+
 
 
                     response = _falkonry.add_facts_stream(_assessmentId, file_extension.split(".")[1], options, data)

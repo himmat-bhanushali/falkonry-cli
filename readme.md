@@ -53,7 +53,10 @@ $ pip install falkonry-cli
 * Set default Assessment
 * Get default Assessment
 * Get Condition List Of Assessment
-* Add facts data to Assessment
+* Add facts data (json format) to Assessment
+* Add facts data (csv format) to Assessment
+* Add facts data (csv format) with Tags to Assessment
+* Add facts data (csv format) with additional tag to Assessment
 * Get Historian Output from Assessment
 * Get Streaming Output
 * Get Facts Data
@@ -702,6 +705,8 @@ Default assessment set : mhai7bxygkawq8 Name : Robo Arm Test 1
 falkonry>>
 ```
 
+
+
 #### Add facts data (json format) to Assessment
 
 Sample JSONFile / Facts Data:
@@ -722,6 +727,7 @@ Default assessment set : mhai7bxygkawq8 Name : Robo Arm Test 1
 falkonry>>
 ```
 
+
 #### Add facts data (csv format) to Assessment
 
 Sample CSVFile / Facts Data:
@@ -738,6 +744,50 @@ Usage:
 
 ```
 falkonry>> assessment_add_facts --path=/Users/user/Facts.csv --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --entityIdentifier=device --valueIdentifier=Assessment1
+Default assessment set : mhai7bxygkawq8 Name : Robo Arm Test 1
+{u'status': u'PENDING', u'datastream': u'5kzugwm1natt0l', u'__$createTime': 1500540954245, u'__$id': u'4v64vkyawmqmf74a', u'action': u'ADD_FACT_DATA', u'__$tenant': u'el7rvvqx2xr6v5', u'assessment': u'mhai7bxygkawq8'}
+falkonry>>
+```
+
+
+#### Add facts data (csv format) with Tags to Assessment
+
+Sample CSVFile / Facts Data:
+```
+"time","end","device","Assessment1","Tags"
+1378493763108,1396832919189,"Device1","Normal","DevTag"
+1293916980000,1315428732702,"Device1","Normal","DevTag2"
+1348315405000,1378493763108,"Device2","Failure","DevTag"
+1315428732702,1348315405000,"Device2","Fouling","DevTag"
+1348315405000,1378493763108,"Device3","Failure","DevTag"
+1315428732702,1348315405000,"Device3","Normal","DevTag2"
+```
+Usage:
+
+```
+falkonry>> assessment_add_facts --path=/Users/user/Facts.csv --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --entityIdentifier=device --valueIdentifier=Assessment1 --tagIdentifier=Tags
+Default assessment set : mhai7bxygkawq8 Name : Robo Arm Test 1
+{u'status': u'PENDING', u'datastream': u'5kzugwm1natt0l', u'__$createTime': 1500540954245, u'__$id': u'4v64vkyawmqmf74a', u'action': u'ADD_FACT_DATA', u'__$tenant': u'el7rvvqx2xr6v5', u'assessment': u'mhai7bxygkawq8'}
+falkonry>>
+```
+
+
+#### Add facts data (csv format) with additional tag to Assessment
+
+Sample CSVFile / Facts Data:
+```
+"time","end","device","Assessment1"
+1378493763108,1396832919189,"Device1","Normal"
+1293916980000,1315428732702,"Device1","Normal"
+1348315405000,1378493763108,"Device2","Failure"
+1315428732702,1348315405000,"Device2","Fouling"
+1348315405000,1378493763108,"Device3","Failure"
+1315428732702,1348315405000,"Device3","Normal"
+```
+Usage:
+
+```
+falkonry>> assessment_add_facts --path=/Users/user/Facts.csv --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --entityIdentifier=device --valueIdentifier=Assessment1 --additionalTag=testTag
 Default assessment set : mhai7bxygkawq8 Name : Robo Arm Test 1
 {u'status': u'PENDING', u'datastream': u'5kzugwm1natt0l', u'__$createTime': 1500540954245, u'__$id': u'4v64vkyawmqmf74a', u'action': u'ADD_FACT_DATA', u'__$tenant': u'el7rvvqx2xr6v5', u'assessment': u'mhai7bxygkawq8'}
 falkonry>>
