@@ -240,7 +240,13 @@ class REPL(Cmd):
                 return
         return
 
-    @options([make_option('--path', help="file path of request")])
+    @options([make_option('--path', help="file path of request"),
+              make_option('--timeIdentifier', help="time identifier in the file"),
+              make_option('--entityIdentifier', help="Entity identifier in the file"),
+              make_option('--timeFormat', help="Time format"),
+              make_option('--timeZone', help="Timezone"),
+              make_option('--signalIdentifier', help="ssignal Identifier in file"),
+              make_option('--valueIdentifier', help="Value Identifier in the file")])
     def do_datastream_add_historical_data(self, arg, opts=None):
         """ add historical data to datastream for model learning """
         if check_login():
@@ -254,7 +260,23 @@ class REPL(Cmd):
                         print_error("Only CSV or JSON file is accepted.")
                         return
                     data = io.open(opts.path)
-                    data_options = {'streaming': False, 'hasMoreData':False}
+                    options = {}
+                    if opts.timeIdentifier is not None and opts.timeIdentifier != "":
+                        options['timeIdentifier'] = opts.timeIdentifier
+                    if opts.timeFormat is not None and opts.timeFormat != "":
+                        options['timeFormat'] = opts.timeFormat
+                    if opts.timeZone is not None and opts.timeZone != "":
+                        options['timeZone'] = opts.timeZone
+                    if opts.entityIdentifier is not None and opts.entityIdentifier != "":
+                        options['entityIdentifier'] = opts.entityIdentifier
+                    if opts.signalIdentifier is not None and opts.signalIdentifier != "":
+                        options['signalIdentifier'] = opts.signalIdentifier
+                    if opts.valueIdentifier is not None and opts.valueIdentifier != "":
+                        options['valueIdentifier'] = opts.valueIdentifier
+                    options['streaming'] = False
+                    options['hasMoreData'] = False
+
+                    data_options = options
                     response = _falkonry.add_input_stream(_datastreamId, file_extension.split(".")[1], data_options, data)
                     print_info(str(response))
             except Exception as error:
