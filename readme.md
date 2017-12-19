@@ -53,10 +53,10 @@ $ pip install falkonry-cli
 * Set default Assessment
 * Get default Assessment
 * Get Condition List Of Assessment
-* Add facts data (json format) to Assessment
-* Add facts data (csv format) to Assessment
-* Add facts data (csv format) with Tags to Assessment
-* Add facts data (csv format) with additional tag to Assessment
+* Add facts data (json format) to Assessment of single entity datastream
+* Add facts data (json format) with addition tag to Assessment of multi entity datastream
+* Add facts data (csv format) to Assessment of single entity datastream
+* Add facts data (csv format) with tags Assessment of single entity datastream
 * Get Historian Output from Assessment
 * Get Streaming Output
 * Get Facts Data
@@ -705,9 +705,27 @@ Default assessment set : mhai7bxygkawq8 Name : Robo Arm Test 1
 falkonry>>
 ```
 
+#### Add facts data (json format) to Assessment of single entity datastream
 
+Sample JSONFile / Facts Data:
+```
+{"time":"2011-09-08T02:22:12.702+05:30","end":"2012-09-22T17:33:25.000+05:30","Assessment1":"Fouling"}
+{"time":"2012-09-22T17:33:25.000+05:30","end":"2013-09-07T00:26:03.108+05:30","Assessment1":"Failure"}
+{"time":"2011-01-02T02:53:00.000+05:30","end":"2011-09-08T02:22:12.702+05:30","Assessment1":"Normal"}
+{"time":"2013-09-07T00:26:03.108+05:30","end":"2014-04-07T06:38:39.189+05:30","Assessment1":"Normal"}
+{"time":"2011-01-02T02:53:00.000+05:30","end":"2011-09-08T02:22:12.702+05:30","Assessment1":"Normal"}
+{"time":"2013-09-07T00:26:03.108+05:30","end":"2014-04-07T06:38:39.189+05:30","Assessment1":"Failure"}
+```
+Usage:
 
-#### Add facts data (json format) to Assessment
+```
+falkonry>> assessment_add_facts --path=/Users/user/Facts.json --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=iso_8601 --timeZone=GMT --valueIdentifier=Assessment1
+Default assessment set : mhai7bxygkawq8 Name : Robo Arm Test 1
+{u'status': u'PENDING', u'datastream': u'5kzugwm1natt0l', u'__$createTime': 1500540954245, u'__$id': u'4v64vkyawmqmf74a', u'action': u'ADD_FACT_DATA', u'__$tenant': u'el7rvvqx2xr6v5', u'assessment': u'mhai7bxygkawq8'}
+falkonry>>
+```
+
+#### Add facts data (json format) with addition tag to Assessment of multi entity datastream
 
 Sample JSONFile / Facts Data:
 ```
@@ -721,14 +739,14 @@ Sample JSONFile / Facts Data:
 Usage:
 
 ```
-falkonry>> assessment_add_facts --path=/Users/user/Facts.json --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=iso_8601 --timeZone=GMT --entityIdentifier=device --valueIdentifier=Assessment1
+falkonry>> assessment_add_facts --path=/Users/user/Facts.json --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=iso_8601 --timeZone=GMT --entityIdentifier=device --valueIdentifier=Assessment1 --additionalTag=testTag
 Default assessment set : mhai7bxygkawq8 Name : Robo Arm Test 1
 {u'status': u'PENDING', u'datastream': u'5kzugwm1natt0l', u'__$createTime': 1500540954245, u'__$id': u'4v64vkyawmqmf74a', u'action': u'ADD_FACT_DATA', u'__$tenant': u'el7rvvqx2xr6v5', u'assessment': u'mhai7bxygkawq8'}
 falkonry>>
 ```
 
 
-#### Add facts data (csv format) to Assessment
+#### Add facts data (csv format) to Assessment of single entity datastream
 
 Sample CSVFile / Facts Data:
 ```
@@ -749,49 +767,27 @@ Default assessment set : mhai7bxygkawq8 Name : Robo Arm Test 1
 falkonry>>
 ```
 
-
-#### Add facts data (csv format) with Tags to Assessment
+#### Add facts data (csv format) with tags Assessment of single entity datastream
 
 Sample CSVFile / Facts Data:
 ```
-"time","end","device","Assessment1","Tags"
-1378493763108,1396832919189,"Device1","Normal","DevTag"
-1293916980000,1315428732702,"Device1","Normal","DevTag2"
-1348315405000,1378493763108,"Device2","Failure","DevTag"
-1315428732702,1348315405000,"Device2","Fouling","DevTag"
-1348315405000,1378493763108,"Device3","Failure","DevTag"
-1315428732702,1348315405000,"Device3","Normal","DevTag2"
+"time","end","device","Assessment1","Tag"
+1378493763108,1396832919189,"Device1","Normal","testTag1"
+1293916980000,1315428732702,"Device1","Normal","testTag2"
+1348315405000,1378493763108,"Device2","Failure","testTag1"
+1315428732702,1348315405000,"Device2","Fouling","testTag1"
+1348315405000,1378493763108,"Device3","Failure","testTag2"
+1315428732702,1348315405000,"Device3","Normal","testTag1"
 ```
 Usage:
 
 ```
-falkonry>> assessment_add_facts --path=/Users/user/Facts.csv --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --entityIdentifier=device --valueIdentifier=Assessment1 --tagIdentifier=Tags
+falkonry>> assessment_add_facts --path=/Users/user/Facts.csv --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --entityIdentifier=device --valueIdentifier=Assessment1 --tagIdentifier=Tag
 Default assessment set : mhai7bxygkawq8 Name : Robo Arm Test 1
 {u'status': u'PENDING', u'datastream': u'5kzugwm1natt0l', u'__$createTime': 1500540954245, u'__$id': u'4v64vkyawmqmf74a', u'action': u'ADD_FACT_DATA', u'__$tenant': u'el7rvvqx2xr6v5', u'assessment': u'mhai7bxygkawq8'}
 falkonry>>
 ```
 
-
-#### Add facts data (csv format) with additional tag to Assessment
-
-Sample CSVFile / Facts Data:
-```
-"time","end","device","Assessment1"
-1378493763108,1396832919189,"Device1","Normal"
-1293916980000,1315428732702,"Device1","Normal"
-1348315405000,1378493763108,"Device2","Failure"
-1315428732702,1348315405000,"Device2","Fouling"
-1348315405000,1378493763108,"Device3","Failure"
-1315428732702,1348315405000,"Device3","Normal"
-```
-Usage:
-
-```
-falkonry>> assessment_add_facts --path=/Users/user/Facts.csv --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --entityIdentifier=device --valueIdentifier=Assessment1 --additionalTag=testTag
-Default assessment set : mhai7bxygkawq8 Name : Robo Arm Test 1
-{u'status': u'PENDING', u'datastream': u'5kzugwm1natt0l', u'__$createTime': 1500540954245, u'__$id': u'4v64vkyawmqmf74a', u'action': u'ADD_FACT_DATA', u'__$tenant': u'el7rvvqx2xr6v5', u'assessment': u'mhai7bxygkawq8'}
-falkonry>>
-```
 
 #### Get Historian Output from Assessment (Generate output for given time range)
 Options:
