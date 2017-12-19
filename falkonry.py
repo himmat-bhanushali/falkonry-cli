@@ -297,7 +297,24 @@ class REPL(Cmd):
                         print_error("Only CSV or JSON file is accepted.")
                         return
                     data = io.open(opts.path)
-                    data_options = {'streaming': True, 'hasMoreData':False}
+                    options = {}
+                    if opts.timeIdentifier is not None and opts.timeIdentifier != "":
+                        options['timeIdentifier'] = opts.timeIdentifier
+                    if opts.timeFormat is not None and opts.timeFormat != "":
+                        options['timeFormat'] = opts.timeFormat
+                    if opts.timeZone is not None and opts.timeZone != "":
+                        options['timeZone'] = opts.timeZone
+                    if opts.entityIdentifier is not None and opts.entityIdentifier != "":
+                        options['entityIdentifier'] = opts.entityIdentifier
+                    if opts.signalIdentifier is not None and opts.signalIdentifier != "":
+                        options['signalIdentifier'] = opts.signalIdentifier
+                    if opts.valueIdentifier is not None and opts.valueIdentifier != "":
+                        options['valueIdentifier'] = opts.valueIdentifier
+                    options['streaming'] = True
+                    options['hasMoreData'] = True
+
+                    data_options = options
+
                     response = _falkonry.add_input_stream(_datastreamId, file_extension.split(".")[1], data_options, data)
                     print_info(str(response))
             except Exception as error:
@@ -631,6 +648,7 @@ class REPL(Cmd):
                 handle_error(error)
                 return
         return
+
 
 
 def validate_login(host,token):
