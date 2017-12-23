@@ -44,7 +44,10 @@ $ pip install falkonry-cli
 * Get default Datastream
 * Add EntityMeta to a Datastream
 * Get EntityMeta of a Datastream
-* Add historical input data to Datastream
+* Add narrow input data (json format) to multi entity Datastream
+* Add narrow input data (csv format) single entity to Datastream
+* Add wide input data (json format) to single entity Datastream
+* Add wide input data (csv format) to multi entity Datastream
 * Add live input data to Datastream
 * Create Assessment
 * Retrieve Assessments
@@ -210,23 +213,23 @@ Datastream successfully created : anbsivd1h7h1sd
 falkonry>>
 ```
 
-#### Create Datastream for narrow/historian style data from multiple things
+#### Create Datastream for narrow/historian style data from multiple entity
 
 Data :
 
 ```
-{"time" :"2016-03-01 01:01:01", "tag" : "signal1_thing1", "value" : 3.4}
-{"time" :"2016-03-01 01:01:01", "tag" : "signal2_thing1", "value" : 1.4}
-{"time" :"2016-03-01 01:01:02", "tag" : "signal1_thing2", "value" : 9.3}
-{"time" :"2016-03-01 01:01:02", "tag" : "signal2_thing2", "value" : 4.3}
+{"time" :"2016-03-01 01:01:01", "signal" : "signal1", "entity" : "entity1", "value" : 3.4}
+{"time" :"2016-03-01 01:01:02", "signal" : "signal2", "entity" : "entity2", "value" : 1.4}
+{"time" :"2016-03-01 01:01:03", "signal" : "signal3", "entity" : "entity3", "value" : 9.3}
+{"time" :"2016-03-01 01:01:04", "signal" : "signal2", "entity" : "entity2", "value" : 4.3}
 
 or
 
-time, tag, value
-2016-03-01 01:01:01, signal1_thing1, 3.4
-2016-03-01 01:01:01, signal2_thing1, 1.4
-2016-03-01 01:01:02, signal1_thing2, 9.3
-2016-03-01 01:01:02, signal2_thing2, 4.3
+time,signal,entity,value
+2016-03-01 01:01:01,signal1,entity1,3.4
+2016-03-01 01:01:01,signal2,entity2,1.4
+2016-03-01 01:01:01,signal3,entity3,9.3
+2016-03-01 01:01:01,signal4,entity4,4.3
 ```
 
 Sample JSONFile:
@@ -242,11 +245,10 @@ Sample JSONFile:
 "identifier": "time",
 "format": "YYYY-MM-DD HH:mm:ss"
 },
+"entityIdentifier": "entity"
 "signal": {
-"tagIdentifier": "tag",
 "valueIdentifier": "value",
-"delimiter": "_",
-"isSignalPrefix": true
+"signalIdentifier": "signal"
 }
 }
 }
@@ -269,9 +271,9 @@ Data :
 
 or
 
-time, signal1, signal2, signal3, signal4
-1467729675422, 41.11, 62.34, 77.63, 4.8
-1467729675445, 43.91, 82.64, 73.63, 3.8
+time,signal1,signal2,signal3,signal4
+1467729675422,41.11,62.34,77.63,4.8
+1467729675445,43.91,82.64,73.63,3.8
 ```
 
 Sample JSONFile:
@@ -342,14 +344,14 @@ falkonry>>
 Data :
 
 ```python
-{"time":1467729675422, "thing": "Thing1", "signal1":41.11, "signal2":82.34, "signal3":74.63, "signal4":4.8}
-{"time":1467729668919, "thing": "Thing2", "signal1":78.11, "signal2":2.33, "signal3":4.6, "signal4":9.8}
+{"time":1467729675422, "entity": "entity1", "signal1":41.11, "signal2":82.34, "signal3":74.63, "signal4":4.8}
+{"time":1467729668919, "entity": "entity2", "signal1":78.11, "signal2":2.33, "signal3":4.6, "signal4":9.8}
 
 or
 
-time, thing, signal1, signal2, signal3, signal4
-1467729675422, thing1, 41.11, 62.34, 77.63, 4.8
-1467729675445, thing1, 43.91, 82.64, 73.63, 3.8
+time, entity, signal1, signal2, signal3, signal4
+1467729675422, entity1, 41.11, 62.34, 77.63, 4.8
+1467729675445, entity1, 43.91, 82.64, 73.63, 3.8
 ```
 
 Sample JSONFile:
@@ -365,7 +367,7 @@ Sample JSONFile:
 "identifier": "time",
 "format": "millis"
 },
-"entityIdentifier": "things"
+"entityIdentifier": "entity"
 },
 "inputList": [
 {
@@ -425,9 +427,9 @@ Data :
 
 or
 
-time, tag, value
-2016-03-01 01:01:01, signal1, 3.4
-2016-03-01 01:01:02, signal2, 9.3
+time,signal,value
+2016-03-01 01:01:01,signal1,3.4
+2016-03-01 01:01:02,signal2,9.3
 
 ```
 Sample JSONFile:
@@ -444,10 +446,8 @@ Sample JSONFile:
 "format": "YYYY-MM-DD HH:mm:ss"
 },
 "signal": {
-"tagIdentifier": "tag",
-"valueIdentifier": "value",
-"delimiter": null,
-"isSignalPrefix": false
+"signalIdentifier": "signal",
+"valueIdentifier": "value"
 }
 },
 "timePrecision": "micro" // this is use to store your data in different date time format. You can store your data in milliseconds("millis") or microseconds("micro"). Default will be "millis"
@@ -546,53 +546,94 @@ Entity Label : testName. Entity Id : testId
 falkonry>>
 ```
 
-#### Add historical input data (json format) to a Datastream (Used for model revision)
+#### Add narrow input data (json format) to multi entity Datastream
 
 Data :
 
 ```
-{"time" :"2016-03-01 01:01:01", "tag" : "signal1_thing1", "value" : 3.4}
-{"time" :"2016-03-01 01:01:01", "tag" : "signal2_thing1", "value" : 1.4}
-{"time" :"2016-03-01 01:01:02", "tag" : "signal1_thing2", "value" : 9.3}
-{"time" :"2016-03-01 01:01:02", "tag" : "signal2_thing2", "value" : 4.3}
+{"time":"2016-03-01T01:01:01.000Z","signal":"current","value":12.4,"car":"car1"}
 ```
 
 Usage :
 
 ```
-falkonry>> datastream_add_historical_data --path=/Users/user/Input.json
+falkonry>> datastream_add_historical_data --path=/Users/user/Input.json --timeIdentifier=time --entityIdentifier=car --timeFormat=iso_8601 --timeZone=GMT --signalIdentifier=signal --valueIdentifier=value
+
 Default datastream set : oii0djojxc2lxt Name : New Ds -1
 {u'status': u'PENDING', u'datastream': u'oii0djojxc2lxt', u'__$createTime': 1500538975912, u'__$id': u'q68cho8foyml3gv4', u'user': u'Tza1q4g0kw5epo', u'action': u'ADD_DATA_DATASTREAM', u'__$tenant': u'el7rvvqx2xr6v5', u'dataSource': u'Lp1nfea7z5lrtk'}
 falkonry>>
 ```
 
-#### Add historical input data (csv format) to a Datastream (Used for model revision)
+#### Add narrow input data (csv format) single entity to Datastream
 Data :
 
 ```
-time, tag, value
-2016-03-01 01:01:01, signal1_thing1, 3.4
-2016-03-01 01:01:01, signal2_thing1, 1.4
+time,signal,value
+2011-01-03T18:16:00.000Z,current,32.96
+2011-01-03T21:57:00.000Z,vibration,3.4
+
 ```
 
 Usage :
 
 ```
-falkonry>> datastream_add_historical_data --path=/Users/user/Input.csv
+falkonry>> datastream_add_historical_data --path=/Users/user/InputNarrow.csv --timeIdentifier=time --timeFormat=iso_8601 --timeZone=GMT --signalIdentifier=signal --valueIdentifier=value
+
 Default datastream set : oii0djojxc2lxt Name : New Ds -1
 {u'status': u'PENDING', u'datastream': u'oii0djojxc2lxt', u'__$createTime': 1500538975912, u'__$id': u'q68cho8foyml3gv4', u'user': u'Tza1q4g0kw5epo', u'action': u'ADD_DATA_DATASTREAM', u'__$tenant': u'el7rvvqx2xr6v5', u'dataSource': u'Lp1nfea7z5lrtk'}
 falkonry>>
 ```
+
+
+#### Add wide input data (json format) to single entity Datastream
+
+Data :
+
+```
+{"time":"2011-01-03T18:16:00.000Z","Signal1":9.95,"Signal2":30.6,"Signal3":41.7}
+{"time":"2011-01-04T18:16:00.000Z","Signal1":19.95,"Signal2":40.6,"Signal3":43.7}
+
+```
+
+Usage :
+
+```
+falkonry>> datastream_add_historical_data --path=/Users/user/InputNarrow.csv --timeIdentifier=time --timeFormat=iso_8601 --timeZone=GMT --signalIdentifier=signal --valueIdentifier=value
+
+Default datastream set : oii0djojxc2lxt Name : New Ds -1
+{u'status': u'PENDING', u'datastream': u'oii0djojxc2lxt', u'__$createTime': 1500538975912, u'__$id': u'q68cho8foyml3gv4', u'user': u'Tza1q4g0kw5epo', u'action': u'ADD_DATA_DATASTREAM', u'__$tenant': u'el7rvvqx2xr6v5', u'dataSource': u'Lp1nfea7z5lrtk'}
+falkonry>>
+```
+
+
+#### Add wide input data (csv format) to multi entity Datastream
+
+Data :
+
+```
+time,device,Signal1,Signal2,Signal3
+2011-01-03T18:16:00.000Z,Device1,9.95,32.96,42.91
+2011-01-03T21:57:00,000Z,Device1,9.95,32.96,42.91
+
+```
+
+Usage :
+
+```
+falkonry>> datastream_add_historical_data --path=/Users/user/InputNarrow.csv --timeIdentifier=time --timeFormat=iso_8601 --timeZone=GMT --signalIdentifier=signal --valueIdentifier=value --entityIdentifier=device
+
+Default datastream set : oii0djojxc2lxt Name : New Ds -1
+{u'status': u'PENDING', u'datastream': u'oii0djojxc2lxt', u'__$createTime': 1500538975912, u'__$id': u'q68cho8foyml3gv4', u'user': u'Tza1q4g0kw5epo', u'action': u'ADD_DATA_DATASTREAM', u'__$tenant': u'el7rvvqx2xr6v5', u'dataSource': u'Lp1nfea7z5lrtk'}
+falkonry>>
+```
+
 
 #### Add live input data (json format) to a Datastream (Used for live monitoring)
 
 Data :
 
 ```
-{"time" :"2016-03-01 01:01:01", "tag" : "signal1_thing1", "value" : 3.4}
-{"time" :"2016-03-01 01:01:01", "tag" : "signal2_thing1", "value" : 1.4}
-{"time" :"2016-03-01 01:01:02", "tag" : "signal1_thing2", "value" : 9.3}
-{"time" :"2016-03-01 01:01:02", "tag" : "signal2_thing2", "value" : 4.3}
+{"time":"2016-03-01T01:01:01.000Z","signal":"current","value":12.4,"car":"car1"}
 ```
 
 Usage :
@@ -609,9 +650,9 @@ falkonry>>
 Data :
 
 ```
-time, tag, value
-2016-03-01 01:01:01, signal1_thing1, 3.4
-2016-03-01 01:01:01, signal2_thing1, 1.4
+time,signal,entity,value
+2016-03-01 01:01:01,signal1,entity1,3.4
+2016-03-01 01:01:01,signal2,entity1,1.4
 ```
 
 Usage :

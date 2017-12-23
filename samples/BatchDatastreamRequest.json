@@ -1,0 +1,1 @@
+{"name":"Datastream_New6","dataSource":{"type":"STANDALONE"},"field":{"time":{"zone":"Asia/Calcutta","identifier":"time","format":"iso_8601"},"batchIdentifier":"batch", "signal":{"valueIdentifier": "value", "signalIdentifier": "signal"}}}

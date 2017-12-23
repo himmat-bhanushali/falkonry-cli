@@ -240,7 +240,14 @@ class REPL(Cmd):
                 return
         return
 
-    @options([make_option('--path', help="file path of request")])
+    @options([make_option('--path', help="file path of request"),
+              make_option('--timeIdentifier', help="time identifier in the file"),
+              make_option('--entityIdentifier', help="Entity identifier in the file"),
+              make_option('--timeFormat', help="Time format"),
+              make_option('--timeZone', help="Timezone"),
+              make_option('--signalIdentifier', help="ssignal Identifier in file"),
+              make_option('--valueIdentifier', help="Value Identifier in the file"),
+              make_option('--batchIdentifier', help="Batch Identifier, if the data being uploaded in batch datastream")])
     def do_datastream_add_historical_data(self, arg, opts=None):
         """ add historical data to datastream for model learning """
         if check_login():
@@ -254,7 +261,25 @@ class REPL(Cmd):
                         print_error("Only CSV or JSON file is accepted.")
                         return
                     data = io.open(opts.path)
-                    data_options = {'streaming': False, 'hasMoreData':False}
+                    options = {}
+                    if opts.timeIdentifier is not None and opts.timeIdentifier != "":
+                        options['timeIdentifier'] = opts.timeIdentifier
+                    if opts.timeFormat is not None and opts.timeFormat != "":
+                        options['timeFormat'] = opts.timeFormat
+                    if opts.timeZone is not None and opts.timeZone != "":
+                        options['timeZone'] = opts.timeZone
+                    if opts.entityIdentifier is not None and opts.entityIdentifier != "":
+                        options['entityIdentifier'] = opts.entityIdentifier
+                    if opts.signalIdentifier is not None and opts.signalIdentifier != "":
+                        options['signalIdentifier'] = opts.signalIdentifier
+                    if opts.valueIdentifier is not None and opts.valueIdentifier != "":
+                        options['valueIdentifier'] = opts.valueIdentifier
+                    if opts.batchIdentifier is not None and opts.batchIdentifier != "":
+                        options['batchIdentifier'] = opts.batchIdentifier
+                    options['streaming'] = False
+                    options['hasMoreData'] = False
+
+                    data_options = options
                     response = _falkonry.add_input_stream(_datastreamId, file_extension.split(".")[1], data_options, data)
                     print_info(str(response))
             except Exception as error:
@@ -275,7 +300,26 @@ class REPL(Cmd):
                         print_error("Only CSV or JSON file is accepted.")
                         return
                     data = io.open(opts.path)
-                    data_options = {'streaming': True, 'hasMoreData':False}
+                    options = {}
+                    if opts.timeIdentifier is not None and opts.timeIdentifier != "":
+                        options['timeIdentifier'] = opts.timeIdentifier
+                    if opts.timeFormat is not None and opts.timeFormat != "":
+                        options['timeFormat'] = opts.timeFormat
+                    if opts.timeZone is not None and opts.timeZone != "":
+                        options['timeZone'] = opts.timeZone
+                    if opts.entityIdentifier is not None and opts.entityIdentifier != "":
+                        options['entityIdentifier'] = opts.entityIdentifier
+                    if opts.signalIdentifier is not None and opts.signalIdentifier != "":
+                        options['signalIdentifier'] = opts.signalIdentifier
+                    if opts.valueIdentifier is not None and opts.valueIdentifier != "":
+                        options['valueIdentifier'] = opts.valueIdentifier
+                    if opts.batchIdentifier is not None and opts.batchIdentifier != "":
+                        options['batchIdentifier'] = opts.batchIdentifier
+                    options['streaming'] = True
+                    options['hasMoreData'] = True
+
+                    data_options = options
+
                     response = _falkonry.add_input_stream(_datastreamId, file_extension.split(".")[1], data_options, data)
                     print_info(str(response))
             except Exception as error:
@@ -411,6 +455,7 @@ class REPL(Cmd):
               make_option('--timeZone', help="Timezone"),
               make_option('--entityIdentifier', help="should be kept empty in case of single entity datastream"),
               make_option('--valueIdentifier', help="Value Identifier in the file"),
+              make_option('--batchIdentifier', help="Batch Identifier, if the data being upload into a batched datastream"),
               make_option('--tagIdentifier', help="Tag Identifier for facts being uploaded"),
               make_option('--additionalTag', help="Tag value for all the facts being uploaded")])
 
@@ -440,6 +485,8 @@ class REPL(Cmd):
                         options['entityIdentifier'] = opts.entityIdentifier
                     if opts.valueIdentifier is not None and opts.valueIdentifier != "":
                         options['valueIdentifier'] = opts.valueIdentifier
+                    if opts.batchIdentifier is not None and opts.batchIdentifier != "":
+                        options['batchIdentifier'] = opts.batchIdentifier
                     if opts.tagIdentifier is not None and opts.tagIdentifier != "":
                         options['tagIdentifier'] = opts.tagIdentifier
                     if opts.additionalTag is not None and opts.additionalTag != "":
@@ -609,6 +656,7 @@ class REPL(Cmd):
                 handle_error(error)
                 return
         return
+
 
 
 def validate_login(host,token):
