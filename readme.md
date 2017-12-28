@@ -422,8 +422,8 @@ falkonry>>
 Data :
 
 ```
-{"time" :"2016-03-01 01:01:01", "tag" : "signal1", "value" : 3.4}
-{"time" :"2016-03-01 01:01:02", "tag" : "signal2", "value" : 9.3}
+{"time" :"2016-03-01 01:01:01", "signal" : "signal1", "value" : 3.4}
+{"time" :"2016-03-01 01:01:02", "signal" : "signal2", "value" : 9.3}
 
 or
 
@@ -451,6 +451,50 @@ Sample JSONFile:
 }
 },
 "timePrecision": "micro" // this is use to store your data in different date time format. You can store your data in milliseconds("millis") or microseconds("micro"). Default will be "millis"
+}
+```
+
+Usage :
+```
+falkonry>> datastream_create --path=/Users/user/DatastreamRequest.json
+Datastream successfully created : anbsivd1h7h1sd
+falkonry>>
+```
+
+#### Create Datastream for batched usecase
+
+Data :
+
+```
+{"time" :"2016-03-01 01:01:01", "signal" : "signal1", "value" : 3.4, "batchId": "batch-1"}
+{"time" :"2016-03-01 01:01:02", "signal" : "signal2", "value" : 9.3, "batchId": "batch-1"}
+
+or
+
+time,signal,value,batchId
+2016-03-01 01:01:01,signal1,3.4,batch-1
+2016-03-01 01:01:02,signal2,9.3,batch-1
+
+```
+Sample JSONFile:
+```
+{
+"name": "Test DS",
+"dataSource": {
+"type": "STANDALONE"
+},
+"field": {
+"time": {
+"zone": "Asia/Calcutta",
+"identifier": "time",
+"format": "YYYY-MM-DD HH:mm:ss"
+},
+"signal": {
+"signalIdentifier": "signal",
+"valueIdentifier": "value"
+},
+"batchIdentifier": "batchId" // set batch identifier here.
+}
 }
 ```
 
