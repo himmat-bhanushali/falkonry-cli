@@ -52,7 +52,8 @@ $ pip install falkonry-cli
 * Add historical narrow input data to multi entity batch datastream
 * Add historical wide input data to single entity batch datastream
 * Add historical wide input data to multi entity batch datastream
-* Add live input data to Datastream
+* Add live input data (json format) to a Datastream (Used for live monitoring)
+* Add live input data (csv format) to a Datastream (Used for live monitoring)
 * Create Assessment
 * Retrieve Assessments
 * Retrieve Assessment by Id
@@ -782,35 +783,54 @@ falkonry>>
 Data :
 
 ```
-{"time":"2016-03-01T01:01:01.000Z","signal":"current","value":12.4,"car":"car1"}
+time,activity,person,end
+1447882550000,walking,p1,1447882565000
+1447882565000,sitting,p1,1447882570000
+1447882575000,cycling,p1,1447882580000
+1447882580000,sitting,p1,1447882585000
+1447882590000,sitting,p1,1447882595000
+1447882595000,walking,p1,1447882600000
+1447882600000,cycling,p1,1447882605000
+1447882625000,rowing,p1,1447882630000
+1447882630000,rowing,p1,1447882635000
+1447882635000,sitting,p1,1447882640000
+1447882660000,rowing,p1,1447882665000
+1447882665000,cycling,p1,1447882670000
 ```
 
 Usage :
 
 ```
-falkonry>> datastream_add_live_data --path=/Users/user/Input.json
-Default datastream set : oii0djojxc2lxt Name : New Ds -1
-Data submitted successfully
-falkonry>>
+datastream_add_live_data --path=/Users/user/Input.json
+Default datastream set : lg7k1a5jor1nvh Name : Human Activity
+{u'message': u'Data submitted successfully'}
 ```
 
-#### Add live data (csv format) to a Datastream (Used for live monitoring)
+#### Add live input data (csv format) to a Datastream (Used for live monitoring)
 
 Data :
 
 ```
-time,signal,entity,value
-2016-03-01 01:01:01,signal1,entity1,3.4
-2016-03-01 01:01:01,signal2,entity1,1.4
+{"time":"1447882550000","activity":"walking","person":"p1","end":"1447882565000"}
+{"time":"1447882565000","activity":"sitting","person":"p1","end":"1447882570000"}
+{"time":"1447882575000","activity":"cycling","person":"p1","end":"1447882580000"}
+{"time":"1447882580000","activity":"sitting","person":"p1","end":"1447882585000"}
+{"time":"1447882590000","activity":"sitting","person":"p1","end":"1447882595000"}
+{"time":"1447882595000","activity":"walking","person":"p1","end":"1447882600000"}
+{"time":"1447882600000","activity":"cycling","person":"p1","end":"1447882605000"}
+{"time":"1447882625000","activity":"rowing","person":"p1","end":"1447882630000"}
+{"time":"1447882630000","activity":"rowing","person":"p1","end":"1447882635000"}
+{"time":"1447882635000","activity":"sitting","person":"p1","end":"1447882640000"}
+{"time":"1447882660000","activity":"rowing","person":"p1","end":"1447882665000"}
+{"time":"1447882665000","activity":"cycling","person":"p1","end":"1447882670000"}
 ```
 
 Usage :
 
 ```
-falkonry>> datastream_add_live_data --path=/Users/user/Input.csv
-Default datastream set : oii0djojxc2lxt Name
-Data submitted successfully
-falkonry>>
+datastream_add_live_data --path=/Users/user/Input.csv
+Default datastream set : lg7k1a5jor1nvh Name : Human Activity
+{u'message': u'Data submitted successfully'}
 ```
 
 #### Create Assessment

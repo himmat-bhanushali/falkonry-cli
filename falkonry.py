@@ -286,7 +286,14 @@ class REPL(Cmd):
                 handle_error(error)
                 return
 
-    @options([make_option('--path', help="file path of request")])
+    @options([make_option('--path', help="file path of request"),
+              make_option('--timeIdentifier', help="time identifier in the file"),
+              make_option('--entityIdentifier', help="Entity identifier in the file"),
+              make_option('--timeFormat', help="Time format"),
+              make_option('--timeZone', help="Timezone"),
+              make_option('--signalIdentifier', help="ssignal Identifier in file"),
+              make_option('--valueIdentifier', help="Value Identifier in the file"),
+              make_option('--batchIdentifier', help="Batch Identifier, if the data being uploaded in batch datastream")])
     def do_datastream_add_live_data(self, arg, opts=None):
         """add live data to datastream for live monitoring """
         if check_login():
