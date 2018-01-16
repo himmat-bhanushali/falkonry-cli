@@ -212,7 +212,7 @@ Sample JSONFile:
 
 Usage :
 ```
-falkonry>> datastream_create --path=/Users/user/DatastreamRequest.json
+falkonry>> datastream_create --path=/Users/user/NarrowSingleEntity.json
 Datastream successfully created : anbsivd1h7h1sd
 falkonry>>
 ```
@@ -260,7 +260,7 @@ Sample JSONFile:
 
 Usage :
 ```
-falkonry>> datastream_create --path=/Users/user/DatastreamRequest.json
+falkonry>> datastream_create --path=/Users/user/NarrowMultipleEntity.json
 Datastream successfully created : anbsivd1h7h1sd
 falkonry>>
 ```
@@ -338,7 +338,7 @@ Sample JSONFile:
 
 Usage :
 ```
-falkonry>> datastream_create --path=/Users/user/DatastreamRequest.json
+falkonry>> datastream_create --path=/Users/user/WideSingleEntity.json
 Datastream successfully created : anb109d1h7h1po
 falkonry>>
 ```
@@ -416,7 +416,7 @@ Sample JSONFile:
 
 Usage :
 ```
-falkonry>> datastream_create --path=/Users/user/DatastreamRequest.json
+falkonry>> datastream_create --path=/Users/user/WideMultiEntity.json
 Datastream successfully created : anb109d1h7h1po
 falkonry>>
 ```
@@ -691,7 +691,7 @@ Data :
 Usage :
 
 ```
-falkonry>> datastream_add_historical_data --path=/Falkonry/falkonry-cli/samples/InputNarrowBatchSingleEntity.json --timeIdentifier="time" --timeFormat="Unix Time Milliseconds" --timeZone="GMT" --signalIdentifier="signal" --batchIdentifier="batchId" --valueIdentifier="value"
+falkonry>> datastream_add_historical_data --path=/Users/user/InputNarrowBatchSingleEntity.json --timeIdentifier="time" --timeFormat="Unix Time Milliseconds" --timeZone="GMT" --signalIdentifier="signal" --batchIdentifier="batchId" --valueIdentifier="value"
 Default datastream set : wlybjb4tq776n9 Name : Narrow Single Entity Batch Test DS
 {u'status': u'PENDING', u'datastream': u'wlybjb4tq776n9', u'__$createTime': 1516013313895, u'__$id': u'kpgly6d2tg9v27b6', u'user': u'e6q8ienqs9celz', u'action': u'ADD_DATA_DATASTREAM', u'__$tenant': u'iqn80x6e2ku9id', u'dataSource': u'y8ibr9co7hqkkd'}
 falkonry>>
@@ -724,7 +724,7 @@ time,batchId,unit,signal,value
 Usage :
 
 ```
-falkonry>> datastream_add_historical_data --path=/Falkonry/falkonry-cli/samples/InputNarrowBatchMultiEntity.csv --timeIdentifier="time" --timeFormat="Unix Time Milliseconds" --timeZone="GMT" --entityIdentifier="unit" --signalIdentifier="signal" --batchIdentifier="batchId" --valueIdentifier="value"
+falkonry>> datastream_add_historical_data --path=/Users/user/InputNarrowBatchMultiEntity.csv --timeIdentifier="time" --timeFormat="Unix Time Milliseconds" --timeZone="GMT" --entityIdentifier="unit" --signalIdentifier="signal" --batchIdentifier="batchId" --valueIdentifier="value"
 Default datastream set : hn6cq2lpcwg49c Name : Narrow Multiple Entity Batch Test DS
 {u'status': u'PENDING', u'datastream': u'hn6cq2lpcwg49c', u'__$createTime': 1516013971506, u'__$id': u'4hqpj9hw2vmcjqwh', u'user': u'e6q8ienqs9celz', u'action': u'ADD_DATA_DATASTREAM', u'__$tenant': u'iqn80x6e2ku9id', u'dataSource': u'Rp8euhiyg3ctt4'}
 falkonry>> 
@@ -747,7 +747,7 @@ Data :
 Usage :
 
 ```
-falkonry>> datastream_add_historical_data --path=/Falkonry/falkonry-cli/samples/InputWideBatchSingleEntity.json --timeIdentifier="time" --timeFormat="Unix Time Milliseconds" --timeZone="GMT" --batchIdentifier="batchId"
+falkonry>> datastream_add_historical_data --path=/Users/user/InputWideBatchSingleEntity.json --timeIdentifier="time" --timeFormat="Unix Time Milliseconds" --timeZone="GMT" --batchIdentifier="batchId"
 Default datastream set : cm492hm4j74wrn Name : Wide Single Entity Batch Test DS
 {u'status': u'PENDING', u'datastream': u'cm492hm4j74wrn', u'__$createTime': 1516015544894, u'__$id': u'wmgllwgjwwjtp7w4', u'user': u'e6q8ienqs9celz', u'action': u'ADD_DATA_DATASTREAM', u'__$tenant': u'iqn80x6e2ku9id', u'dataSource': u'Teqm2nwjpbhbs3'}
 falkonry>> 
@@ -770,7 +770,7 @@ time,batchId,unit,signal1,signal2,signal3
 Usage :
 
 ```
-falkonry>> datastream_add_historical_data --path=/home/vedant/FalkonryWorkspace/falkonry-cli/Updated_samples/InputWideBatchMultiEntity.csv --timeIdentifier="time" --timeFormat="Unix Time Milliseconds" --timeZone="GMT" --entityIdentifier="unit" --batchIdentifier="batchId"
+falkonry>> datastream_add_historical_data --path=/Users/user/InputWideBatchMultiEntity.csv --timeIdentifier="time" --timeFormat="Unix Time Milliseconds" --timeZone="GMT" --entityIdentifier="unit" --batchIdentifier="batchId"
 Default datastream set : 7wgwm68b9p24n4 Name : Wide Multiple Entity Batch Test DS
 {u'status': u'PENDING', u'datastream': u'7wgwm68b9p24n4', u'__$createTime': 1516016064677, u'__$id': u'mlc2pt7y87jhwlw2', u'user': u'e6q8ienqs9celz', u'action': u'ADD_DATA_DATASTREAM', u'__$tenant': u'iqn80x6e2ku9id', u'dataSource': u'Lita7m408qq9j9'}
 falkonry>>
@@ -907,7 +907,7 @@ Sample JSONFile / Facts Data:
 Usage:
 
 ```
-falkonry>> assessment_add_facts --path=/home/vedant/FalkonryWorkspace/falkonry-cli/Updated_samples/NarrowFacts.json --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --valueIdentifier=value
+falkonry>> assessment_add_facts --path=/Users/user/NarrowFacts.json --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --valueIdentifier=value
 Default assessment set : hv987ptckdc6n7 Name : New Test Assessment
 {u'status': u'PENDING', u'datastream': u'cr77vk6mkwqwqq', u'__$createTime': 1516022010240, u'__$id': u'lcq4pp9jcvwgcgmp', u'action': u'ADD_FACT_DATA', u'__$tenant': u'iqn80x6e2ku9id', u'assessment': u'hv987ptckdc6n7'}
 falkonry>> 
@@ -926,7 +926,7 @@ Sample JSONFile / Facts Data:
 Usage:
 
 ```
-falkonry>> assessment_add_facts --path=/home/vedant/FalkonryWorkspace/falkonry-cli/Updated_samples/MoreFacts.json --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --valueIdentifier=value --additionalTag=testTag
+falkonry>> assessment_add_facts --path=/Users/user/MoreFacts.json --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --valueIdentifier=value --additionalTag=testTag
 Default assessment set : hv987ptckdc6n7 Name : New Test Assessment
 {u'status': u'PENDING', u'datastream': u'cr77vk6mkwqwqq', u'__$createTime': 1516087411723, u'__$id': u'4l8bgmd6rv2qj77j', u'action': u'ADD_FACT_DATA', u'__$tenant': u'iqn80x6e2ku9id', u'assessment': u'hv987ptckdc6n7'}
 falkonry>>
@@ -948,7 +948,7 @@ time,end,value
 Usage:
 
 ```
-falkonry>> assessment_add_facts --path=/home/vedant/FalkonryWorkspace/falkonry-cli/Updated_samples/NarrowFacts.csv --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --valueIdentifier=value
+falkonry>> assessment_add_facts --path=/Users/user/NarrowFacts.csv --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --valueIdentifier=value
 Default assessment set : bqn8vjdb7yr9km Name : new test
 {u'status': u'PENDING', u'datastream': u'cr77vk6mkwqwqq', u'__$createTime': 1516089750789, u'__$id': u'm7b2l694wcptccmk', u'action': u'ADD_FACT_DATA', u'__$tenant': u'iqn80x6e2ku9id', u'assessment': u'bqn8vjdb7yr9km'}
 falkonry>>
@@ -967,7 +967,7 @@ time,end,value,tagId
 Usage:
 
 ```
-falkonry>> assessment_add_facts --path=/home/vedant/FalkonryWorkspace/falkonry-cli/Updated_samples/TagFacts.csv --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --valueIdentifier=value --tagIdentifier=tagId
+falkonry>> assessment_add_facts --path=/Users/user/TagFacts.csv --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --valueIdentifier=value --tagIdentifier=tagId
 Default assessment set : 4rrp97lk9gcvwc Name : test new
 {u'status': u'PENDING', u'datastream': u'cr77vk6mkwqwqq', u'__$createTime': 1516090649022, u'__$id': u'hly8b4727wm9prq8', u'action': u'ADD_FACT_DATA', u'__$tenant': u'iqn80x6e2ku9id', u'assessment': u'4rrp97lk9gcvwc'}
 falkonry>>
