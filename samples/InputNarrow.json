@@ -1,1 +1,2 @@
-{"time":"2016-03-01T01:01:01.000Z","signal":"current","value":12.4,"car":"car1"}
+{"time" :"2016-03-01 01:01:01", "tag" : "signal1", "value" : 3.4}
+{"time" :"2016-03-01 01:01:02", "tag" : "signal2", "value" : 9.3}

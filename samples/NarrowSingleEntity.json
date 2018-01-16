@@ -1,0 +1,19 @@
+{
+  "name": "Narrow Single Entity Test DS",
+  "dataSource": {
+    "type": "STANDALONE"
+  },
+  "field": {
+    "time": {
+      "zone": "Asia/Calcutta",
+      "identifier": "time",
+      "format": "YYYY-MM-DD HH:mm:ss"
+    },
+  "signal": {
+    "tagIdentifier": "tag",
+    "valueIdentifier": "value",
+    "delimiter": null,
+    "isSignalPrefix": false
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+   "name":"Wide Multiple Entity Batch Test DS",
+   "dataSource":{
+      "type":"STANDALONE"
+   },
+   "field":{
+      "time":{
+         "zone":"Asia/Calcutta",
+         "identifier":"time",
+         "format":"millis"
+      },
+      "entityIdentifier":"entity",
+      "batchIdentifier":"batchId"
+   },
+   "inputList":[
+      {
+         "name":"signal1",
+         "valueType":{
+            "type":"Numeric"
+         },
+         "eventType":{
+            "type":"Samples"
+         }
+      },
+      {
+         "name":"signal2",
+         "valueType":{
+            "type":"Numeric"
+         },
+         "eventType":{
+            "type":"Samples"
+         }
+      },
+      {
+         "name":"signal3",
+         "valueType":{
+            "type":"Numeric"
+         },
+         "eventType":{
+            "type":"Samples"
+         }
+      }
+   ]
+}
