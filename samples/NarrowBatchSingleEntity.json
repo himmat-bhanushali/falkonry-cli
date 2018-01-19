@@ -1,0 +1,18 @@
+{
+  "name": "Narrow Single Entity Batch Test DS",
+  "dataSource": {
+    "type": "STANDALONE"
+  },
+  "field": {
+    "time": {
+      "zone": "Asia/Calcutta",
+      "identifier": "time",
+      "format": "YYYY-MM-DD HH:mm:ss"
+    },
+    "batchIdentifier":"batchId",
+    "signal": {
+      "valueIdentifier": "value",
+      "signalIdentifier": "signal"
+    }
+  }
+}

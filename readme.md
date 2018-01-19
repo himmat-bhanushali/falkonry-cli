@@ -44,11 +44,16 @@ $ pip install falkonry-cli
 * Get default Datastream
 * Add EntityMeta to a Datastream
 * Get EntityMeta of a Datastream
-* Add narrow input data (json format) to multi entity Datastream
-* Add narrow input data (csv format) single entity to Datastream
-* Add wide input data (json format) to single entity Datastream
-* Add wide input data (csv format) to multi entity Datastream
-* Add live input data to Datastream
+* Add historical narrow input data (json format) to multi entity Datastream
+* Add historical narrow input data (csv format) single entity to Datastream
+* Add historical wide input data (json format) to single entity Datastream
+* Add historical wide input data (csv format) to multi entity Datastream
+* Add historical narrow input data to single entity batch datastream
+* Add historical narrow input data to multi entity batch datastream
+* Add historical wide input data to single entity batch datastream
+* Add historical wide input data to multi entity batch datastream
+* Add live input data (json format) to a Datastream (Used for live monitoring)
+* Add live input data (csv format) to a Datastream (Used for live monitoring)
 * Create Assessment
 * Retrieve Assessments
 * Retrieve Assessment by Id
@@ -208,7 +213,7 @@ Sample JSONFile:
 
 Usage :
 ```
-falkonry>> datastream_create --path=/Users/user/DatastreamRequest.json
+falkonry>> datastream_create --path=/Users/user/NarrowSingleEntity.json
 Datastream successfully created : anbsivd1h7h1sd
 falkonry>>
 ```
@@ -256,7 +261,7 @@ Sample JSONFile:
 
 Usage :
 ```
-falkonry>> datastream_create --path=/Users/user/DatastreamRequest.json
+falkonry>> datastream_create --path=/Users/user/NarrowMultipleEntity.json
 Datastream successfully created : anbsivd1h7h1sd
 falkonry>>
 ```
@@ -334,7 +339,7 @@ Sample JSONFile:
 
 Usage :
 ```
-falkonry>> datastream_create --path=/Users/user/DatastreamRequest.json
+falkonry>> datastream_create --path=/Users/user/WideSingleEntity.json
 Datastream successfully created : anb109d1h7h1po
 falkonry>>
 ```
@@ -412,7 +417,7 @@ Sample JSONFile:
 
 Usage :
 ```
-falkonry>> datastream_create --path=/Users/user/DatastreamRequest.json
+falkonry>> datastream_create --path=/Users/user/WideMultiEntity.json
 Datastream successfully created : anb109d1h7h1po
 falkonry>>
 ```
@@ -590,7 +595,7 @@ Entity Label : testName. Entity Id : testId
 falkonry>>
 ```
 
-#### Add narrow input data (json format) to multi entity Datastream
+#### Add historical narrow input data (json format) to multi entity Datastream
 
 Data :
 
@@ -608,7 +613,7 @@ Default datastream set : oii0djojxc2lxt Name : New Ds -1
 falkonry>>
 ```
 
-#### Add narrow input data (csv format) single entity to Datastream
+#### Add historical narrow input data (csv format) single entity to Datastream
 Data :
 
 ```
@@ -629,7 +634,7 @@ falkonry>>
 ```
 
 
-#### Add wide input data (json format) to single entity Datastream
+#### Add historical wide input data (json format) to single entity Datastream
 
 Data :
 
@@ -650,7 +655,7 @@ falkonry>>
 ```
 
 
-#### Add wide input data (csv format) to multi entity Datastream
+#### Add historical wide input data (csv format) to multi entity Datastream
 
 Data :
 
@@ -672,40 +677,160 @@ falkonry>>
 ```
 
 
+#### Add historical narrow input data (json format) to single entity batch Datastream
+
+Data :
+
+```
+{"time": 1467729675010,"batchId": "batch_1","signal": "signal1","value": 9.95}
+{"time": 1467729675020,"batchId": "batch_1","signal": "signal1","value": 4.45}
+{"time": 1467729675030,"batchId": "batch_2","signal": "signal1","value": 1.45}
+{"time": 1467729675040,"batchId": "batch_2","signal": "signal1","value": 8.45}
+{"time": 1467729675050,"batchId": "batch_2","signal": "signal1","value": 2.45}
+```
+
+Usage :
+
+```
+falkonry>> datastream_add_historical_data --path=/Users/user/InputNarrowBatchSingleEntity.json --timeIdentifier="time" --timeFormat="Unix Time Milliseconds" --timeZone="GMT" --signalIdentifier="signal" --batchIdentifier="batchId" --valueIdentifier="value"
+Default datastream set : wlybjb4tq776n9 Name : Narrow Single Entity Batch Test DS
+{u'status': u'PENDING', u'datastream': u'wlybjb4tq776n9', u'__$createTime': 1516013313895, u'__$id': u'kpgly6d2tg9v27b6', u'user': u'e6q8ienqs9celz', u'action': u'ADD_DATA_DATASTREAM', u'__$tenant': u'iqn80x6e2ku9id', u'dataSource': u'y8ibr9co7hqkkd'}
+falkonry>>
+```
+
+
+#### Add historical narrow input data (csv format) to multi entity batch Datastream
+
+Data :
+
+```
+time,batchId,unit,signal,value
+1467729675010,batch_1,unit1,signal1,9.95
+1467729675020,batch_1,unit1,signal1,4.45
+1467729675030,batch_2,unit1,signal1,1.45
+1467729675040,batch_2,unit1,signal1,8.45
+1467729675050,batch_2,unit1,signal1,2.45
+1467729675010,batch_1,unit1,signal2,19.95
+1467729675020,batch_1,unit1,signal2,14.45
+1467729675030,batch_2,unit1,signal2,10.45
+1467729675040,batch_2,unit1,signal2,18.45
+1467729675050,batch_2,unit1,signal2,12.45
+1467729675010,batch_1,unit1,signal3,39.95
+1467729675020,batch_1,unit1,signal3,34.45
+1467729675030,batch_2,unit1,signal3,30.45
+1467729675040,batch_2,unit1,signal3,38.45
+1467729675050,batch_2,unit1,signal3,32.45
+```
+
+Usage :
+
+```
+falkonry>> datastream_add_historical_data --path=/Users/user/InputNarrowBatchMultiEntity.csv --timeIdentifier="time" --timeFormat="Unix Time Milliseconds" --timeZone="GMT" --entityIdentifier="unit" --signalIdentifier="signal" --batchIdentifier="batchId" --valueIdentifier="value"
+Default datastream set : hn6cq2lpcwg49c Name : Narrow Multiple Entity Batch Test DS
+{u'status': u'PENDING', u'datastream': u'hn6cq2lpcwg49c', u'__$createTime': 1516013971506, u'__$id': u'4hqpj9hw2vmcjqwh', u'user': u'e6q8ienqs9celz', u'action': u'ADD_DATA_DATASTREAM', u'__$tenant': u'iqn80x6e2ku9id', u'dataSource': u'Rp8euhiyg3ctt4'}
+falkonry>> 
+
+```
+
+
+#### Add historical wide input data (json format) to single entity Datastream
+
+Data :
+
+```
+{"time": 1467729675010,"batchId": "batch_1","signal1": 9.95,"signal2": 19.95,"signal3": 39.95}
+{"time": 1467729675020,"batchId": "batch_1","signal1": 4.45,"signal2": 14.45,"signal3": 34.45}
+{"time": 1467729675030,"batchId": "batch_2","signal1": 1.45,"signal2": 10.45,"signal3": 30.45}
+{"time": 1467729675040,"batchId": "batch_2","signal1": 8.45,"signal2": 18.45,"signal3": 38.45}
+{"time": 1467729675050,"batchId": "batch_2","signal1": 2.45,"signal2": 12.45,"signal3": 32.45}
+```
+
+Usage :
+
+```
+falkonry>> datastream_add_historical_data --path=/Users/user/InputWideBatchSingleEntity.json --timeIdentifier="time" --timeFormat="Unix Time Milliseconds" --timeZone="GMT" --batchIdentifier="batchId"
+Default datastream set : cm492hm4j74wrn Name : Wide Single Entity Batch Test DS
+{u'status': u'PENDING', u'datastream': u'cm492hm4j74wrn', u'__$createTime': 1516015544894, u'__$id': u'wmgllwgjwwjtp7w4', u'user': u'e6q8ienqs9celz', u'action': u'ADD_DATA_DATASTREAM', u'__$tenant': u'iqn80x6e2ku9id', u'dataSource': u'Teqm2nwjpbhbs3'}
+falkonry>> 
+```
+
+
+#### Add historical wide input data (csv format) to multi entity Datastream
+
+Data :
+
+```
+time,batchId,unit,signal1,signal2,signal3
+1467729675010,batch_1,unit1,9.95,19.95,39.95
+1467729675020,batch_1,unit1,4.45,14.45,34.45
+1467729675030,batch_2,unit1,1.45,10.45,30.45
+1467729675040,batch_2,unit1,8.45,18.45,38.45
+1467729675050,batch_2,unit1,2.45,12.45,32.45
+```
+
+Usage :
+
+```
+falkonry>> datastream_add_historical_data --path=/Users/user/InputWideBatchMultiEntity.csv --timeIdentifier="time" --timeFormat="Unix Time Milliseconds" --timeZone="GMT" --entityIdentifier="unit" --batchIdentifier="batchId"
+Default datastream set : 7wgwm68b9p24n4 Name : Wide Multiple Entity Batch Test DS
+{u'status': u'PENDING', u'datastream': u'7wgwm68b9p24n4', u'__$createTime': 1516016064677, u'__$id': u'mlc2pt7y87jhwlw2', u'user': u'e6q8ienqs9celz', u'action': u'ADD_DATA_DATASTREAM', u'__$tenant': u'iqn80x6e2ku9id', u'dataSource': u'Lita7m408qq9j9'}
+falkonry>>
+```
+
+
 #### Add live input data (json format) to a Datastream (Used for live monitoring)
 
 Data :
 
 ```
-{"time":"2016-03-01T01:01:01.000Z","signal":"current","value":12.4,"car":"car1"}
+time,activity,person,end
+1447882550000,walking,p1,1447882565000
+1447882565000,sitting,p1,1447882570000
+1447882575000,cycling,p1,1447882580000
+1447882580000,sitting,p1,1447882585000
+1447882590000,sitting,p1,1447882595000
+1447882595000,walking,p1,1447882600000
+1447882600000,cycling,p1,1447882605000
+1447882625000,rowing,p1,1447882630000
+1447882630000,rowing,p1,1447882635000
+1447882635000,sitting,p1,1447882640000
+1447882660000,rowing,p1,1447882665000
+1447882665000,cycling,p1,1447882670000
 ```
 
 Usage :
 
 ```
-falkonry>> datastream_add_live_data --path=/Users/user/Input.json
-Default datastream set : oii0djojxc2lxt Name : New Ds -1
-Data submitted successfully
-falkonry>>
+datastream_add_live_data --path=/Users/user/Input.json
+Default datastream set : lg7k1a5jor1nvh Name : Human Activity
+{u'message': u'Data submitted successfully'}
 ```
 
-#### Add live data (csv format) to a Datastream (Used for live monitoring)
+#### Add live input data (csv format) to a Datastream (Used for live monitoring)
 
 Data :
 
 ```
-time,signal,entity,value
-2016-03-01 01:01:01,signal1,entity1,3.4
-2016-03-01 01:01:01,signal2,entity1,1.4
+{"time":"1447882550000","activity":"walking","person":"p1","end":"1447882565000"}
+{"time":"1447882565000","activity":"sitting","person":"p1","end":"1447882570000"}
+{"time":"1447882575000","activity":"cycling","person":"p1","end":"1447882580000"}
+{"time":"1447882580000","activity":"sitting","person":"p1","end":"1447882585000"}
+{"time":"1447882590000","activity":"sitting","person":"p1","end":"1447882595000"}
+{"time":"1447882595000","activity":"walking","person":"p1","end":"1447882600000"}
+{"time":"1447882600000","activity":"cycling","person":"p1","end":"1447882605000"}
+{"time":"1447882625000","activity":"rowing","person":"p1","end":"1447882630000"}
+{"time":"1447882630000","activity":"rowing","person":"p1","end":"1447882635000"}
+{"time":"1447882635000","activity":"sitting","person":"p1","end":"1447882640000"}
+{"time":"1447882660000","activity":"rowing","person":"p1","end":"1447882665000"}
+{"time":"1447882665000","activity":"cycling","person":"p1","end":"1447882670000"}
 ```
 
 Usage :
 
 ```
-falkonry>> datastream_add_live_data --path=/Users/user/Input.csv
-Default datastream set : oii0djojxc2lxt Name
-Data submitted successfully
-falkonry>>
+datastream_add_live_data --path=/Users/user/Input.csv
+Default datastream set : lg7k1a5jor1nvh Name : Human Activity
+{u'message': u'Data submitted successfully'}
 ```
 
 #### Create Assessment
@@ -794,40 +919,38 @@ falkonry>>
 
 Sample JSONFile / Facts Data:
 ```
-{"time":"2011-09-08T02:22:12.702+05:30","end":"2012-09-22T17:33:25.000+05:30","Assessment1":"Fouling"}
-{"time":"2012-09-22T17:33:25.000+05:30","end":"2013-09-07T00:26:03.108+05:30","Assessment1":"Failure"}
-{"time":"2011-01-02T02:53:00.000+05:30","end":"2011-09-08T02:22:12.702+05:30","Assessment1":"Normal"}
-{"time":"2013-09-07T00:26:03.108+05:30","end":"2014-04-07T06:38:39.189+05:30","Assessment1":"Normal"}
-{"time":"2011-01-02T02:53:00.000+05:30","end":"2011-09-08T02:22:12.702+05:30","Assessment1":"Normal"}
-{"time":"2013-09-07T00:26:03.108+05:30","end":"2014-04-07T06:38:39.189+05:30","Assessment1":"Failure"}
+{"time":1456774261072,"end":1456774261116,"value":"label1"}
+{"time":1456774261321,"end":1456774261362,"value":"label2"}
+{"time":1456774261538,"end":1456774261570,"value":"label1"}
+{"time":1456774261723,"end":1456774261754,"value":"label2"}
 ```
 Usage:
 
 ```
-falkonry>> assessment_add_facts --path=/Users/user/Facts.json --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=iso_8601 --timeZone=GMT --valueIdentifier=Assessment1
-Default assessment set : mhai7bxygkawq8 Name : Robo Arm Test 1
-{u'status': u'PENDING', u'datastream': u'5kzugwm1natt0l', u'__$createTime': 1500540954245, u'__$id': u'4v64vkyawmqmf74a', u'action': u'ADD_FACT_DATA', u'__$tenant': u'el7rvvqx2xr6v5', u'assessment': u'mhai7bxygkawq8'}
-falkonry>>
+falkonry>> assessment_add_facts --path=/Users/user/NarrowFacts.json --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --valueIdentifier=value
+Default assessment set : hv987ptckdc6n7 Name : New Test Assessment
+{u'status': u'PENDING', u'datastream': u'cr77vk6mkwqwqq', u'__$createTime': 1516022010240, u'__$id': u'lcq4pp9jcvwgcgmp', u'action': u'ADD_FACT_DATA', u'__$tenant': u'iqn80x6e2ku9id', u'assessment': u'hv987ptckdc6n7'}
+falkonry>> 
+
 ```
 
 #### Add facts data (json format) with addition tag to Assessment of multi entity datastream
 
 Sample JSONFile / Facts Data:
 ```
-{"time":"2011-09-08T02:22:12.702+05:30","end":"2012-09-22T17:33:25.000+05:30","device":"Device1","Assessment1":"Fouling"}
-{"time":"2012-09-22T17:33:25.000+05:30","end":"2013-09-07T00:26:03.108+05:30","device":"Device1","Assessment1":"Failure"}
-{"time":"2011-01-02T02:53:00.000+05:30","end":"2011-09-08T02:22:12.702+05:30","device":"Device2","Assessment1":"Normal"}
-{"time":"2013-09-07T00:26:03.108+05:30","end":"2014-04-07T06:38:39.189+05:30","device":"Device2","Assessment1":"Normal"}
-{"time":"2011-01-02T02:53:00.000+05:30","end":"2011-09-08T02:22:12.702+05:30","device":"Device3","Assessment1":"Normal"}
-{"time":"2013-09-07T00:26:03.108+05:30","end":"2014-04-07T06:38:39.189+05:30","device":"Device3","Assessment1":"Failure"}
+{"time":1456774261061,"end":1456774261103,"value":"label1"}
+{"time":1456774261213,"end":1456774261258,"value":"label2"}
+{"time":1456774261455,"end":1456774261512,"value":"label1"}
+{"time":1456774261715,"end":1456774261767,"value":"label2"}
 ```
 Usage:
 
 ```
-falkonry>> assessment_add_facts --path=/Users/user/Facts.json --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=iso_8601 --timeZone=GMT --entityIdentifier=device --valueIdentifier=Assessment1 --additionalTag=testTag
-Default assessment set : mhai7bxygkawq8 Name : Robo Arm Test 1
-{u'status': u'PENDING', u'datastream': u'5kzugwm1natt0l', u'__$createTime': 1500540954245, u'__$id': u'4v64vkyawmqmf74a', u'action': u'ADD_FACT_DATA', u'__$tenant': u'el7rvvqx2xr6v5', u'assessment': u'mhai7bxygkawq8'}
+falkonry>> assessment_add_facts --path=/Users/user/MoreFacts.json --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --valueIdentifier=value --additionalTag=testTag
+Default assessment set : hv987ptckdc6n7 Name : New Test Assessment
+{u'status': u'PENDING', u'datastream': u'cr77vk6mkwqwqq', u'__$createTime': 1516087411723, u'__$id': u'4l8bgmd6rv2qj77j', u'action': u'ADD_FACT_DATA', u'__$tenant': u'iqn80x6e2ku9id', u'assessment': u'hv987ptckdc6n7'}
 falkonry>>
+
 ```
 
 
@@ -835,20 +958,19 @@ falkonry>>
 
 Sample CSVFile / Facts Data:
 ```
-"time","end","device","Assessment1"
-1378493763108,1396832919189,"Device1","Normal"
-1293916980000,1315428732702,"Device1","Normal"
-1348315405000,1378493763108,"Device2","Failure"
-1315428732702,1348315405000,"Device2","Fouling"
-1348315405000,1378493763108,"Device3","Failure"
-1315428732702,1348315405000,"Device3","Normal"
+time,end,value
+"1456774261072","1456774261116","label1"
+"1456774261321","1456774261362","label2"
+"1456774261538","1456774261570","label1"
+"1456774261723","1456774261754","label2"
+
 ```
 Usage:
 
 ```
-falkonry>> assessment_add_facts --path=/Users/user/Facts.csv --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --entityIdentifier=device --valueIdentifier=Assessment1
-Default assessment set : mhai7bxygkawq8 Name : Robo Arm Test 1
-{u'status': u'PENDING', u'datastream': u'5kzugwm1natt0l', u'__$createTime': 1500540954245, u'__$id': u'4v64vkyawmqmf74a', u'action': u'ADD_FACT_DATA', u'__$tenant': u'el7rvvqx2xr6v5', u'assessment': u'mhai7bxygkawq8'}
+falkonry>> assessment_add_facts --path=/Users/user/NarrowFacts.csv --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --valueIdentifier=value
+Default assessment set : bqn8vjdb7yr9km Name : new test
+{u'status': u'PENDING', u'datastream': u'cr77vk6mkwqwqq', u'__$createTime': 1516089750789, u'__$id': u'm7b2l694wcptccmk', u'action': u'ADD_FACT_DATA', u'__$tenant': u'iqn80x6e2ku9id', u'assessment': u'bqn8vjdb7yr9km'}
 falkonry>>
 ```
 
@@ -856,20 +978,18 @@ falkonry>>
 
 Sample CSVFile / Facts Data:
 ```
-"time","end","device","Assessment1","Tag"
-1378493763108,1396832919189,"Device1","Normal","testTag1"
-1293916980000,1315428732702,"Device1","Normal","testTag2"
-1348315405000,1378493763108,"Device2","Failure","testTag1"
-1315428732702,1348315405000,"Device2","Fouling","testTag1"
-1348315405000,1378493763108,"Device3","Failure","testTag2"
-1315428732702,1348315405000,"Device3","Normal","testTag1"
+time,end,value,tagId
+"1456774261072","1456774261116","label1","tag1"
+"1456774261321","1456774261362","label2","tag1"
+"1456774261538","1456774261570","label1","tag2"
+"1456774261723","1456774261754","label2","tag2"
 ```
 Usage:
 
 ```
-falkonry>> assessment_add_facts --path=/Users/user/Facts.csv --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --entityIdentifier=device --valueIdentifier=Assessment1 --tagIdentifier=Tag
-Default assessment set : mhai7bxygkawq8 Name : Robo Arm Test 1
-{u'status': u'PENDING', u'datastream': u'5kzugwm1natt0l', u'__$createTime': 1500540954245, u'__$id': u'4v64vkyawmqmf74a', u'action': u'ADD_FACT_DATA', u'__$tenant': u'el7rvvqx2xr6v5', u'assessment': u'mhai7bxygkawq8'}
+falkonry>> assessment_add_facts --path=/Users/user/TagFacts.csv --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --valueIdentifier=value --tagIdentifier=tagId
+Default assessment set : 4rrp97lk9gcvwc Name : test new
+{u'status': u'PENDING', u'datastream': u'cr77vk6mkwqwqq', u'__$createTime': 1516090649022, u'__$id': u'hly8b4727wm9prq8', u'action': u'ADD_FACT_DATA', u'__$tenant': u'iqn80x6e2ku9id', u'assessment': u'4rrp97lk9gcvwc'}
 falkonry>>
 ```
 
@@ -969,15 +1089,40 @@ Usage:
 1. Fetching facts data
 ```
 falkonry>> assessment_get_facts --format=application/json --modelIndex=2
-Default assessment set : 743cveg32hkwl2 Name : Standalone DS
+Default assessment set : 424ltd4jphnm69 Name : Sports Activity
 Facts Data : 
 ==================================================================================================================
-{"id":"zjE7gRjij2aAtn","tenant":"A8vkl6bxn86qh0","createTime":1501756952620,"type":"entities.Verification","time":1472628618962,"end":1475258391805,"entity":"UNIT-1","value":"normal","assessment":"743cveg32hkwl2","tags":["USER ADDED","Test",""],"sysCreateTime":1501756952620,"falkonry_source":"1501756363467"}
-{"id":"BdPJyBwtOia6y5","tenant":"A8vkl6bxn86qh0","createTime":1501757081175,"type":"entities.Verification","time":1475300807496,"end":1477972996029,"entity":"UNIT-1","value":"good","assessment":"743cveg32hkwl2","tags":["USER ADDED","GoodTag",""],"sysCreateTime":1501757081175,"falkonry_source":"1501756363467"}
-{"id":"4Yx5vcg7qYa1W8","tenant":"A8vkl6bxn86qh0","createTime":1501757152737,"type":"entities.Verification","time":1477972996029,"end":1483147710332,"entity":"UNIT-1","value":"failure","assessment":"743cveg32hkwl2","tags":["USER ADDED","Failed",""],"sysCreateTime":1501757152737,"falkonry_source":"1501756363467"}
-{"id":"NUR1dP3PGtI5nW","tenant":"A8vkl6bxn86qh0","createTime":1500546860111,"type":"entities.Verification","time":1500453248322,"end":1500453256182,"entity":"UNIT-1","value":"bad","assessment":"743cveg32hkwl2","tags":["USER ADDED"],"sysCreateTime":1500546860111,"falkonry_source":"1500546477175"}
-{"id":"EmdxDwHrQd4X1v","tenant":"A8vkl6bxn86qh0","createTime":1500546642589,"type":"entities.Verification","time":1500453256182,"end":1500453256896,"entity":"UNIT-1","value":"new","assessment":"743cveg32hkwl2","tags":["USER ADDED"],"sysCreateTime":1500546642589,"falkonry_source":"1500546477175"}
-{"id":"MBLD2yA0cSG2fM","tenant":"A8vkl6bxn86qh0","createTime":1500546681069,"type":"entities.Verification","time":1500453256896,"end":1500453261945,"entity":"UNIT-1","value":"normal","assessment":"743cveg32hkwl2","tags":["USER ADDED"],"sysCreateTime":1500546681069,"falkonry_source":"1500546477175"}
+{"time":1447882550000000,"end":1447882565000000,"entity":"p1","value":"walking"}
+{"time":1447882565000000,"end":1447882570000000,"entity":"p1","value":"sitting"}
+{"time":1447882575000000,"end":1447882580000000,"entity":"p1","value":"cycling"}
+{"time":1447882580000000,"end":1447882585000000,"entity":"p1","value":"sitting"}
+{"time":1447882590000000,"end":1447882595000000,"entity":"p1","value":"sitting"}
+{"time":1447882595000000,"end":1447882600000000,"entity":"p1","value":"walking"}
+{"time":1447882600000000,"end":1447882605000000,"entity":"p1","value":"cycling"}
+{"time":1447882625000000,"end":1447882635000000,"entity":"p1","value":"rowing"}
+{"time":1447882635000000,"end":1447882640000000,"entity":"p1","value":"sitting"}
+{"time":1447882660000000,"end":1447882665000000,"entity":"p1","value":"rowing"}
+{"time":1447882665000000,"end":1447882670000000,"entity":"p1","value":"cycling"}
+{"time":1447882670000000,"end":1447882675000000,"entity":"p1","value":"rowing"}
+{"time":1447882675000000,"end":1447882680000000,"entity":"p1","value":"sitting"}
+{"time":1447882680000000,"end":1447882685000000,"entity":"p1","value":"rowing"}
+{"time":1447882685000000,"end":1447882690000000,"entity":"p1","value":"walking"}
+{"time":1447882695000000,"end":1447882700000000,"entity":"p1","value":"cycling"}
+{"time":1447882700000000,"end":1447882705000000,"entity":"p1","value":"sitting"}
+{"time":1447882715000000,"end":1447882720000000,"entity":"p1","value":"cycling"}
+{"time":1447882720000000,"end":1447882725000000,"entity":"p1","value":"walking"}
+{"time":1447882725000000,"end":1447882730000000,"entity":"p1","value":"rowing"}
+{"time":1447882750000000,"end":1447882755000000,"entity":"p1","value":"walking"}
+{"time":1447882770000000,"end":1447882775000000,"entity":"p1","value":"rowing"}
+{"time":1447882775000000,"end":1447882785000000,"entity":"p1","value":"cycling"}
+{"time":1447882795000000,"end":1447882800000000,"entity":"p1","value":"rowing"}
+{"time":1447882800000000,"end":1447882805000000,"entity":"p1","value":"cycling"}
+{"time":1447882805000000,"end":1447882810000000,"entity":"p1","value":"rowing"}
+{"time":1447882820000000,"end":1447882825000000,"entity":"p1","value":"rowing"}
+{"time":1447882830000000,"end":1447882835000000,"entity":"p1","value":"cycling"}
+{"time":1447882835000000,"end":1447882840000000,"entity":"p1","value":"sitting"}
+{"time":1447882840000000,"end":1447882845000000,"entity":"p1","value":"walking"}
+
 ==================================================================================================================
 falkonry>>
 ```
@@ -985,7 +1130,7 @@ falkonry>>
 2. Writing facts Data to file
 ```
 falkonry>> assessment_get_facts --format=application/json --modelIndex=2 --path=facts.json
-Default assessment set : 743cveg32hkwl2 Name : Standalone DS
+Default assessment set : 424ltd4jphnm69 Name : Sports Activity
 Facts data is written to the file : facts.json
 falkonry>>
 ```
