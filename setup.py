@@ -12,8 +12,9 @@ setup(
     long_description='Falkonry cli tool to access Condition Prediction APIs',
     py_modules=['falkonry'],
     install_requires=[
-        'cmd2',
-        'falkonryClient'
+        'cmd2==0.7.7',
+        'pprint==0.1',
+        'falkonryclient>=1.1.0'
     ],
     entry_points='''
         [console_scripts]
