@@ -14,6 +14,7 @@ setup(
     install_requires=[
         'cmd2==0.7.7',
         'pprint==0.1',
+        'pyperclip==1.5.32'
         'falkonryclient>=1.1.0'
     ],
     entry_points='''

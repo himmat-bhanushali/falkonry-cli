@@ -8,6 +8,7 @@ import datetime
 
 from cmd2 import Cmd,make_option,options
 from falkonryclient import client as Falkonry
+from falkonryclient.helper.utils import exceptionResponseHandler
 from falkonryclient.helper import schema as Schemas
 from pprint import pprint
 
@@ -117,7 +118,7 @@ class REPL(Cmd):
                     datastreamObject = _falkonry.get_datastream(_datastreamId)
                     print_info("Default datastream set : " + _datastreamId + " Name : " + datastreamObject.get_name())
                 except Exception as error:
-                    _datastreamId = None;
+                    _datastreamId = None
                     handle_error(error)
                     print_error("Please set the default datastream again")
         return
@@ -450,7 +451,7 @@ class REPL(Cmd):
                     assessmentObj = _falkonry.get_assessment(_assessmentId)
                     print_info("Default assessment set : " + _assessmentId + " Name : " + assessmentObj.get_name())
                 except Exception as error:
-                    _assessmentId = None;
+                    _assessmentId = None
                     handle_error(error)
                     print_error("Please set the default assessment again")
         return
@@ -685,13 +686,13 @@ def validate_login(host,token):
                 try:
                     datastream = _falkonry.get_datastream('test-id')
                 except Exception as error:
-                    if hasattr(error, 'message'):
-                        errorObj = json.loads(error.message)
-                        if errorObj['message'] == "Unauthorized Access":
+                    errorMsg = exceptionResponseHandler(error)
+                    if errorMsg:
+                        if errorMsg == "Unauthorized Access":
                             print_error('Unauthorized Access. Please verify your details.')
                             _falkonry = None
                             return False
-                        elif errorObj['message'] == "No such Datastream available":
+                        elif errorMsg == "No such Datastream available":
                             return True
                         else:
                             _falkonry = None
@@ -724,19 +725,19 @@ def check_login():
 
 
 def print_info(msg):
-    print _self.colorize(msg, "blue")
+    print(_self.colorize(msg, "blue"))
 
 
 def print_success(msg):
-    print _self.colorize(msg, "green")
+    print(_self.colorize(msg, "green"))
 
 
 def print_error(msg):
-    print _self.colorize(msg + "\n Try help <command> for info", "red")
+    print(_self.colorize(msg + "\n Try help <command> for info", "red"))
 
 
 def print_custom(msg, color):
-    print _self.colorize(msg, color)
+    print(_self.colorize(msg, color))
 
 
 def get_file_extension(path):
@@ -756,7 +757,7 @@ def check_default_datastream():
                 print_info("Default datastream set : " + _datastreamId + " Name : " + datastreamObject.get_name())
                 return True
             except Exception as error:
-                _datastreamId = None;
+                _datastreamId = None
                 handle_error(error)
                 print_error("Please set the default datastream again")
                 return False
@@ -775,7 +776,7 @@ def check_default_assessment():
                 print_info("Default assessment set : " + _assessmentId + " Name : " + assessmentObj.get_name())
                 return True
             except Exception as error:
-                _assessmentId = None;
+                _assessmentId = None
                 handle_error(error)
                 print_error("Please set the default assessment again")
                 return False
@@ -788,10 +789,10 @@ def print_row(name, id, user_id, live_status):
 
 def handle_error(error):
     try:
-        errorObj = json.loads(error.message)
-        print_error(errorObj['message'])
+        errorMsg = exceptionResponseHandler(error)
+        print_error(errorMsg)
     except Exception as error_new:
-        print _self.colorize("Unhandled Exception : " + str(error), "red")
+        print(_self.colorize("Unhandled Exception : " + str(error), "red"))
 
 def print_datastream_details(datastream_str):
     datastream = json.loads(datastream_str)
@@ -802,9 +803,15 @@ def print_datastream_details(datastream_str):
     print_info("Create Time : " + (str(datetime.datetime.fromtimestamp(datastream['createTime']/1000.0))))
     print_info("Update Time : " + (str(datetime.datetime.fromtimestamp(datastream['updateTime']/1000.0))))
     print_info("Events # : " + str(datastream['stats']['events']))
+    # print_info(datastream['timePrecision'])
     if datastream['stats']['events'] > 0:
-        print_info("Events Start Time : " + (str(datetime.datetime.fromtimestamp(datastream['stats']['earliestDataPoint']/1000.0))))
-        print_info("Events End Time : " + (str(datetime.datetime.fromtimestamp(datastream['stats']['latestDataPoint']/1000.0))))
+        if datastream['timePrecision'] != 'micro':
+            print_info("Events Start Time : " + (str(datetime.datetime.fromtimestamp(datastream['stats']['earliestDataPoint']/1000.0))))
+            print_info("Events End Time : " + (str(datetime.datetime.fromtimestamp(datastream['stats']['latestDataPoint']/1000.0))))
+        else:
+            print_info("Events Start Time : " + (str(datetime.datetime.fromtimestamp(datastream['stats']['earliestDataPoint']/1000000.0))))
+            print_info("Events End Time : " + (str(datetime.datetime.fromtimestamp(datastream['stats']['latestDataPoint']/1000000.0))))
+
     else:
         print_info("Events Start Time : N/A")
         print_info("Events End Time : N/A")
