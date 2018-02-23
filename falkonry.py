@@ -4,11 +4,11 @@ import json
 import io
 import os
 import datetime
+import argparse
 
-
-from cmd2 import Cmd,make_option,options
+from cmd2 import Cmd,options,with_argparser
 from falkonryclient import client as Falkonry
-from falkonryclient.helper.utils import exceptionResponseHandler
+from falkonryclient.helper.utils import exception_handler
 from falkonryclient.helper import schema as Schemas
 from pprint import pprint
 
@@ -32,17 +32,21 @@ class REPL(Cmd):
         _self = self
         print_custom("Welcome to Falkonry Shell !!!", "green")
 
-    @options([make_option('--host', help="host url"),
-              make_option('--token', help="auth token")
-             ])
-    def do_login(self, args, opts=None):
+    # @options([make_option('--host', help="host url"),
+    #           make_option('--token', help="auth token")
+    #          ])
+    login_argparser = argparse.ArgumentParser()
+    login_argparser.add_argument('--host', help="host url")
+    login_argparser.add_argument('--token', help="auth token")
+    @with_argparser(login_argparser)
+    def do_login(self, args=None):
         """login to the falkonry"""
-        if (opts.host is None or opts.host =="") or (opts.token is None or opts.token ==""):
+        if (args.host is None or args.host =="") or (args.token is None or args.token ==""):
             print_error("Please pass host url and token")
             return
-        if opts.host.find("https://") == -1:
-            opts.host = "https://" + opts.host
-        if validate_login(opts.host, opts.token):
+        if args.host.find("https://") == -1:
+            args.host = "https://" + args.host
+        if validate_login(args.host, args.token):
             print_success("logged in to falkonry")
 
     def do_logout(self, line):
@@ -75,32 +79,40 @@ class REPL(Cmd):
                 print_row(datastream.get_name(), datastream.get_id(), datastream.get_created_by(), datastream.get_live())
             print_info("==================================================================================================================")
 
-    @options([make_option('--id', help="datastream id")])
-    def do_datastream_get_by_id(self, arg, opts=None):
+    # @options([make_option('--id', help="datastream id")])
+    datastream_get_by_id_parser = argparse.ArgumentParser()
+    datastream_get_by_id_parser.add_argument('--id', help="datastream id")
+
+    @with_argparser(datastream_get_by_id_parser)
+    def do_datastream_get_by_id(self, args=None):
         """get datastream by id """
         if check_login():
-            if opts.id is None or opts.id == "":
+            if args.id is None or args.id == "":
                 print_error("Please pass datastream id")
                 return
             print_info("Fetching Datastreams")
             try:
-                datastreamObject = _falkonry.get_datastream(opts.id)
+                datastreamObject = _falkonry.get_datastream(args.id)
                 print_datastream_details(datastreamObject.to_json())
             except Exception as error:
                 handle_error(error)
 
-    @options([make_option('--id', help="datastream id")])
-    def do_datastream_default_set(self, arg, opts=None):
+    # @options([make_option('--id', help="datastream id")])
+    datastream_default_set_parser = argparse.ArgumentParser()
+    datastream_default_set_parser.add_argument('--id', help="datastream id")
+
+    @with_argparser(datastream_default_set_parser)
+    def do_datastream_default_set(self, args=None):
         """set default datastream"""
         if check_login():
             try:
-                if opts.id is None or opts.id == "":
+                if args.id is None or args.id == "":
                     print_error("Please pass datastream id")
                     return
                 global _datastreamId
-                datastreamObject = _falkonry.get_datastream(opts.id)
-                _datastreamId = opts.id
-                print_success("Default datastream set : "+ opts.id)
+                datastreamObject = _falkonry.get_datastream(args.id)
+                _datastreamId = args.id
+                print_success("Default datastream set : "+ args.id)
                 return
             except Exception as error:
                 handle_error(error)
@@ -140,8 +152,12 @@ class REPL(Cmd):
                     handle_error(error)
         return
 
-    @options([make_option('--path', help="file path of entity meta request")])
-    def do_datastream_add_entity_meta(self, arg,opts=None):
+    # @options([make_option('--path', help="file path of entity meta request")])
+    datastream_add_entity_meta_parser = argparse.ArgumentParser()
+    datastream_add_entity_meta_parser.add_argument('--path', help="file path of entity meta request")
+
+    @with_argparser(datastream_add_entity_meta_parser)
+    def do_datastream_add_entity_meta(self, args=None):
         """add entitymeta of datastream"""
         global _datastreamId
         if check_login():
@@ -150,15 +166,15 @@ class REPL(Cmd):
                 return
             else:
                 try:
-                    if opts.path is None or opts.path == "":
+                    if args.path is None or args.path == "":
                         print_error("Please pass json file path for adding entity meta")
                         return
                     try:
-                        file_extension = get_file_extension(opts.path)
+                        file_extension = get_file_extension(args.path)
                         if file_extension != ".json":
                             print_error("Only JSON file is accepted.")
                             return
-                        with open(opts.path) as data_file:
+                        with open(args.path) as data_file:
                             data = json.load(data_file)
                     except Exception as error:
                         print_error("Error in reading file." + str(error))
@@ -169,21 +185,25 @@ class REPL(Cmd):
                     handle_error(error)
         return
 
-    @options([make_option('--path', help="file path of request")])
-    def do_datastream_create(self,  arg, opts=None):
+    # @options([make_option('--path', help="file path of request")])
+    datastream_create_parser = argparse.ArgumentParser()
+    datastream_create_parser.add_argument('--path', help="file path of request")
+
+    @with_argparser(datastream_create_parser)
+    def do_datastream_create(self, args=None):
         """create datastream"""
         if check_login():
             try:
-                if opts.path is None or opts.path == "":
+                if args.path is None or args.path == "":
                     print_error("Please pass json file path for creating datastream")
                     return
                 # read file
                 try:
-                    file_extension = get_file_extension(opts.path)
+                    file_extension = get_file_extension(args.path)
                     if file_extension != ".json":
                         print_error("Only JSON file is accepted.")
                         return
-                    with open(opts.path) as data_file:
+                    with open(args.path) as data_file:
                         data = json.load(data_file)
                 except Exception as error:
                     print_error("Error in reading file." + str(error))
@@ -196,16 +216,20 @@ class REPL(Cmd):
                 return
         return
 
-    @options([make_option('--id', help="datastream id")])
-    def do_datastream_delete(self, arg, opts=None):
+    # @options([make_option('--id', help="datastream id")])
+    datastream_delete_argparser = argparse.ArgumentParser()
+    datastream_delete_argparser.add_argument('--id', help="datastream id")
+
+    @with_argparser(datastream_delete_argparser)
+    def do_datastream_delete(self, args=None):
         """delete datastream"""
         if check_login():
             try:
-                if opts.id is None:
+                if args.id is None:
                     print_error("Please pass datastream id")
                     return
-                _falkonry.delete_datastream(opts.id)
-                print_success("Datastream successfully deleted : "+ opts.id)
+                _falkonry.delete_datastream(args.id)
+                print_success("Datastream successfully deleted : "+ args.id)
                 return
             except Exception as error:
                 handle_error(error)
@@ -241,42 +265,53 @@ class REPL(Cmd):
                 return
         return
 
-    @options([make_option('--path', help="file path of request"),
-              make_option('--timeIdentifier', help="time identifier in the file"),
-              make_option('--entityIdentifier', help="Entity identifier in the file"),
-              make_option('--timeFormat', help="Time format"),
-              make_option('--timeZone', help="Timezone"),
-              make_option('--signalIdentifier', help="ssignal Identifier in file"),
-              make_option('--valueIdentifier', help="Value Identifier in the file"),
-              make_option('--batchIdentifier', help="Batch Identifier, if the data being uploaded in batch datastream")])
-    def do_datastream_add_historical_data(self, arg, opts=None):
+    # @options([make_option('--path', help="file path of request"),
+    #           make_option('--timeIdentifier', help="time identifier in the file"),
+    #           make_option('--entityIdentifier', help="Entity identifier in the file"),
+    #           make_option('--timeFormat', help="Time format"),
+    #           make_option('--timeZone', help="Timezone"),
+    #           make_option('--signalIdentifier', help="ssignal Identifier in file"),
+    #           make_option('--valueIdentifier', help="Value Identifier in the file"),
+    #           make_option('--batchIdentifier', help="Batch Identifier, if the data being uploaded in batch datastream")])
+    datastream_add_historical_data_argparser = argparse.ArgumentParser()
+    datastream_add_historical_data_argparser.add_argument('--path', help="file path of request")
+    datastream_add_historical_data_argparser.add_argument('--timeIdentifier', help="time identifier in the file")
+    datastream_add_historical_data_argparser.add_argument('--entityIdentifier', help="Entity identifier in the file")
+    datastream_add_historical_data_argparser.add_argument('--timeFormat', help="Time format")
+    datastream_add_historical_data_argparser.add_argument('--timeZone', help="Timezone")
+    datastream_add_historical_data_argparser.add_argument('--signalIdentifier', help="signal Identifier in file")
+    datastream_add_historical_data_argparser.add_argument('--valueIdentifier', help="Value Identifier in the file")
+    datastream_add_historical_data_argparser.add_argument('--batchIdentifier', help="Batch Identifier, if the data being uploaded in batch datastream")
+
+    @with_argparser(datastream_add_historical_data_argparser)
+    def do_datastream_add_historical_data(self, args=None):
         """ add historical data to datastream for model learning """
         if check_login():
             try:
-                if opts.path is None or opts.path == "":
+                if args.path is None or args.path == "":
                     print_error("Please pass historical data file path")
                     return
                 if check_default_datastream():
-                    file_extension = get_file_extension(opts.path)
+                    file_extension = get_file_extension(args.path)
                     if file_extension != ".csv" and file_extension != ".json":
                         print_error("Only CSV or JSON file is accepted.")
                         return
-                    data = io.open(opts.path)
+                    data = io.open(args.path)
                     options = {}
-                    if opts.timeIdentifier is not None and opts.timeIdentifier != "":
-                        options['timeIdentifier'] = opts.timeIdentifier
-                    if opts.timeFormat is not None and opts.timeFormat != "":
-                        options['timeFormat'] = opts.timeFormat
-                    if opts.timeZone is not None and opts.timeZone != "":
-                        options['timeZone'] = opts.timeZone
-                    if opts.entityIdentifier is not None and opts.entityIdentifier != "":
-                        options['entityIdentifier'] = opts.entityIdentifier
-                    if opts.signalIdentifier is not None and opts.signalIdentifier != "":
-                        options['signalIdentifier'] = opts.signalIdentifier
-                    if opts.valueIdentifier is not None and opts.valueIdentifier != "":
-                        options['valueIdentifier'] = opts.valueIdentifier
-                    if opts.batchIdentifier is not None and opts.batchIdentifier != "":
-                        options['batchIdentifier'] = opts.batchIdentifier
+                    if args.timeIdentifier is not None and args.timeIdentifier != "":
+                        options['timeIdentifier'] = args.timeIdentifier
+                    if args.timeFormat is not None and args.timeFormat != "":
+                        options['timeFormat'] = args.timeFormat
+                    if args.timeZone is not None and args.timeZone != "":
+                        options['timeZone'] = args.timeZone
+                    if args.entityIdentifier is not None and args.entityIdentifier != "":
+                        options['entityIdentifier'] = args.entityIdentifier
+                    if args.signalIdentifier is not None and args.signalIdentifier != "":
+                        options['signalIdentifier'] = args.signalIdentifier
+                    if args.valueIdentifier is not None and args.valueIdentifier != "":
+                        options['valueIdentifier'] = args.valueIdentifier
+                    if args.batchIdentifier is not None and args.batchIdentifier != "":
+                        options['batchIdentifier'] = args.batchIdentifier
                     options['streaming'] = False
                     options['hasMoreData'] = False
 
@@ -287,42 +322,43 @@ class REPL(Cmd):
                 handle_error(error)
                 return
 
-    @options([make_option('--path', help="file path of request"),
-              make_option('--timeIdentifier', help="time identifier in the file"),
-              make_option('--entityIdentifier', help="Entity identifier in the file"),
-              make_option('--timeFormat', help="Time format"),
-              make_option('--timeZone', help="Timezone"),
-              make_option('--signalIdentifier', help="ssignal Identifier in file"),
-              make_option('--valueIdentifier', help="Value Identifier in the file"),
-              make_option('--batchIdentifier', help="Batch Identifier, if the data being uploaded in batch datastream")])
-    def do_datastream_add_live_data(self, arg, opts=None):
+    # @options([make_option('--path', help="file path of request"),
+    #           make_option('--timeIdentifier', help="time identifier in the file"),
+    #           make_option('--entityIdentifier', help="Entity identifier in the file"),
+    #           make_option('--timeFormat', help="Time format"),
+    #           make_option('--timeZone', help="Timezone"),
+    #           make_option('--signalIdentifier', help="ssignal Identifier in file"),
+    #           make_option('--valueIdentifier', help="Value Identifier in the file"),
+    #           make_option('--batchIdentifier', help="Batch Identifier, if the data being uploaded in batch datastream")])
+    @with_argparser(datastream_add_historical_data_argparser)
+    def do_datastream_add_live_data(self, args=None):
         """add live data to datastream for live monitoring """
         if check_login():
             try:
-                if opts.path is None or opts.path == "":
+                if args.path is None or args.path == "":
                     print_error("Please pass historical data file path")
                     return
                 if check_default_datastream():
-                    file_extension = get_file_extension(opts.path)
+                    file_extension = get_file_extension(args.path)
                     if file_extension != ".csv" and file_extension != ".json":
                         print_error("Only CSV or JSON file is accepted.")
                         return
-                    data = io.open(opts.path)
+                    data = io.open(args.path)
                     options = {}
-                    if opts.timeIdentifier is not None and opts.timeIdentifier != "":
-                        options['timeIdentifier'] = opts.timeIdentifier
-                    if opts.timeFormat is not None and opts.timeFormat != "":
-                        options['timeFormat'] = opts.timeFormat
-                    if opts.timeZone is not None and opts.timeZone != "":
-                        options['timeZone'] = opts.timeZone
-                    if opts.entityIdentifier is not None and opts.entityIdentifier != "":
-                        options['entityIdentifier'] = opts.entityIdentifier
-                    if opts.signalIdentifier is not None and opts.signalIdentifier != "":
-                        options['signalIdentifier'] = opts.signalIdentifier
-                    if opts.valueIdentifier is not None and opts.valueIdentifier != "":
-                        options['valueIdentifier'] = opts.valueIdentifier
-                    if opts.batchIdentifier is not None and opts.batchIdentifier != "":
-                        options['batchIdentifier'] = opts.batchIdentifier
+                    if args.timeIdentifier is not None and args.timeIdentifier != "":
+                        options['timeIdentifier'] = args.timeIdentifier
+                    if args.timeFormat is not None and args.timeFormat != "":
+                        options['timeFormat'] = args.timeFormat
+                    if args.timeZone is not None and args.timeZone != "":
+                        options['timeZone'] = args.timeZone
+                    if args.entityIdentifier is not None and args.entityIdentifier != "":
+                        options['entityIdentifier'] = args.entityIdentifier
+                    if args.signalIdentifier is not None and args.signalIdentifier != "":
+                        options['signalIdentifier'] = args.signalIdentifier
+                    if args.valueIdentifier is not None and args.valueIdentifier != "":
+                        options['valueIdentifier'] = args.valueIdentifier
+                    if args.batchIdentifier is not None and args.batchIdentifier != "":
+                        options['batchIdentifier'] = args.batchIdentifier
                     options['streaming'] = True
                     options['hasMoreData'] = True
 
@@ -357,15 +393,19 @@ class REPL(Cmd):
                 return
         return
 
-    @options([make_option('--id', help="assessment id")])
-    def do_assessment_get_by_id(self, arg, opts=None):
+    # @options([make_option('--id', help="assessment id")])
+    assessment_get_by_id_argparser = argparse.ArgumentParser()
+    assessment_get_by_id_argparser.add_argument('--id', help="assessment id")
+
+    @with_argparser(assessment_get_by_id_argparser)
+    def do_assessment_get_by_id(self, args=None):
         """ fetch assessment by id for default datastream"""
         if check_login():
             try:
-                if opts.id is None:
+                if args.id is None:
                     print_error("Please pass assessment id")
                     return
-                assessmentObject = _falkonry.get_assessment(opts.id)
+                assessmentObject = _falkonry.get_assessment(args.id)
                 print_assessment_details(assessmentObject.to_json())
                 return
             except Exception as error:
@@ -373,22 +413,26 @@ class REPL(Cmd):
                 return
         return
 
-    @options([make_option('--path', help="file path of request")])
-    def do_assessment_create(self, arg, opts=None):
+    # @options([make_option('--path', help="file path of request")])
+    assessment_create_argparser = argparse.ArgumentParser()
+    assessment_create_argparser.add_argument('--path', help="file path of request")
+
+    @with_argparser(assessment_create_argparser)
+    def do_assessment_create(self, args=None):
         """ create assessment in default datastream"""
         if check_login():
             try:
                 if check_default_datastream():
-                    if opts.path is None or opts.path == "":
+                    if args.path is None or args.path == "":
                         print_error("Please pass json file path for creating assessment")
                         return
                     # read file
                     try:
-                        file_extension = get_file_extension(opts.path)
+                        file_extension = get_file_extension(args.path)
                         if file_extension != ".json":
                             print_error("Only JSON file is accepted.")
                             return
-                        with open(opts.path) as data_file:
+                        with open(args.path) as data_file:
                             data = json.load(data_file)
                     except Exception as error:
                         print_error("Error in reading file." + str(error))
@@ -402,37 +446,45 @@ class REPL(Cmd):
                 return
         return
 
-    @options([make_option('--id', help="assessment id")])
-    def do_assessment_delete(self, arg, opts=None):
+    # @options([make_option('--id', help="assessment id")])
+    do_assessment_delete_argparser = argparse.ArgumentParser()
+    do_assessment_delete_argparser.add_argument('--id', help="assessment id")
+
+    @with_argparser(do_assessment_delete_argparser)
+    def do_assessment_delete(self, args=None):
         """ delete assessment by id default datastream"""
         if check_login():
             try:
-                if opts.id is None:
+                if args.id is None:
                     print_error("Please pass assessment id")
                     return
-                _falkonry.delete_assessment(opts.id)
-                print_info("Assessment deleted successfully: " + opts.id)
+                _falkonry.delete_assessment(args.id)
+                print_info("Assessment deleted successfully: " + args.id)
                 return
             except Exception as error:
                 handle_error(error)
                 return
         return
 
-    @options([make_option('--id', help="assessment id")])
-    def do_assessment_default_set(self, arg, opts=None):
+    # @options([make_option('--id', help="assessment id")])
+    assessment_default_set_argparser = argparse.ArgumentParser()
+    assessment_default_set_argparser.add_argument('--id', help="assessment id")
+
+    @with_argparser(assessment_default_set_argparser)
+    def do_assessment_default_set(self, args=None):
         """ set default assessment"""
         if check_login():
             try:
-                if opts.id is None:
+                if args.id is None:
                     print_error("Please pass assessment id")
                     return
                 if check_default_datastream():
                     global _assessmentId
-                    assessmentObj = _falkonry.get_assessment(opts.id)
+                    assessmentObj = _falkonry.get_assessment(args.id)
                     if assessmentObj.get_datastream() != _datastreamId:
-                        print_error("Assessment id : " + opts.id + " does not belong to default datastream")
-                    _assessmentId = opts.id
-                    print_success("Default assessment set : "+ opts.id)
+                        print_error("Assessment id : " + args.id + " does not belong to default datastream")
+                    _assessmentId = args.id
+                    print_success("Default assessment set : "+ args.id)
                 return
             except Exception as error:
                 handle_error(error)
@@ -456,49 +508,59 @@ class REPL(Cmd):
                     print_error("Please set the default assessment again")
         return
 
-    @options([make_option('--path', help="file path of facts file"),
-              make_option('--startTimeIdentifier', help="Start time identifier in the file"),
-              make_option('--endTimeIdentifier', help="End time identifier in the file"),
-              make_option('--timeFormat', help="Time format of start and endtime"),
-              make_option('--timeZone', help="Timezone"),
-              make_option('--entityIdentifier', help="should be kept empty in case of single entity datastream"),
-              make_option('--valueIdentifier', help="Value Identifier in the file"),
-              make_option('--batchIdentifier', help="Batch Identifier, if the data being upload into a batched datastream"),
-              make_option('--tagIdentifier', help="Tag Identifier for facts being uploaded"),
-              make_option('--additionalTag', help="Tag value for all the facts being uploaded")])
+    # @options([make_option('--path', help="file path of facts file"),
+    #           make_option('--startTimeIdentifier', help="Start time identifier in the file"),
+    #           make_option('--endTimeIdentifier', help="End time identifier in the file"),
+    #           make_option('--timeFormat', help="Time format of start and endtime"),
+    #           make_option('--timeZone', help="Timezone"),
+    #           make_option('--entityIdentifier', help="should be kept empty in case of single entity datastream"),
+    #           make_option('--valueIdentifier', help="Value Identifier in the file"),
+    #           make_option('--batchIdentifier', help="Batch Identifier, if the data being upload into a batched datastream"),
+    #           make_option('--tagIdentifier', help="Tag Identifier for facts being uploaded"),
+    #           make_option('--additionalTag', help="Tag value for all the facts being uploaded")])
+    assessment_add_facts_argparser = argparse.ArgumentParser()
+    assessment_add_facts_argparser.add_argument('--path', help="file path of request")
+    assessment_add_facts_argparser.add_argument('--timeIdentifier', help="time identifier in the file")
+    assessment_add_facts_argparser.add_argument('--entityIdentifier', help="Entity identifier in the file")
+    assessment_add_facts_argparser.add_argument('--timeFormat', help="Time format")
+    assessment_add_facts_argparser.add_argument('--timeZone', help="Timezone")
+    assessment_add_facts_argparser.add_argument('--signalIdentifier', help="signal Identifier in file")
+    assessment_add_facts_argparser.add_argument('--valueIdentifier', help="Value Identifier in the file")
+    assessment_add_facts_argparser.add_argument('--batchIdentifier', help="Batch Identifier, if the data being uploaded in batch datastream")
 
-    def do_assessment_add_facts(self, arg, opts=None):
+    @with_argparser(assessment_add_facts_argparser)
+    def do_assessment_add_facts(self, args=None):
         """ add facts to assessment"""
         if check_login():
             try:
-                if opts.path is None or opts.path == "":
+                if args.path is None or args.path == "":
                     print_error("Please pass facts data file path")
                     return
                 if check_default_assessment():
-                    file_extension = get_file_extension(opts.path)
+                    file_extension = get_file_extension(args.path)
                     if file_extension != ".csv" and file_extension != ".json":
                         print_error("Only CSV or JSON file is accepted.")
                         return
-                    data = io.open(opts.path)
+                    data = io.open(args.path)
                     options = {}
-                    if opts.startTimeIdentifier is not None and opts.startTimeIdentifier != "":
-                        options['startTimeIdentifier'] = opts.startTimeIdentifier
-                    if opts.endTimeIdentifier is not None and opts.endTimeIdentifier != "":
-                        options['endTimeIdentifier'] = opts.endTimeIdentifier
-                    if opts.timeFormat is not None and opts.timeFormat != "":
-                        options['timeFormat'] = opts.timeFormat
-                    if opts.timeZone is not None and opts.timeZone != "":
-                        options['timeZone'] = opts.timeZone
-                    if opts.entityIdentifier is not None and opts.entityIdentifier != "":
-                        options['entityIdentifier'] = opts.entityIdentifier
-                    if opts.valueIdentifier is not None and opts.valueIdentifier != "":
-                        options['valueIdentifier'] = opts.valueIdentifier
-                    if opts.batchIdentifier is not None and opts.batchIdentifier != "":
-                        options['batchIdentifier'] = opts.batchIdentifier
-                    if opts.tagIdentifier is not None and opts.tagIdentifier != "":
-                        options['tagIdentifier'] = opts.tagIdentifier
-                    if opts.additionalTag is not None and opts.additionalTag != "":
-                        options['additionalTag'] = opts.additionalTag
+                    if args.startTimeIdentifier is not None and args.startTimeIdentifier != "":
+                        options['startTimeIdentifier'] = args.startTimeIdentifier
+                    if args.endTimeIdentifier is not None and args.endTimeIdentifier != "":
+                        options['endTimeIdentifier'] = args.endTimeIdentifier
+                    if args.timeFormat is not None and args.timeFormat != "":
+                        options['timeFormat'] = args.timeFormat
+                    if args.timeZone is not None and args.timeZone != "":
+                        options['timeZone'] = args.timeZone
+                    if args.entityIdentifier is not None and args.entityIdentifier != "":
+                        options['entityIdentifier'] = args.entityIdentifier
+                    if args.valueIdentifier is not None and args.valueIdentifier != "":
+                        options['valueIdentifier'] = args.valueIdentifier
+                    if args.batchIdentifier is not None and args.batchIdentifier != "":
+                        options['batchIdentifier'] = args.batchIdentifier
+                    if args.tagIdentifier is not None and args.tagIdentifier != "":
+                        options['tagIdentifier'] = args.tagIdentifier
+                    if args.additionalTag is not None and args.additionalTag != "":
+                        options['additionalTag'] = args.additionalTag
 
 
 
@@ -510,43 +572,52 @@ class REPL(Cmd):
                 return
         return
 
-    @options([make_option('--path', help="file path to write output"),
-              make_option('--trackerId', help="tracker id of the previous output request"),
-              make_option('--modelIndex', help="index of the model of which output needs to be fetched "),
-              make_option('--startTime', help="startTime of the output range should be in ISO8601 format 'YYYY-MM-DDTHH:mm:ss.SSSZ'"),
-              make_option('--endTime', help="endTime of the output range should be in ISO8601 format 'YYYY-MM-DDTHH:mm:ss.SSSZ'"),
-              make_option('--format', help="format of the output. For csv pass text/csv. For JSON output pass application/json")])
-    def do_assessment_get_historical_output(self, arg, opts=None):
+    # @options([make_option('--path', help="file path to write output"),
+    #           make_option('--trackerId', help="tracker id of the previous output request"),
+    #           make_option('--modelIndex', help="index of the model of which output needs to be fetched "),
+    #           make_option('--startTime', help="startTime of the output range should be in ISO8601 format 'YYYY-MM-DDTHH:mm:ss.SSSZ'"),
+    #           make_option('--endTime', help="endTime of the output range should be in ISO8601 format 'YYYY-MM-DDTHH:mm:ss.SSSZ'"),
+    #           make_option('--format', help="format of the output. For csv pass text/csv. For JSON output pass application/json")])
+    assessment_get_historical_output_argparser = argparse.ArgumentParser()
+    assessment_get_historical_output_argparser.add_argument('--path', help="file path to write output")
+    assessment_get_historical_output_argparser.add_argument('--trackerId', help="tracker id of the previous output request")
+    assessment_get_historical_output_argparser.add_argument('--modelIndex', help="index of the model of which output needs to be fetched ")
+    assessment_get_historical_output_argparser.add_argument('--startTime', help="startTime of the output range should be in ISO8601 format 'YYYY-MM-DDTHH:mm:ss.SSSZ'")
+    assessment_get_historical_output_argparser.add_argument('--endTime', help="endTime of the output range should be in ISO8601 format 'YYYY-MM-DDTHH:mm:ss.SSSZ'")
+    assessment_get_historical_output_argparser.add_argument('--format', help="format of the output. For csv pass text/csv. For JSON output pass application/json")
+
+    @with_argparser(assessment_get_historical_output_argparser)
+    def do_assessment_get_historical_output(self, args=None):
         """ get learn/test output of assessment"""
         if check_login():
             try:
                 if check_default_assessment():
                     output_ops = {}
-                    if opts.trackerId is not None and opts.trackerId != "":
-                        output_ops['trackerId'] = opts.trackerId
-                    if opts.modelIndex is not None and opts.modelIndex != "":
-                        output_ops['modelIndex'] = opts.modelIndex
-                    if opts.startTime is not None and opts.startTime != "":
-                        output_ops['startTime'] = opts.startTime
-                    if opts.endTime is not None and opts.endTime != "":
-                        output_ops['endTime'] = opts.endTime
-                    if opts.format is not None and opts.format != "":
-                        if opts.format != "application/json" and opts.format != "text/csv":
+                    if args.trackerId is not None and args.trackerId != "":
+                        output_ops['trackerId'] = args.trackerId
+                    if args.modelIndex is not None and args.modelIndex != "":
+                        output_ops['modelIndex'] = args.modelIndex
+                    if args.startTime is not None and args.startTime != "":
+                        output_ops['startTime'] = args.startTime
+                    if args.endTime is not None and args.endTime != "":
+                        output_ops['endTime'] = args.endTime
+                    if args.format is not None and args.format != "":
+                        if args.format != "application/json" and args.format != "text/csv":
                             print_error("Unsupported response format. Only supported format are : application/json ,text/csv")
                             return
-                        output_ops['format'] = opts.format
-                    if (opts.trackerId is None or opts.trackerId =="") and (opts.startTime is None or opts.startTime == ""):
+                        output_ops['format'] = args.format
+                    if (args.trackerId is None or args.trackerId =="") and (args.startTime is None or args.startTime == ""):
                         print_error("TrackerID or startTime is require for fetching output data")
                         return
                     output_response = _falkonry.get_historical_output(_assessmentId, output_ops)
                     if output_response.status_code == 200:
-                        if opts.path:
+                        if args.path:
                             #write response to file
                             try:
-                                file = open(opts.path,"w")
+                                file = open(args.path,"w")
                                 file.write(str(output_response.text))
                                 file.close()
-                                print_success("Output data is written to the file : " + opts.path)
+                                print_success("Output data is written to the file : " + args.path)
                             except Exception as fileError:
                                 handle_error(fileError)
                         else:
@@ -565,19 +636,23 @@ class REPL(Cmd):
                 return
         return
 
-    @options([make_option('--format', help="format of the output. For csv pass text/csv. For JSON output pass application/json")])
-    def do_assessment_output_listen(self, arg, opts=None):
+    # @options([make_option('--format', help="format of the output. For csv pass text/csv. For JSON output pass application/json")])
+    assessment_output_listen_argparser = argparse.ArgumentParser()
+    assessment_output_listen_argparser.add_argument('--format', help="format of the output. For csv pass text/csv. For JSON output pass application/json")
+
+    @with_argparser(assessment_output_listen_argparser)
+    def do_assessment_output_listen(self, args=None):
         """ get live output of assessment"""
         if check_login():
             try:
                 if not check_default_assessment():
                    return
                 output_ops = {}
-                if opts.format is not None and opts.format != "":
-                    if opts.format != "application/json" and opts.format != "text/csv":
+                if args.format is not None and args.format != "":
+                    if args.format != "application/json" and args.format != "text/csv":
                         print_error("Unsupported response format. Only supported format are : application/json ,text/csv")
                         return
-                    output_ops['format'] = opts.format
+                    output_ops['format'] = args.format
                 output_response = _falkonry.get_output(_assessmentId, output_ops)
                 print_info("Fetching live assessments : ")
                 for event in output_response.events():
@@ -587,37 +662,45 @@ class REPL(Cmd):
                 return
         return
 
-    @options([make_option('--path', help="file path to write output"),
-              make_option('--modelIndex', help="index of the model of which facts needs to be fetched "),
-              make_option('--startTime', help="startTime of the facts range should be in ISO8601 format 'YYYY-MM-DDTHH:mm:ss.SSSZ'"),
-              make_option('--endTime', help="endTime of the facts range should be in ISO8601 format 'YYYY-MM-DDTHH:mm:ss.SSSZ'"),
-              make_option('--format', help="format of the facts data. For csv pass text/csv. For JSON output pass application/json")])
-    def do_assessment_get_facts(self, arg, opts=None):
+    # @options([make_option('--path', help="file path to write output"),
+    #           make_option('--modelIndex', help="index of the model of which facts needs to be fetched "),
+    #           make_option('--startTime', help="startTime of the facts range should be in ISO8601 format 'YYYY-MM-DDTHH:mm:ss.SSSZ'"),
+    #           make_option('--endTime', help="endTime of the facts range should be in ISO8601 format 'YYYY-MM-DDTHH:mm:ss.SSSZ'"),
+    #           make_option('--format', help="format of the facts data. For csv pass text/csv. For JSON output pass application/json")])
+    assessment_get_facts_argparser = argparse.ArgumentParser()
+    assessment_get_facts_argparser.add_argument('--path', help="file path to write output")
+    assessment_get_facts_argparser.add_argument('--modelIndex', help="index of the model of which facts needs to be fetched ")
+    assessment_get_facts_argparser.add_argument('--startTime', help="startTime of the facts range should be in ISO8601 format 'YYYY-MM-DDTHH:mm:ss.SSSZ'")
+    assessment_get_facts_argparser.add_argument('--endTime', help="endTime of the facts range should be in ISO8601 format 'YYYY-MM-DDTHH:mm:ss.SSSZ'")
+    assessment_get_facts_argparser.add_argument('--format', help="format of the facts data. For csv pass text/csv. For JSON output pass application/json")
+
+    @with_argparser(assessment_get_facts_argparser)
+    def do_assessment_get_facts(self, args=None):
         """ get facts of assessment"""
         if check_login():
             try:
                 if not check_default_assessment():
                    return
                 output_ops = {}
-                if opts.modelIndex is not None and opts.modelIndex != "":
-                    output_ops['modelIndex'] = opts.modelIndex
-                if opts.startTime is not None and opts.startTime != "":
-                    output_ops['startTime'] = opts.startTime
-                if opts.endTime is not None and opts.endTime != "":
-                    output_ops['endTime'] = opts.endTime
-                if opts.format is not None and opts.format != "":
-                    if opts.format != "application/json" and opts.format != "text/csv":
+                if args.modelIndex is not None and args.modelIndex != "":
+                    output_ops['modelIndex'] = args.modelIndex
+                if args.startTime is not None and args.startTime != "":
+                    output_ops['startTime'] = args.startTime
+                if args.endTime is not None and args.endTime != "":
+                    output_ops['endTime'] = args.endTime
+                if args.format is not None and args.format != "":
+                    if args.format != "application/json" and args.format != "text/csv":
                         print_error("Unsupported response format. Only supported format are : application/json ,text/csv")
                         return
-                    output_ops['format'] = opts.format
+                    output_ops['format'] = args.format
                 output_response = _falkonry.get_facts(_assessmentId, output_ops)
-                if opts.path is not None and opts.path != "":
+                if args.path is not None and args.path != "":
                     #write response to file
                     try:
-                        file = open(opts.path,"w")
+                        file = open(args.path,"w")
                         file.write(str(output_response.text))
                         file.close()
-                        print_success("Facts data is written to the file : " + opts.path)
+                        print_success("Facts data is written to the file : " + args.path)
                     except Exception as fileError:
                         handle_error(fileError)
                 else:
@@ -631,28 +714,33 @@ class REPL(Cmd):
         return
 
 
-    @options([make_option('--path', help="file path to write output"),
-              make_option('--format', help="format of the input data. For csv pass text/csv. For JSON output pass application/json")])
-    def do_datastream_get_data(self, arg, opts=None):
+    # @options([make_option('--path', help="file path to write output"),
+    #           make_option('--format', help="format of the input data. For csv pass text/csv. For JSON output pass application/json")])
+    datastream_get_data_argparser = argparse.ArgumentParser()
+    datastream_get_data_argparser.add_argument('--path', help="file path to write output")
+    datastream_get_data_argparser.add_argument('--format', help="format of the input data. For csv pass text/csv. For JSON output pass application/json")
+
+    @with_argparser(datastream_get_data_argparser)
+    def do_datastream_get_data(self, args=None):
         """ get data of datastream"""
         if check_login():
             try:
                 if not check_default_datastream():
                    return
                 output_ops = {}
-                if opts.format is not None and opts.format != "":
-                    if opts.format != "application/json" and opts.format != "text/csv":
+                if args.format is not None and args.format != "":
+                    if args.format != "application/json" and args.format != "text/csv":
                         print_error("Unsupported response format. Only supported format are : application/json ,text/csv")
                         return
-                    output_ops['format'] = opts.format
+                    output_ops['format'] = args.format
                 output_response = _falkonry.get_datastream_data(_datastreamId, output_ops)
-                if opts.path is not None and opts.path != "":
+                if args.path is not None and args.path != "":
                     #write response to file
                     try:
-                        file = open(opts.path,"w")
+                        file = open(args.path,"w")
                         file.write(str(output_response.text))
                         file.close()
-                        print_success("Input data is written to the file : " + opts.path)
+                        print_success("Input data is written to the file : " + args.path)
                     except Exception as fileError:
                         handle_error(fileError)
                 else:
@@ -686,7 +774,7 @@ def validate_login(host,token):
                 try:
                     datastream = _falkonry.get_datastream('test-id')
                 except Exception as error:
-                    errorMsg = exceptionResponseHandler(error)
+                    errorMsg = exception_handler(error)
                     if errorMsg:
                         if errorMsg == "Unauthorized Access":
                             print_error('Unauthorized Access. Please verify your details.')
@@ -789,7 +877,7 @@ def print_row(name, id, user_id, live_status):
 
 def handle_error(error):
     try:
-        errorMsg = exceptionResponseHandler(error)
+        errorMsg = exception_handler(error)
         print_error(errorMsg)
     except Exception as error_new:
         print(_self.colorize("Unhandled Exception : " + str(error), "red"))
