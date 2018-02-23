@@ -32,9 +32,6 @@ class REPL(Cmd):
         _self = self
         print_custom("Welcome to Falkonry Shell !!!", "green")
 
-    # @options([make_option('--host', help="host url"),
-    #           make_option('--token', help="auth token")
-    #          ])
     login_argparser = argparse.ArgumentParser()
     login_argparser.add_argument('--host', help="host url")
     login_argparser.add_argument('--token', help="auth token")
@@ -79,7 +76,6 @@ class REPL(Cmd):
                 print_row(datastream.get_name(), datastream.get_id(), datastream.get_created_by(), datastream.get_live())
             print_info("==================================================================================================================")
 
-    # @options([make_option('--id', help="datastream id")])
     datastream_get_by_id_parser = argparse.ArgumentParser()
     datastream_get_by_id_parser.add_argument('--id', help="datastream id")
 
@@ -97,7 +93,6 @@ class REPL(Cmd):
             except Exception as error:
                 handle_error(error)
 
-    # @options([make_option('--id', help="datastream id")])
     datastream_default_set_parser = argparse.ArgumentParser()
     datastream_default_set_parser.add_argument('--id', help="datastream id")
 
@@ -152,7 +147,6 @@ class REPL(Cmd):
                     handle_error(error)
         return
 
-    # @options([make_option('--path', help="file path of entity meta request")])
     datastream_add_entity_meta_parser = argparse.ArgumentParser()
     datastream_add_entity_meta_parser.add_argument('--path', help="file path of entity meta request")
 
@@ -185,7 +179,6 @@ class REPL(Cmd):
                     handle_error(error)
         return
 
-    # @options([make_option('--path', help="file path of request")])
     datastream_create_parser = argparse.ArgumentParser()
     datastream_create_parser.add_argument('--path', help="file path of request")
 
@@ -216,7 +209,6 @@ class REPL(Cmd):
                 return
         return
 
-    # @options([make_option('--id', help="datastream id")])
     datastream_delete_argparser = argparse.ArgumentParser()
     datastream_delete_argparser.add_argument('--id', help="datastream id")
 
@@ -265,14 +257,6 @@ class REPL(Cmd):
                 return
         return
 
-    # @options([make_option('--path', help="file path of request"),
-    #           make_option('--timeIdentifier', help="time identifier in the file"),
-    #           make_option('--entityIdentifier', help="Entity identifier in the file"),
-    #           make_option('--timeFormat', help="Time format"),
-    #           make_option('--timeZone', help="Timezone"),
-    #           make_option('--signalIdentifier', help="ssignal Identifier in file"),
-    #           make_option('--valueIdentifier', help="Value Identifier in the file"),
-    #           make_option('--batchIdentifier', help="Batch Identifier, if the data being uploaded in batch datastream")])
     datastream_add_historical_data_argparser = argparse.ArgumentParser()
     datastream_add_historical_data_argparser.add_argument('--path', help="file path of request")
     datastream_add_historical_data_argparser.add_argument('--timeIdentifier', help="time identifier in the file")
@@ -322,14 +306,6 @@ class REPL(Cmd):
                 handle_error(error)
                 return
 
-    # @options([make_option('--path', help="file path of request"),
-    #           make_option('--timeIdentifier', help="time identifier in the file"),
-    #           make_option('--entityIdentifier', help="Entity identifier in the file"),
-    #           make_option('--timeFormat', help="Time format"),
-    #           make_option('--timeZone', help="Timezone"),
-    #           make_option('--signalIdentifier', help="ssignal Identifier in file"),
-    #           make_option('--valueIdentifier', help="Value Identifier in the file"),
-    #           make_option('--batchIdentifier', help="Batch Identifier, if the data being uploaded in batch datastream")])
     @with_argparser(datastream_add_historical_data_argparser)
     def do_datastream_add_live_data(self, args=None):
         """add live data to datastream for live monitoring """
@@ -393,7 +369,6 @@ class REPL(Cmd):
                 return
         return
 
-    # @options([make_option('--id', help="assessment id")])
     assessment_get_by_id_argparser = argparse.ArgumentParser()
     assessment_get_by_id_argparser.add_argument('--id', help="assessment id")
 
@@ -413,7 +388,6 @@ class REPL(Cmd):
                 return
         return
 
-    # @options([make_option('--path', help="file path of request")])
     assessment_create_argparser = argparse.ArgumentParser()
     assessment_create_argparser.add_argument('--path', help="file path of request")
 
@@ -446,7 +420,6 @@ class REPL(Cmd):
                 return
         return
 
-    # @options([make_option('--id', help="assessment id")])
     do_assessment_delete_argparser = argparse.ArgumentParser()
     do_assessment_delete_argparser.add_argument('--id', help="assessment id")
 
@@ -466,7 +439,6 @@ class REPL(Cmd):
                 return
         return
 
-    # @options([make_option('--id', help="assessment id")])
     assessment_default_set_argparser = argparse.ArgumentParser()
     assessment_default_set_argparser.add_argument('--id', help="assessment id")
 
@@ -508,16 +480,6 @@ class REPL(Cmd):
                     print_error("Please set the default assessment again")
         return
 
-    # @options([make_option('--path', help="file path of facts file"),
-    #           make_option('--startTimeIdentifier', help="Start time identifier in the file"),
-    #           make_option('--endTimeIdentifier', help="End time identifier in the file"),
-    #           make_option('--timeFormat', help="Time format of start and endtime"),
-    #           make_option('--timeZone', help="Timezone"),
-    #           make_option('--entityIdentifier', help="should be kept empty in case of single entity datastream"),
-    #           make_option('--valueIdentifier', help="Value Identifier in the file"),
-    #           make_option('--batchIdentifier', help="Batch Identifier, if the data being upload into a batched datastream"),
-    #           make_option('--tagIdentifier', help="Tag Identifier for facts being uploaded"),
-    #           make_option('--additionalTag', help="Tag value for all the facts being uploaded")])
     assessment_add_facts_argparser = argparse.ArgumentParser()
     assessment_add_facts_argparser.add_argument('--path', help="file path of request")
     assessment_add_facts_argparser.add_argument('--timeIdentifier', help="time identifier in the file")
@@ -572,12 +534,6 @@ class REPL(Cmd):
                 return
         return
 
-    # @options([make_option('--path', help="file path to write output"),
-    #           make_option('--trackerId', help="tracker id of the previous output request"),
-    #           make_option('--modelIndex', help="index of the model of which output needs to be fetched "),
-    #           make_option('--startTime', help="startTime of the output range should be in ISO8601 format 'YYYY-MM-DDTHH:mm:ss.SSSZ'"),
-    #           make_option('--endTime', help="endTime of the output range should be in ISO8601 format 'YYYY-MM-DDTHH:mm:ss.SSSZ'"),
-    #           make_option('--format', help="format of the output. For csv pass text/csv. For JSON output pass application/json")])
     assessment_get_historical_output_argparser = argparse.ArgumentParser()
     assessment_get_historical_output_argparser.add_argument('--path', help="file path to write output")
     assessment_get_historical_output_argparser.add_argument('--trackerId', help="tracker id of the previous output request")
@@ -636,7 +592,6 @@ class REPL(Cmd):
                 return
         return
 
-    # @options([make_option('--format', help="format of the output. For csv pass text/csv. For JSON output pass application/json")])
     assessment_output_listen_argparser = argparse.ArgumentParser()
     assessment_output_listen_argparser.add_argument('--format', help="format of the output. For csv pass text/csv. For JSON output pass application/json")
 
@@ -662,11 +617,6 @@ class REPL(Cmd):
                 return
         return
 
-    # @options([make_option('--path', help="file path to write output"),
-    #           make_option('--modelIndex', help="index of the model of which facts needs to be fetched "),
-    #           make_option('--startTime', help="startTime of the facts range should be in ISO8601 format 'YYYY-MM-DDTHH:mm:ss.SSSZ'"),
-    #           make_option('--endTime', help="endTime of the facts range should be in ISO8601 format 'YYYY-MM-DDTHH:mm:ss.SSSZ'"),
-    #           make_option('--format', help="format of the facts data. For csv pass text/csv. For JSON output pass application/json")])
     assessment_get_facts_argparser = argparse.ArgumentParser()
     assessment_get_facts_argparser.add_argument('--path', help="file path to write output")
     assessment_get_facts_argparser.add_argument('--modelIndex', help="index of the model of which facts needs to be fetched ")
@@ -714,8 +664,6 @@ class REPL(Cmd):
         return
 
 
-    # @options([make_option('--path', help="file path to write output"),
-    #           make_option('--format', help="format of the input data. For csv pass text/csv. For JSON output pass application/json")])
     datastream_get_data_argparser = argparse.ArgumentParser()
     datastream_get_data_argparser.add_argument('--path', help="file path to write output")
     datastream_get_data_argparser.add_argument('--format', help="format of the input data. For csv pass text/csv. For JSON output pass application/json")
