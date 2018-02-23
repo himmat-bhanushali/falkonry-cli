@@ -30,7 +30,7 @@ class REPL(Cmd):
         Cmd.__init__(self)
         global  _self
         _self = self
-        print_custom("Welcome to Falkonry Shell !!!", "green")
+        print_custom("Welcome to Falkonry Shell !", "green")
 
     login_argparser = argparse.ArgumentParser()
     login_argparser.add_argument('--host', help="host url")
