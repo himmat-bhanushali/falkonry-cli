@@ -202,7 +202,7 @@ Sample JSONFile:
 "format": "YYYY-MM-DD HH:mm:ss"
 },
 "signal": {
-"tagIdentifier": "tag",
+"keyIdentifier": "tag",
 "valueIdentifier": "value",
 "delimiter": null,
 "isSignalPrefix": false
@@ -946,7 +946,7 @@ Sample JSONFile / Facts Data:
 Usage:
 
 ```
-falkonry>> assessment_add_facts --path=/Users/user/MoreFacts.json --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --valueIdentifier=value --additionalTag=testTag
+falkonry>> assessment_add_facts --path=/Users/user/MoreFacts.json --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --valueIdentifier=value --additionalKeyword=testTag
 Default assessment set : hv987ptckdc6n7 Name : New Test Assessment
 {u'status': u'PENDING', u'datastream': u'cr77vk6mkwqwqq', u'__$createTime': 1516087411723, u'__$id': u'4l8bgmd6rv2qj77j', u'action': u'ADD_FACT_DATA', u'__$tenant': u'iqn80x6e2ku9id', u'assessment': u'hv987ptckdc6n7'}
 falkonry>>
@@ -987,7 +987,7 @@ time,end,value,tagId
 Usage:
 
 ```
-falkonry>> assessment_add_facts --path=/Users/user/TagFacts.csv --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --valueIdentifier=value --tagIdentifier=tagId
+falkonry>> assessment_add_facts --path=/Users/user/TagFacts.csv --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --valueIdentifier=value --keyIdentifier=tagId
 Default assessment set : 4rrp97lk9gcvwc Name : test new
 {u'status': u'PENDING', u'datastream': u'cr77vk6mkwqwqq', u'__$createTime': 1516090649022, u'__$id': u'hly8b4727wm9prq8', u'action': u'ADD_FACT_DATA', u'__$tenant': u'iqn80x6e2ku9id', u'assessment': u'4rrp97lk9gcvwc'}
 falkonry>>
