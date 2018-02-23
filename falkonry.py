@@ -35,6 +35,7 @@ class REPL(Cmd):
     login_argparser = argparse.ArgumentParser()
     login_argparser.add_argument('--host', help="host url")
     login_argparser.add_argument('--token', help="auth token")
+
     @with_argparser(login_argparser)
     def do_login(self, args=None):
         """login to the falkonry"""
@@ -519,12 +520,10 @@ class REPL(Cmd):
                         options['valueIdentifier'] = args.valueIdentifier
                     if args.batchIdentifier is not None and args.batchIdentifier != "":
                         options['batchIdentifier'] = args.batchIdentifier
-                    if args.tagIdentifier is not None and args.tagIdentifier != "":
-                        options['tagIdentifier'] = args.tagIdentifier
-                    if args.additionalTag is not None and args.additionalTag != "":
-                        options['additionalTag'] = args.additionalTag
-
-
+                    if args.keyIdentifier is not None and args.keyIdentifier != "":
+                        options['keyIdentifier'] = args.keyIdentifier
+                    if args.additionalKeyword is not None and args.additionalKeyword != "":
+                        options['additionalKeyword'] = args.additionalKeyword
 
                     response = _falkonry.add_facts_stream(_assessmentId, file_extension.split(".")[1], options, data)
                     print_info(str(response))
