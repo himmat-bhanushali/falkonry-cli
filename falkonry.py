@@ -483,13 +483,15 @@ class REPL(Cmd):
 
     assessment_add_facts_argparser = argparse.ArgumentParser()
     assessment_add_facts_argparser.add_argument('--path', help="file path of request")
-    assessment_add_facts_argparser.add_argument('--timeIdentifier', help="time identifier in the file")
-    assessment_add_facts_argparser.add_argument('--entityIdentifier', help="Entity identifier in the file")
-    assessment_add_facts_argparser.add_argument('--timeFormat', help="Time format")
+    assessment_add_facts_argparser.add_argument('--startTimeIdentifier', help="Start time identifier in the file")
+    assessment_add_facts_argparser.add_argument('--endTimeIdentifier', help="End time identifier in the file")
+    assessment_add_facts_argparser.add_argument('--timeFormat', help="Time format of start and endtime")
     assessment_add_facts_argparser.add_argument('--timeZone', help="Timezone")
-    assessment_add_facts_argparser.add_argument('--signalIdentifier', help="signal Identifier in file")
+    assessment_add_facts_argparser.add_argument('--entityIdentifier', help="should be kept empty in case of single entity datastream")
     assessment_add_facts_argparser.add_argument('--valueIdentifier', help="Value Identifier in the file")
-    assessment_add_facts_argparser.add_argument('--batchIdentifier', help="Batch Identifier, if the data being uploaded in batch datastream")
+    assessment_add_facts_argparser.add_argument('--batchIdentifier', help="Batch Identifier, if the data being upload into a batched datastream")
+    assessment_add_facts_argparser.add_argument('--tagIdentifier', help="Tag Identifier for facts being uploaded")
+    assessment_add_facts_argparser.add_argument('--additionalTag', help="Tag value for all the facts being uploaded")
 
     @with_argparser(assessment_add_facts_argparser)
     def do_assessment_add_facts(self, args=None):
