@@ -16,7 +16,7 @@ $ pip install falkonry-cli
 
 ## Requirements
 ```
-* Supported Python: Python 2.7
+* Supported Python: Python 3.4 or higher
 * Supported Platform : MacOS / Windows 7 or higher/ Ubuntu 14.0 or higher
 ```
 ## Features Supported
