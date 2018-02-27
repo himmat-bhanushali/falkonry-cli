@@ -228,6 +228,22 @@ class REPL(Cmd):
                 handle_error(error)
                 return
 
+    def do_datastream_get_live_status(self, line):
+        """ Returns the Live monitoring status for the default datastream """
+        global _datastreamId
+        if check_login():
+            try:
+                if check_default_datastream():
+                    print_info("Fetching Live monitoring status for datastream : " + _datastreamId)
+                    res = _falkonry.get_datastream(_datastreamId).get_live()
+                    print_info("Live Monitoring : "+ str(res))
+                    return res
+                return
+            except Exception as error:
+                handle_error(error)
+                return
+        return
+
     def do_datastream_start_live(self, line):
         """ turn on live monitoring of datastream """
         global _datastreamId
