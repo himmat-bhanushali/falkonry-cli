@@ -506,8 +506,8 @@ class REPL(Cmd):
     assessment_add_facts_argparser.add_argument('--entityIdentifier', help="should be kept empty in case of single entity datastream")
     assessment_add_facts_argparser.add_argument('--valueIdentifier', help="Value Identifier in the file")
     assessment_add_facts_argparser.add_argument('--batchIdentifier', help="Batch Identifier, if the data being upload into a batched datastream")
-    assessment_add_facts_argparser.add_argument('--tagIdentifier', help="Tag Identifier for facts being uploaded")
-    assessment_add_facts_argparser.add_argument('--additionalTag', help="Tag value for all the facts being uploaded")
+    assessment_add_facts_argparser.add_argument('--keywordIdentifier', help="Keyword Identifier for facts being uploaded")
+    assessment_add_facts_argparser.add_argument('--additionalKeyword', help="Keyword for all the facts being uploaded")
 
     @with_argparser(assessment_add_facts_argparser)
     def do_assessment_add_facts(self, args=None):
@@ -538,8 +538,8 @@ class REPL(Cmd):
                         options['valueIdentifier'] = args.valueIdentifier
                     if args.batchIdentifier is not None and args.batchIdentifier != "":
                         options['batchIdentifier'] = args.batchIdentifier
-                    if args.keyIdentifier is not None and args.keyIdentifier != "":
-                        options['keyIdentifier'] = args.keyIdentifier
+                    if args.keywordIdentifier is not None and args.keywordIdentifier != "":
+                        options['keywordIdentifier'] = args.keywordIdentifier
                     if args.additionalKeyword is not None and args.additionalKeyword != "":
                         options['additionalKeyword'] = args.additionalKeyword
 
