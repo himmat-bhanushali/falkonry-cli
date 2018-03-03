@@ -96,21 +96,19 @@ falkonry>> help
 
 Documented commands (type help <topic>):
 ========================================
-
-_relative_load                    datastream_add_live_data    history      
-assessment_add_facts              datastream_create           load         
-assessment_create                 datastream_default_get      login        
-assessment_default_get            datastream_default_set      login_details
-assessment_default_set            datastream_delete           logout       
-assessment_delete                 datastream_get_by_id        py           
-assessment_get_by_id              datastream_get_data         pyscript     
-assessment_get_facts              datastream_get_entity_meta  quit         
-assessment_get_historical_output  datastream_get_list         run          
-assessment_get_list               datastream_start_live       save         
-assessment_output_listen          datastream_stop_live        set          
-cmdenvironment                    edit                        shell        
-datastream_add_entity_meta        exit                        shortcuts    
-datastream_add_historical_data    help                        show         
+assessment_add_facts              datastream_add_live_data    exit         
+assessment_create                 datastream_create           help         
+assessment_default_get            datastream_default_get      history      
+assessment_default_set            datastream_default_set      load         
+assessment_delete                 datastream_delete           login        
+assessment_delete_argparser       datastream_get_by_id        login_details
+assessment_get_by_id              datastream_get_data         logout       
+assessment_get_facts              datastream_get_entity_meta  py           
+assessment_get_historical_output  datastream_get_list         pyscript     
+assessment_get_list               datastream_get_live_status  quit         
+assessment_output_listen          datastream_start_live       set          
+datastream_add_entity_meta        datastream_stop_live        shell        
+datastream_add_historical_data    edit                        shortcuts       
 falkonry>>
 ```
 
