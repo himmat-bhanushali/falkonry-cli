@@ -62,9 +62,9 @@ $ pip install falkonry-cli
 * Get default Assessment
 * Get Condition List Of Assessment
 * Add facts data (json format) to Assessment of single entity datastream
-* Add facts data (json format) with addition tag to Assessment of multi entity datastream
+* Add facts data (json format) with addition keyword to Assessment of multi entity datastream
 * Add facts data (csv format) to Assessment of single entity datastream
-* Add facts data (csv format) with tags Assessment of single entity datastream
+* Add facts data (csv format) with keywords to Assessment of single entity datastream
 * Get Historian Output from Assessment
 * Get Streaming Output
 * Get Facts Data
@@ -176,12 +176,12 @@ user$
 Data :
 
 ```
-{"time" :"2016-03-01 01:01:01", "tag" : "signal1", "value" : 3.4}
-{"time" :"2016-03-01 01:01:02", "tag" : "signal2", "value" : 9.3}
+{"time" :"2016-03-01 01:01:01", "signal" : "signal1", "value" : 3.4}
+{"time" :"2016-03-01 01:01:02", "signal" : "signal2", "value" : 9.3}
 
 or
 
-time, tag, value
+time, signal, value
 2016-03-01 01:01:01, signal1, 3.4
 2016-03-01 01:01:02, signal2, 9.3
 
@@ -200,10 +200,8 @@ Sample JSONFile:
 "format": "YYYY-MM-DD HH:mm:ss"
 },
 "signal": {
-"keyIdentifier": "tag",
-"valueIdentifier": "value",
-"delimiter": null,
-"isSignalPrefix": false
+"signalIdentifier": "signal",
+"valueIdentifier": "value"
 }
 }
 }
@@ -932,7 +930,7 @@ falkonry>>
 
 ```
 
-#### Add facts data (json format) with addition tag to Assessment of multi entity datastream
+#### Add facts data (json format) with addition keywords to Assessment of multi entity datastream
 
 Sample JSONFile / Facts Data:
 ```
@@ -972,7 +970,7 @@ Default assessment set : bqn8vjdb7yr9km Name : new test
 falkonry>>
 ```
 
-#### Add facts data (csv format) with tags Assessment of single entity datastream
+#### Add facts data (csv format) with keywords to Assessment of single entity datastream
 
 Sample CSVFile / Facts Data:
 ```
@@ -985,7 +983,7 @@ time,end,value,tagId
 Usage:
 
 ```
-falkonry>> assessment_add_facts --path=/Users/user/TagFacts.csv --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --valueIdentifier=value --keyIdentifier=tagId
+falkonry>> assessment_add_facts --path=/Users/user/TagFacts.csv --startTimeIdentifier=time --endTimeIdentifier=end --timeFormat=millis --timeZone=GMT --valueIdentifier=value --keywordIdentifier=tagId
 Default assessment set : 4rrp97lk9gcvwc Name : test new
 {u'status': u'PENDING', u'datastream': u'cr77vk6mkwqwqq', u'__$createTime': 1516090649022, u'__$id': u'hly8b4727wm9prq8', u'action': u'ADD_FACT_DATA', u'__$tenant': u'iqn80x6e2ku9id', u'assessment': u'4rrp97lk9gcvwc'}
 falkonry>>
@@ -1147,17 +1145,15 @@ falkonry>> datastream_get_data --format=application/json
 Default datastream set : 1scyeeoxbdh7if Name : New Standalone
 Input Data : 
 ==================================================================================================================
-{"time":1294078560000,"tag":"Device1:device","value":"Device1"}
-{"time":1294091820000,"tag":"Device1:device","value":"Device1"}
-{"time":1294099380000,"tag":"Device1:device","value":"Device1"}
-{"time":1294078560000,"tag":"Device2:device","value":"Device2"}
-{"time":1294091820000,"tag":"Device2:device","value":"Device2"}
-{"time":1294099380000,"tag":"Device2:device","value":"Device2"}
-{"time":1294078560000,"tag":"Device3:device","value":"Device3"}
-{"time":1294091820000,"tag":"Device3:device","value":"Device3"}
-{"time":1294099380000,"tag":"Device3:device","value":"Device3"}
-{"time":1294078560000,"tag":"Device1:device","value":"Device1"}
-{"time":1294091820000,"tag":"Device1:device","value":"Device1"}
+{"time":1294078560000,"signal":"Signal1","value":12.3}
+{"time":1294091820000,"signal":"Signal1","value":14.5}
+{"time":1294099380000,"signal":"Signal1","value":17.6}
+{"time":1294078560000,"signal":"Signal2","value":12.3}
+{"time":1294091820000,"signal":"Signal2","value":11.8}
+{"time":1294099380000,"signal":"Signal2","value":15.9}
+{"time":1294078560000,"signal":"Signal3","value":21.3}
+{"time":1294091820000,"signal":"Signal3","value":17.3}
+{"time":1294099380000,"signal":"Signal3","value":19.2}
 ==================================================================================================================
 falkonry>>
 ```
