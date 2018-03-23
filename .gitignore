@@ -1,0 +1,6 @@
+*.iml
+.idea
+*.pyc
+.DS_Store
+test/out
+*.egg-info
