@@ -1,0 +1,18 @@
+falkonry>> login --host=https://localhost:8080 --token=t6vl8dty74ngy9r4vy29r6pkth4b4npj
+logged in to falkonry
+falkonry>> datastream_get_by_id --id=2n42c2t64mrvkr
+Fetching Datastreams
+==================================================================================================================
+Id : 2n42c2t64mrvkr
+Name : 1-Window
+Created By : qymdt8l48yklrp
+Create Time : 2018-01-26 17:00:59.871000
+Update Time : 2018-03-12 14:53:17.341000
+Events # : 150000
+Events Start Time : 2017-04-12 12:17:28.469000
+Events End Time : 2017-04-12 12:24:08.429000
+Time Format : millis
+Time Zone : Asia\/Kolkata
+Live Monitoring: OFF
+Signals: LA_xacc, RA_yacc, RL_zacc, RA_zacc, LL_zacc, RA_xacc, RL_xacc, LA_zacc, T_zacc, T_yacc, T_xacc, LL_xacc, LA_yacc, LL_yacc, RL_yacc, 1-Window, 1-Assess
+==================================================================================================================

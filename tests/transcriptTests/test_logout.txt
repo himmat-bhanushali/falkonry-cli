@@ -1,0 +1,5 @@
+falkonry>> login_details
+Host : https://localhost:8080
+Token : t6vl8dty74ngy9r4vy29r6pkth4b4npj
+falkonry>> logout
+logged out from falkonry

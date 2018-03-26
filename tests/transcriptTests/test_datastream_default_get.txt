@@ -1,0 +1,4 @@
+falkonry>> login --host=https://localhost:8080 --token=t6vl8dty74ngy9r4vy29r6pkth4b4npj
+logged in to falkonry
+falkonry>> datastream_default_set --id=2n42c2t64mrvkr
+Default datastream set : 2n42c2t64mrvkr
