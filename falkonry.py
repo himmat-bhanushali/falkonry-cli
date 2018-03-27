@@ -30,7 +30,7 @@ class REPL(Cmd):
         Cmd.__init__(self)
         global  _self
         _self = self
-        print_custom("Welcome to Falkonry Shell !", "green")
+        # print_custom("Welcome to Falkonry Shell !", "green")
 
     login_argparser = argparse.ArgumentParser()
     login_argparser.add_argument('--host', help="host url")
@@ -778,19 +778,20 @@ def check_login():
 
 
 def print_info(msg):
-    print(_self.colorize(msg, "blue"))
+    Cmd.poutput(_self,msg=_self.colorize(msg, "blue"))
 
 
 def print_success(msg):
-    print(_self.colorize(msg, "green"))
+    Cmd.poutput(_self,msg=_self.colorize(msg, "green"))
+
 
 
 def print_error(msg):
-    print(_self.colorize(msg + "\n Try help <command> for info", "red"))
+    Cmd.poutput(_self,msg=_self.colorize(msg + "\n Try help <command> for info", "red"))
 
 
 def print_custom(msg, color):
-    print(_self.colorize(msg, color))
+    Cmd.poutput(_self,msg=_self.colorize(msg, color))
 
 
 def get_file_extension(path):
