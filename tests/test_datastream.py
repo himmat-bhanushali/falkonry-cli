@@ -3,12 +3,13 @@ from falkonryclient import schemas as Schemas
 import unittest
 import re
 import subprocess
+import os
 import json
 import datetime
 
 global created_datastream
-host = "https://localhost:8080"
-token = "t6vl8dty74ngy9r4vy29r6pkth4b4npj"
+host = os.environ['FALKONRY_HOST_URL'] if os.environ.get('FALKONRY_HOST_URL') else "https://localhost:8080"
+token = os.environ['FALKONRY_TOKEN'] if os.environ.get('FALKONRY_TOKEN') else "t6vl8dty74ngy9r4vy29r6pkth4b4npj"
 falkonry = Falkonry(host,token)
 
 path_datastream_add_entity_meta_request = "tests/resources/EntityMetaRequest.json"
@@ -21,10 +22,6 @@ def file_write(file_name, data):
 class TestDatastream(unittest.TestCase):
 
     def setUp(self):
-        # self.FALKONRY_HOST_URL = "https://localhost:8080"
-        # self.FALKONRY_TOKEN = "t6vl8dty74ngy9r4vy29r6pkth4b4npj"
-        # self.host = "https://localhost:8080"
-        # self.token = "t6vl8dty74ngy9r4vy29r6pkth4b4npj"
         ########################################################################################################################
         # Initialising Dummy datastream for the tests
         datastream = Schemas.Datastream()
@@ -58,7 +55,8 @@ class TestDatastream(unittest.TestCase):
             self.created_datastreams.append(test_datastream.get_id())
         self.login_data = """falkonry>> login --host={host} --token={token}\nlogged in to falkonry\n"""\
                 .format(host = host, token = token)
-        self.default_datastream_data = """falkonry>> datastream_default_set --id {id}
+        self.default_datastream_data = \
+"""falkonry>> datastream_default_set --id {id}
 Default datastream set : {id}
 """.format(
             id=str(test_datastream.get_id())
@@ -114,7 +112,8 @@ Listing Datastreams...
     def test_do_datastream_get_by_id(self):
         datastream = self.test_datastream.to_json()
         datastream = json.loads(datastream)
-        data = r"""falkonry>> datastream_get_by_id --id {id}
+        data = \
+r"""falkonry>> datastream_get_by_id --id {id}
 Fetching Datastreams
 ==================================================================================================================
 Id : {id}
@@ -147,7 +146,8 @@ Signals: /.*/
 
     def test_do_datastream_default_set(self):
         datastream = self.test_datastream
-        data = """falkonry>> datastream_default_set --id {id}
+        data = \
+"""falkonry>> datastream_default_set --id {id}
 Default datastream set : {id}
 """.format(
             id=str(datastream.get_id())
@@ -158,7 +158,8 @@ Default datastream set : {id}
 
     def test_do_datastream_default_get(self):
         datastream = self.test_datastream
-        data = """falkonry>> datastream_default_set --id {id}
+        data = \
+"""falkonry>> datastream_default_set --id {id}
 Default datastream set : {id}
 falkonry>> datastream_default_get
 Default datastream set : {id} Name : {name}
@@ -170,7 +171,8 @@ Default datastream set : {id} Name : {name}
 
     def test_do_datastream_add_entity_meta(self):
         datastream = self.test_datastream
-        data = """falkonry>> datastream_default_set --id {id}
+        data = \
+"""falkonry>> datastream_default_set --id {id}
 Default datastream set : {id}
 falkonry>> datastream_add_entity_meta --path {path}
 Entity Meta successfully added to datastream: {id}
@@ -187,7 +189,8 @@ Entity Meta successfully added to datastream: {id}
             entity_label = entity.get_label()
             entity_id = entity.get_sourceId()
         #todo: Can loop through and append all the labels
-        data = """falkonry>> datastream_default_set --id {id}
+        data = \
+"""falkonry>> datastream_default_set --id {id}
 Default datastream set : {id}
 falkonry>> datastream_get_entity_meta
 /.*/Entity Meta of datastream: {id}/.*/
@@ -205,7 +208,8 @@ falkonry>> datastream_get_entity_meta
 
     def test_do_datastream_get_live_status(self):
         datastream = self.test_datastream
-        data="""falkonry>> datastream_get_live_status
+        data= \
+"""falkonry>> datastream_get_live_status
 Default datastream set : {id} Name : {name}
 Fetching Live monitoring status for datastream : {id}
 Live Monitoring : {live_status}
@@ -218,7 +222,8 @@ Live Monitoring : {live_status}
 
     def test_do_datastream_start_live(self):
         datastream = self.test_datastream
-        data = """falkonry>> datastream_start_live
+        data = \
+"""falkonry>> datastream_start_live
 Default datastream set : {id} Name : {name}
 Turning on Live monitoring for datastream : {id}
 /(Datastream is {live_status} for live monitoring|Active model is not assigned in any assessment)/
@@ -232,7 +237,8 @@ Turning on Live monitoring for datastream : {id}
 
     def test_do_datastream_stop_live(self):
         datastream = self.test_datastream
-        data = """falkonry>> datastream_stop_live
+        data = \
+"""falkonry>> datastream_stop_live
 Default datastream set : {id} Name : {name}
 Turning off Live monitoring for datastream : {id}
 /(Datastream is {live_status} for live monitoring|Active model is not assigned in any assessment)/
@@ -246,7 +252,8 @@ Turning off Live monitoring for datastream : {id}
 
     def test_do_datastream_add_historical_data(self):
         datastream = self.test_datastream
-        data = """falkonry>> datastream_add_historical_data --path {path} --timeIdentifier "time" --entityIdentifier "car" --timeFormat "iso_8601" --timeZone "GMT" --signalIdentifier "signal" --valueIdentifier "value"
+        data = \
+"""falkonry>> datastream_add_historical_data --path {path} --timeIdentifier "time" --entityIdentifier "car" --timeFormat "iso_8601" --timeZone "GMT" --signalIdentifier "signal" --valueIdentifier "value"
 Default datastream set : {id} Name : {name}
 /.*/__$id/.*/
 """.format(
@@ -259,7 +266,8 @@ Default datastream set : {id} Name : {name}
 
     def test_do_datastream_add_live_data(self):
         datastream = self.test_datastream
-        data = """falkonry>> datastream_add_live_data --path {path} --timeIdentifier "time" --entityIdentifier "car" --timeFormat "iso_8601" --timeZone "GMT" --signalIdentifier "signal" --valueIdentifier "value"
+        data = \
+"""falkonry>> datastream_add_live_data --path {path} --timeIdentifier "time" --entityIdentifier "car" --timeFormat "iso_8601" --timeZone "GMT" --signalIdentifier "signal" --valueIdentifier "value"
 Default datastream set : {id} Name : {name}\n/(/.*/__$id/.*/|Datastream is not live, streaming data cannot be accepted.)/
 """.format(
             path = path_datastream_add_historical_data,

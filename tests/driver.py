@@ -11,6 +11,6 @@ with open("RunTransciptTest.sh",'w') as f:
         f.writelines("python /home/jaipreet/Projects/falkonry_src/falkonry-cli/falkonry.py --test /home/jaipreet/Projects/falkonry_src/falkonry-cli/tests/test_transcripts/{file}\n".format(file = file))
 error_log_file = open('logs/ErrorTestLog{time}.txt'.format(time=dt.now()),'w')
 output_log_file = open('logs/OutputTestLog{time}.txt'.format(time=dt.now()),'w')
-process = subprocess.Popen("/bin/sh /home/jaipreet/Projects/falkonry_src/falkonry-cli/tests/RunTransciptTest.sh".format(time=str(datetime.datetime.now())),shell=True, stdout=output_log_file, stderr=error_log_file)
+process = subprocess.Popen("/bin/sh /home/jaipreet/Projects/falkonry_src/falkonry-cli/tests/RunTransciptTest.sh",shell=True, stdout=output_log_file, stderr=error_log_file)
 error_log_file.close()
 output_log_file.close()

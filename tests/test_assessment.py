@@ -1,14 +1,14 @@
 from falkonryclient import client as Falkonry
 from falkonryclient import schemas as Schemas
 import unittest
-import re
-import subprocess
 import json
 import datetime
+import os
+
 
 global created_datastream
-host = "https://localhost:8080"
-token = "t6vl8dty74ngy9r4vy29r6pkth4b4npj"
+host = os.environ['FALKONRY_HOST_URL'] if os.environ.get('FALKONRY_HOST_URL') else "https://localhost:8080"
+token = os.environ['FALKONRY_TOKEN'] if os.environ.get('FALKONRY_TOKEN') else "t6vl8dty74ngy9r4vy29r6pkth4b4npj"
 falkonry = Falkonry(host,token)
 
 path_assessment_add_facts = "tests/resources/AddFacts.json"
@@ -73,9 +73,8 @@ class TestAssessment(unittest.TestCase):
 
         self.login_data = """falkonry>> login --host={host} --token={token}\nlogged in to falkonry\n"""\
                 .format(host = host, token = token)
-        self.default_datastream_data = """falkonry>> datastream_default_set --id {id}
-Default datastream set : {id}
-""".format(
+        self.default_datastream_data = """falkonry>> datastream_default_set --id {id}\nDefault datastream set : {id}\n"""\
+                .format(
             id=str(test_datastream.get_id())
         )
         self.default_assessment_data ="""falkonry>> assessment_default_set --id {assessment_id}
@@ -95,7 +94,7 @@ Default datastream set : {datastream_id} Name : {datastream_name}
         for assessment in assessments:
             if assessment.get_datastream() == self.test_datastream.get_id():
                 assessmentList.append(assessment)
-        if len(assessmentList)>0:
+        if len(assessmentList) > 0:
             data = \
 """falkonry>> assessment_get_list 
 Default datastream set : {datastream_id} Name : {datastream_name}
@@ -178,7 +177,6 @@ Default datastream set : {datastream_id} Name : {datastream_name}
             datastream_name = str(datastream.get_name())
         )
         file_write("test_do_datastream_default_set", self.login_data +self.default_datastream_data + data)
-
 
 
     def test_do_assessment_default_get(self):
