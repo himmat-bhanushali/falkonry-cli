@@ -11,10 +11,10 @@ host = "https://localhost:8080"
 token = "t6vl8dty74ngy9r4vy29r6pkth4b4npj"
 falkonry = Falkonry(host,token)
 
-path_datastream_add_entity_meta_request = "samples/EntityMetaRequest.json"
-path_datastream_add_historical_data = "samples/Input.json"
+path_datastream_add_entity_meta_request = "tests/resources/EntityMetaRequest.json"
+path_datastream_add_historical_data = "tests/resources/Input.json"
 def file_write(file_name, data):
-    with open("test_check/" + str(file_name) + '.txt', 'w') as file:
+    with open("test_transcripts/" + str(file_name) + '.txt', 'w') as file:
         file.write(str(data))
 
 
@@ -106,9 +106,9 @@ Listing Datastreams...
             data = ''
 
         file_write("test_do_datastream_get_list", self.login_data + data)
-        p = subprocess.Popen('./test.sh')
-        (output, error) = p.communicate()
-        print("output", output)
+        # p = subprocess.Popen('./test.sh')
+        # (output, error) = p.communicate()
+        # print("output", output)
 
 
     def test_do_datastream_get_by_id(self):
@@ -199,7 +199,7 @@ falkonry>> datastream_get_entity_meta
         )
         file_write("test_do_datastream_get_entity_meta", self.login_data + data)
 
-    def tes_do_datastream_delete(self):
+    def test_do_datastream_delete(self):
         #todo:Complete for delete
         pass
 

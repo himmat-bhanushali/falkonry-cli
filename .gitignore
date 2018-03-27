@@ -4,3 +4,6 @@
 .DS_Store
 test/out
 *.egg-info
+.pytest_cache
+tests/logs
+tests/test_transcripts
