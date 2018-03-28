@@ -2,7 +2,7 @@
 .idea
 *.pyc
 .DS_Store
-test/out
+tests/out
 *.egg-info
 .pytest_cache
 tests/logs

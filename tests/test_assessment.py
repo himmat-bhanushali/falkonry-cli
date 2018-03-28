@@ -10,8 +10,9 @@ global created_datastream
 host = os.environ['FALKONRY_HOST_URL'] if os.environ.get('FALKONRY_HOST_URL') else "https://localhost:8080"
 token = os.environ['FALKONRY_TOKEN'] if os.environ.get('FALKONRY_TOKEN') else "t6vl8dty74ngy9r4vy29r6pkth4b4npj"
 falkonry = Falkonry(host,token)
+falkonry_path = os.path.dirname(os.path.abspath(__file__))
 
-path_assessment_add_facts = "tests/resources/AddFacts.json"
+path_assessment_add_facts = "{path}/resources/AddFacts.json".format(path=falkonry_path)
 path_datastream_add_historical_data = "tests/resources/Input.json"
 def file_write(file_name, data):
     with open("test_transcripts/" + str(file_name) + '.txt', 'w') as file:
@@ -21,11 +22,7 @@ def file_write(file_name, data):
 class TestAssessment(unittest.TestCase):
 
     def setUp(self):
-        # self.FALKONRY_HOST_URL = "https://localhost:8080"
-        # self.FALKONRY_TOKEN = "t6vl8dty74ngy9r4vy29r6pkth4b4npj"
-        # self.host = "https://localhost:8080"
-        # self.token = "t6vl8dty74ngy9r4vy29r6pkth4b4npj"
-    ####################################################################################################################
+########################################################################################################################
         # Initialising Dummy datastream for the tests
         datastream = Schemas.Datastream()
         datastream.set_name('Motor Health')
@@ -46,18 +43,19 @@ class TestAssessment(unittest.TestCase):
         field.set_entityIdentifier('car')
         datastream.set_datasource(datasource)
         datastream.set_field(field)
-        ################################################################################################################
+########################################################################################################################
 
         self.created_datastreams = []
         global created_datastreams
         created_datastreams = self.created_datastreams #Created a reference
         test_datastream = falkonry.create_datastream(datastream)
-        ################################################################################################################
+########################################################################################################################
+
         assessment_req = Schemas.AssessmentRequest()
         assessment_req.set_name("Assessement_name")
         assessment_req.set_datastream(test_datastream.get_id())
         assessment_req.set_rate('PTOS')
-        ################################################################################################################
+########################################################################################################################
 
         self.created_assessments = []
         global created_assessments
@@ -234,7 +232,6 @@ Default assessment set : {id} Name : {name}
             name = str(assessment.get_name()),
             id = str(assessment.get_id())
         )
-        #only __$id is matched coz there is no predefined pattern in which the rest of the response can be checked against
         file_write("test_do_assessment_output_listen", self.login_data + self.default_datastream_data +self.default_assessment_data + data)
 
 

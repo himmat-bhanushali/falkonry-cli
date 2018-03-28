@@ -2,7 +2,6 @@ from falkonryclient import client as Falkonry
 from falkonryclient import schemas as Schemas
 import unittest
 import re
-import subprocess
 import os
 import json
 import datetime
@@ -11,9 +10,10 @@ global created_datastream
 host = os.environ['FALKONRY_HOST_URL'] if os.environ.get('FALKONRY_HOST_URL') else "https://localhost:8080"
 token = os.environ['FALKONRY_TOKEN'] if os.environ.get('FALKONRY_TOKEN') else "t6vl8dty74ngy9r4vy29r6pkth4b4npj"
 falkonry = Falkonry(host,token)
+falkonry_path = os.path.dirname(os.path.abspath(__file__))
 
-path_datastream_add_entity_meta_request = "tests/resources/EntityMetaRequest.json"
-path_datastream_add_historical_data = "tests/resources/Input.json"
+path_datastream_add_entity_meta_request = "{path}/resources/EntityMetaRequest.json".format(path=falkonry_path)
+path_datastream_add_historical_data = "{path}/resources/Input.json".format(path=falkonry_path)
 def file_write(file_name, data):
     with open("test_transcripts/" + str(file_name) + '.txt', 'w') as file:
         file.write(str(data))
@@ -22,7 +22,7 @@ def file_write(file_name, data):
 class TestDatastream(unittest.TestCase):
 
     def setUp(self):
-        ########################################################################################################################
+########################################################################################################################
         # Initialising Dummy datastream for the tests
         datastream = Schemas.Datastream()
         datastream.set_name('Motor Health')
@@ -43,7 +43,7 @@ class TestDatastream(unittest.TestCase):
         field.set_entityIdentifier('car')
         datastream.set_datasource(datasource)
         datastream.set_field(field)
-        ########################################################################################################################
+########################################################################################################################
 
         self.created_datastreams = []
         global created_datastream
@@ -104,9 +104,6 @@ Listing Datastreams...
             data = ''
 
         file_write("test_do_datastream_get_list", self.login_data + data)
-        # p = subprocess.Popen('./test.sh')
-        # (output, error) = p.communicate()
-        # print("output", output)
 
 
     def test_do_datastream_get_by_id(self):
@@ -137,7 +134,7 @@ Signals: /.*/
             update_time = (str(datetime.datetime.fromtimestamp(datastream['updateTime']/1000.0))),
             # event = str(datastream['stats']['events']),
             time_format = datastream['field']['time']['format'],
-            time_zone = datastream['field']['time']['zone'],#todo:Back slash for space
+            time_zone = datastream['field']['time']['zone'],
             live = datastream['live'],
             # signals = '/.*/'
         )
@@ -255,7 +252,7 @@ Turning off Live monitoring for datastream : {id}
         data = \
 """falkonry>> datastream_add_historical_data --path {path} --timeIdentifier "time" --entityIdentifier "car" --timeFormat "iso_8601" --timeZone "GMT" --signalIdentifier "signal" --valueIdentifier "value"
 Default datastream set : {id} Name : {name}
-/.*/__$id/.*/
+/.*/
 """.format(
             path = path_datastream_add_historical_data,
             name = str(datastream.get_name()),
@@ -275,7 +272,7 @@ Default datastream set : {id} Name : {name}\n/(/.*/__$id/.*/|Datastream is not l
             id = str(datastream.get_id())
         )
         #only __$id is matched coz there is no predefined pattern in which the rest of the response can be checked against
-        file_write("check", self.login_data + self.default_datastream_data + data)
+        file_write("test_do_datastream_add_live_data", self.login_data + self.default_datastream_data + data)
 
 
     # @staticmethod#todo:look for optimization
