@@ -7,4 +7,4 @@ tests/out
 .pytest_cache
 tests/logs
 tests/resources/*.txt
-tests/test_transcripts
+tests/test_transcripts/*.txt
