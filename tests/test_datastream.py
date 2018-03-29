@@ -117,7 +117,7 @@ Id : {id}
 Name : {name}
 Created By : {created_by}
 Create Time : {created_time}
-Update Time : {update_time}
+Update Time : /.*/
 Events # : /.*/
 Events Start Time : /.*/
 Events End Time : /.*/
