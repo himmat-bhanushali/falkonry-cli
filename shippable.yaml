@@ -26,7 +26,7 @@ integrations:
       type: slack
       recipients:
         - "#builds"
-      on_success: always
+      on_success: never
       on_failure: always
-      on_start: always
-      on_pull_request: always
+      on_start: never
+      on_pull_request: never
