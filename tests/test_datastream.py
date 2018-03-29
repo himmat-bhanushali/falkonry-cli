@@ -110,7 +110,7 @@ Listing Datastreams...
         datastream = self.test_datastream.to_json()
         datastream = json.loads(datastream)
         data = \
-"""falkonry>> datastream_get_by_id --id {id}
+r"""falkonry>> datastream_get_by_id --id {id}
 Fetching Datastreams
 ==================================================================================================================
 Id : {id}
@@ -122,10 +122,9 @@ Events # : /.*/
 Events Start Time : /.*/
 Events End Time : /.*/
 Time Format : {time_format}
-Time Zone : {time_zone}
-Live Monitoring: {live}
+Time Zone : {time_zone}/.*/
+Live Monitoring: {live}/.*/
 Signals: /.*/
-==================================================================================================================
 """.format(
             id = datastream['id'],
             name = datastream['name'],
