@@ -1,8 +1,0 @@
-falkonry>> login --host=https://localhost:8080 --token=t6vl8dty74ngy9r4vy29r6pkth4b4npj
-logged in to falkonry
-falkonry>> datastream_default_set --id bcy2hym9b2ygmc
-Default datastream set : bcy2hym9b2ygmc
-falkonry>> datastream_stop_live
-Default datastream set : bcy2hym9b2ygmc Name : Motor Health
-Turning off Live monitoring for datastream : bcy2hym9b2ygmc
-/(Datastream is OFF for live monitoring|Active model is not assigned in any assessment)/

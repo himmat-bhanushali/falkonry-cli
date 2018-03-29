@@ -1,5 +1,0 @@
-falkonry>> login --host=https://localhost:8080 --token=t6vl8dty74ngy9r4vy29r6pkth4b4npj
-logged in to falkonry
-falkonry>> login_details
-Host : https:\/\/localhost:8080
-Token : /.*/t6vl8dty74ngy9r4vy29r6pkth4b4npj/.*/

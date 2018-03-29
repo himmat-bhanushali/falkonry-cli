@@ -1,7 +1,0 @@
-falkonry>> login --host=https://localhost:8080 --token=t6vl8dty74ngy9r4vy29r6pkth4b4npj
-logged in to falkonry
-falkonry>> datastream_default_set --id bcy2hym9b2ygmc
-Default datastream set : bcy2hym9b2ygmc
-falkonry>> datastream_add_historical_data --path /home/jaipreet/Projects/falkonry_src/falkonry-cli/tests/resources/Input.json --timeIdentifier "time" --entityIdentifier "car" --timeFormat "iso_8601" --timeZone "GMT" --signalIdentifier "signal" --valueIdentifier "value"
-Default datastream set : bcy2hym9b2ygmc Name : Motor Health
-/.*/
