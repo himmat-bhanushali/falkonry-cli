@@ -7,11 +7,8 @@ import json
 import datetime
 
 global created_datastreams
-host = os.environ['FALKONRY_HOST_URL'] if os.environ.get('FALKONRY_HOST_URL') else 'https://localhost:8080'
-token = os.environ['FALKONRY_TOKEN'] if os.environ.get('FALKONRY_TOKEN') else 't6vl8dty74ngy9r4vy29r6pkth4b4npj'
-#
-# host = os.environ['FALKONRY_HOST_URL']
-# token = os.environ['FALKONRY_TOKEN']
+host = os.environ['FALKONRY_HOST_URL']
+token = os.environ['FALKONRY_TOKEN']
 falkonry = Falkonry(host,token)
 falkonry_path = os.path.dirname(os.path.abspath(__file__))
 

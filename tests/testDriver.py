@@ -3,14 +3,18 @@ import subprocess
 from datetime import datetime as dt
 from falkonryclient import client as Falkonry
 
-host = os.environ['FALKONRY_HOST_URL'] if os.environ.get('FALKONRY_HOST_URL') else 'https://localhost:8080'
-token = os.environ['FALKONRY_TOKEN'] if os.environ.get('FALKONRY_TOKEN') else 't6vl8dty74ngy9r4vy29r6pkth4b4npj'
+host = os.environ['FALKONRY_HOST_URL']
+token = os.environ['FALKONRY_TOKEN']
 falkonry = Falkonry(host,token)
 falkonry_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-subprocess.call("rm -r {path}/tests/test_transcripts/*.txt".format(path=falkonry_path),shell=True)
+files = os.listdir("{path}/tests/test_transcripts".format(path=falkonry_path))
+
+if(len(files) > 1):
+    subprocess.call("rm -r {path}/tests/test_transcripts/*.txt".format(path=falkonry_path),shell=True)
+
 subprocess.call('pytest')
-files = os.listdir("test_transcripts")
+files = os.listdir("{path}/tests/test_transcripts".format(path=falkonry_path))
 print("Testing Transcripts")
 
 
