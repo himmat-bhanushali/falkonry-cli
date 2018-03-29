@@ -10,12 +10,11 @@ python /home/jaipreet/Projects/falkonry_src/falkonry-cli/falkonry.py --test /hom
 python /home/jaipreet/Projects/falkonry_src/falkonry-cli/falkonry.py --test /home/jaipreet/Projects/falkonry_src/falkonry-cli/tests/test_transcripts/test_do_login_details.txt
 python /home/jaipreet/Projects/falkonry_src/falkonry-cli/falkonry.py --test /home/jaipreet/Projects/falkonry_src/falkonry-cli/tests/test_transcripts/test_do_login.txt
 python /home/jaipreet/Projects/falkonry_src/falkonry-cli/falkonry.py --test /home/jaipreet/Projects/falkonry_src/falkonry-cli/tests/test_transcripts/test_do_assessment_add_facts.txt
-python /home/jaipreet/Projects/falkonry_src/falkonry-cli/falkonry.py --test /home/jaipreet/Projects/falkonry_src/falkonry-cli/tests/test_transcripts/check.txt
-python /home/jaipreet/Projects/falkonry_src/falkonry-cli/falkonry.py --test /home/jaipreet/Projects/falkonry_src/falkonry-cli/tests/test_transcripts/test_do_assessmet_default_get.txt
 python /home/jaipreet/Projects/falkonry_src/falkonry-cli/falkonry.py --test /home/jaipreet/Projects/falkonry_src/falkonry-cli/tests/test_transcripts/test_do_logout.txt
 python /home/jaipreet/Projects/falkonry_src/falkonry-cli/falkonry.py --test /home/jaipreet/Projects/falkonry_src/falkonry-cli/tests/test_transcripts/test_do_datastream_default_set.txt
 python /home/jaipreet/Projects/falkonry_src/falkonry-cli/falkonry.py --test /home/jaipreet/Projects/falkonry_src/falkonry-cli/tests/test_transcripts/test_do_datastream_start_live.txt
 python /home/jaipreet/Projects/falkonry_src/falkonry-cli/falkonry.py --test /home/jaipreet/Projects/falkonry_src/falkonry-cli/tests/test_transcripts/test_do_assessment_default_get.txt
+python /home/jaipreet/Projects/falkonry_src/falkonry-cli/falkonry.py --test /home/jaipreet/Projects/falkonry_src/falkonry-cli/tests/test_transcripts/test_do_assessment_default_set.txt
 python /home/jaipreet/Projects/falkonry_src/falkonry-cli/falkonry.py --test /home/jaipreet/Projects/falkonry_src/falkonry-cli/tests/test_transcripts/test_do_datastream_add_live_data.txt
 python /home/jaipreet/Projects/falkonry_src/falkonry-cli/falkonry.py --test /home/jaipreet/Projects/falkonry_src/falkonry-cli/tests/test_transcripts/test_do_datastream_add_entity_meta.txt
 python /home/jaipreet/Projects/falkonry_src/falkonry-cli/falkonry.py --test /home/jaipreet/Projects/falkonry_src/falkonry-cli/tests/test_transcripts/test_do_datastream_get_live_status.txt

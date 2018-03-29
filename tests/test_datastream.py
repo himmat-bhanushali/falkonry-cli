@@ -6,9 +6,12 @@ import os
 import json
 import datetime
 
-global created_datastream
-host = os.environ['FALKONRY_HOST_URL']
-token = os.environ['FALKONRY_TOKEN']
+global created_datastreams
+host = os.environ['FALKONRY_HOST_URL'] if os.environ.get('FALKONRY_HOST_URL') else 'https://localhost:8080'
+token = os.environ['FALKONRY_TOKEN'] if os.environ.get('FALKONRY_TOKEN') else 't6vl8dty74ngy9r4vy29r6pkth4b4npj'
+#
+# host = os.environ['FALKONRY_HOST_URL']
+# token = os.environ['FALKONRY_TOKEN']
 falkonry = Falkonry(host,token)
 falkonry_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -46,8 +49,8 @@ class TestDatastream(unittest.TestCase):
 ########################################################################################################################
 
         self.created_datastreams = []
-        global created_datastream
-        created_datastream = self.created_datastreams #Created a reference
+        global created_datastreams
+        created_datastreams = self.created_datastreams #Created a reference
         test_datastream = falkonry.create_datastream(datastream)
 
         if test_datastream:
@@ -182,20 +185,31 @@ Entity Meta successfully added to datastream: {id}
     def test_do_datastream_get_entity_meta(self):
         datastream = self.test_datastream
         entity_meta = falkonry.get_entity_meta(datastream.get_id())
+        entity_label =''
+        entity_id = ''
         for entity in entity_meta:
             entity_label = entity.get_label()
             entity_id = entity.get_sourceId()
         #todo: Can loop through and append all the labels
-        data = \
+        if entity_label == '':
+            data = \
 """falkonry>> datastream_default_set --id {id}
 Default datastream set : {id}
 falkonry>> datastream_get_entity_meta
 /.*/Entity Meta of datastream: {id}/.*/
-/.*/Entity Label : {entity_label}. Entity Id : {entity_id}/.*/
 """.format(
             id = str(datastream.get_id()),
-            entity_label = str(entity_label) if entity_label else '/.*/',
-            entity_id = str(entity_id) if entity_id else '/.*/'
+        )
+        else:
+            data = \
+"""falkonry>> datastream_default_set --id {id}
+Default datastream set : {id}
+falkonry>> datastream_get_entity_meta
+/.*/Entity Meta of datastream: {id}/.*/
+""".format(
+            id = str(datastream.get_id()),
+            entity_label = entity_label if entity_label !='' else '/.*/',
+            entity_id = entity_id if entity_id != '' else'/.*/'
         )
         file_write("test_do_datastream_get_entity_meta", self.login_data + data)
 
@@ -275,11 +289,9 @@ Default datastream set : {id} Name : {name}\n/(/.*/__$id/.*/|Datastream is not l
         file_write("test_do_datastream_add_live_data", self.login_data + self.default_datastream_data + data)
 
 
-    # @staticmethod#todo:look for optimization
-    # def tearDownClass():
-    #     for datastream in created_datastream:
-    #         try:
-    #             falkonry.delete_datastream(datastream)
-    #         except:
-    #             pass
-    #     print('Called')
+    # todo:look for optimization
+    def tearDown(self):
+        with open('resources/datastreams.txt','w') as file:
+            for ds in created_datastreams:
+                file.write(ds)
+                file.write("\\")

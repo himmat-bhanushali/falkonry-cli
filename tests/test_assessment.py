@@ -7,8 +7,11 @@ import os
 
 
 global created_datastream
-host = os.environ['FALKONRY_HOST_URL']
-token = os.environ['FALKONRY_TOKEN']
+host = os.environ['FALKONRY_HOST_URL'] if os.environ.get('FALKONRY_HOST_URL') else 'https://localhost:8080'
+token = os.environ['FALKONRY_TOKEN'] if os.environ.get('FALKONRY_TOKEN') else 't6vl8dty74ngy9r4vy29r6pkth4b4npj'
+
+# host = os.environ['FALKONRY_HOST_URL']
+# token = os.environ['FALKONRY_TOKEN']
 falkonry = Falkonry(host,token)
 falkonry_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -163,18 +166,18 @@ Rate : {assessment_rate}
         pass
 
 
-    def test_do_datastream_default_set(self):
+    def test_do_assessment_default_set(self):
         assessment = self.test_assessment
         datastream = self.test_datastream
         data = """falkonry>> assessment_default_set --id {assessment_id}
 Default datastream set : {datastream_id} Name : {datastream_name}
-/(Default assessment set : {assessment_id}|Assessment id : {assessment_id} does not belong to default datastream)/
+/(Default assessment set : {assessment_id}|Assessment id : {assessment_id} does not belong to default datastream)|No such Datastream available/
 """.format(
             assessment_id = str(assessment.get_id()),
             datastream_id = str(datastream.get_id()),
             datastream_name = str(datastream.get_name())
         )
-        file_write("test_do_datastream_default_set", self.login_data +self.default_datastream_data + data)
+        file_write("test_do_assessment_default_set", self.login_data +self.default_datastream_data + data)
 
 
     def test_do_assessment_default_get(self):
@@ -196,7 +199,7 @@ Default assessment set : {assessment_id} Name : {assessment_name}
         datastream = self.test_datastream
         data = r"""falkonry>> assessment_add_facts --path "tests/resources/AddFacts.json" --startTimeIdentifier "time" --endTimeIdentifier "end" --timeFormat "iso_8601" --timeZone "GMT" --valueIdentifier "Health" --entityIdentifier "car"
 Default assessment set : {id} Name : {name}
-/.*/__$id/.*/
+/.*/
 """.format(
             path = path_assessment_add_facts,
             name = str(assessment.get_name()),
@@ -234,12 +237,9 @@ Default assessment set : {id} Name : {name}
         )
         file_write("test_do_assessment_output_listen", self.login_data + self.default_datastream_data +self.default_assessment_data + data)
 
-
-    # @staticmethod#todo:look for optimization
-    # def tearDownClass():
-    #     for datastream in created_datastream:
-    #         try:
-    #             falkonry.delete_datastream(datastream)
-    #         except:
-    #             pass
-    #     print('Called')
+    # todo:look for optimization
+    def tearDown(self):
+        with open('resources/assessments.txt','w') as file:
+            for ds in created_datastreams:
+                file.write(ds)
+                file.write("\\")
