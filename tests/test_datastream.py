@@ -110,7 +110,7 @@ Listing Datastreams...
         datastream = self.test_datastream.to_json()
         datastream = json.loads(datastream)
         data = \
-r"""falkonry>> datastream_get_by_id --id {id}
+"""falkonry>> datastream_get_by_id --id {id}
 Fetching Datastreams
 ==================================================================================================================
 Id : {id}
