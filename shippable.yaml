@@ -16,7 +16,7 @@ build:
     - python -V
   post_ci:
     - pip install -r requirements.txt
-    - cd tests; python testDriver.py; cd ..
+    - cd tests; python ./Test.sh; cd ..
     - mkdir -p shippable/testresults
     - cp tests/out/*.xml shippable/testresults/
 
