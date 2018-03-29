@@ -1,0 +1,14 @@
+falkonry>> login --host=https://localhost:8080 --token=t6vl8dty74ngy9r4vy29r6pkth4b4npj
+logged in to falkonry
+falkonry>> assessment_get_by_id --id 22rl4d642cjqc7
+==================================================================================================================
+Id : 22rl4d642cjqc7
+Name : Assessement_name
+Created By : qymdt8l48yklrp
+Create Time : 2018-03-30 02:45:18.464000
+Update Time : 2018-03-30 02:45:18.464000
+Datastream : bcy2hym9b2ygmc
+Live : OFF
+Rate : PTOS
+/(Condition List|Apriori Condition List)/ : /.*/
+==================================================================================================================

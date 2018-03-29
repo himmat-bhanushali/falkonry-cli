@@ -1,0 +1,12 @@
+falkonry>> login --host=https://localhost:8080 --token=t6vl8dty74ngy9r4vy29r6pkth4b4npj
+logged in to falkonry
+falkonry>> datastream_default_set --id bcy2hym9b2ygmc
+Default datastream set : bcy2hym9b2ygmc
+falkonry>> assessment_get_list 
+Default datastream set : bcy2hym9b2ygmc Name : Motor Health
+Fetching assessment list of datastream : bcy2hym9b2ygmc...
+==================================================================================================================
+ Assessment Name                               Id                   Created By           Live Status         
+==================================================================================================================
+/.*/Assessement_name/.*/22rl4d642cjqc7/.*/qymdt8l48yklrp/.*/OFF/.*/
+==================================================================================================================
