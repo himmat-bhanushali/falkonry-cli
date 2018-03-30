@@ -236,7 +236,7 @@ falkonry>> datastream_get_entity_meta
 """falkonry>> datastream_delete --id {id}
 Datastream successfully deleted : {id}
 """.format(id = datastream_delete.get_id())
-        file_write("check",self.login_data + data)
+        file_write("test_do_datastream_delete",self.login_data + data)
 
     def test_do_datastream_get_live_status(self):
         datastream = self.test_datastream
@@ -312,7 +312,7 @@ Default datastream set : {id} Name : {name}\n/(/.*/__$id/.*/|Datastream is not l
     def test_do_datastream_get_data_with_path(self):
         datastream = self.test_datastream
         data = \
-"""falkonry>> datastream_get_data --path {path}/test_transcripts/demotestremove
+"""falkonry>> datastream_get_data --path {path}/test_transcripts/TestDatastreamDataRemove
 Default datastream set : {id} Name : {name}
 Input data is written to the file : /.*/demotestremove
 """.format(

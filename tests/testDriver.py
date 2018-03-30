@@ -12,7 +12,7 @@ path_test_transcripts = falkonry_path + "/tests/test_transcripts"
 files = os.listdir(path_test_transcripts)
 
 if(len(files) > 1):
-    subprocess.call("rm -r {path}/tests/test_transcripts/*.txt".format(path=falkonry_path),shell=True)
+    subprocess.call("rm -r {path}/tests/test_transcripts/*".format(path=falkonry_path),shell=True)
 
 subprocess.call('pytest')
 files = os.listdir("{path}/tests/test_transcripts".format(path=falkonry_path))
