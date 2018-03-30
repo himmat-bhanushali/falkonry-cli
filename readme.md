@@ -7,6 +7,12 @@ Falkonry CLI tool to access [Falkonry Condition Prediction](falkonry.com) APIs
 
 [Releases](https://github.com/Falkonry/falkonry-cli/releases)
 
+## Requirements
+```
+* Supported Python: Python 3.6
+* Supported Platform : MacOS / Windows 7 or higher/ Ubuntu 14.0 or higher
+```
+
 ## Installation
 Installation may require administrative privileges in some operating systems
 
@@ -16,15 +22,6 @@ $ pip install falkonry-cli
 
 ## Documentation
 http://help.falkonry.com/en/latest/adk_documentation.html
-
-## Requirements
-```
-* Supported Python: Python 3.6
-* Supported Platform : MacOS / Windows 7 or higher/ Ubuntu 14.0 or higher
-```
-
-## Docs
-[Falkonry APIs](https://app.falkonry.ai/api)
 
 ## License
 Available under [MIT License](LICENSE)
