@@ -314,7 +314,7 @@ Default datastream set : {id} Name : {name}\n/(/.*/__$id/.*/|Datastream is not l
         data = \
 """falkonry>> datastream_get_data --path {path}/test_transcripts/TestDatastreamDataRemove
 Default datastream set : {id} Name : {name}
-Input data is written to the file : /.*/demotestremove
+Input data is written to the file : /.*/TestDatastreamDataRemove
 """.format(
     path = falkonry_path,
     id = str(datastream.get_id()),

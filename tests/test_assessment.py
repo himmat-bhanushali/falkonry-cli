@@ -101,14 +101,13 @@ Fetching assessment list of datastream : {datastream_id}...
  Assessment Name                               Id                   Created By           Live Status         
 ==================================================================================================================
 /.*/{assessment_name}/.*/{assessment_id}/.*/{created_by}/.*/{assessment_live_status}/.*/
-==================================================================================================================
 """.format(
     datastream_name = str(self.test_datastream.get_name()),
     datastream_id = str(self.test_datastream.get_id()),
-    assessment_name = str(assessmentList[0].get_name()),
-    assessment_id = str(assessmentList[0].get_id()),
-    created_by = str(assessmentList[0].get_created_by()),
-    assessment_live_status = str(assessmentList[0].get_live())
+    assessment_name = str(assessmentList[-1].get_name()),
+    assessment_id = str(assessmentList[-1].get_id()),
+    created_by = str(assessmentList[-1].get_created_by()),
+    assessment_live_status = str(assessmentList[-1].get_live())
 
 )
         else:
@@ -268,9 +267,8 @@ Default assessment set : {id} Name : {name}
         facts_data = falkonry.get_facts(assessment.get_id(),{})
         data = \
 """falkonry>> assessment_get_facts --path {path}/test_transcripts/TestAssessmentDataRemove
-Default assessment set : 87q79dtnjbr4p2 Name : Assessement_name
-Facts data is written to the file : /.*/\/test_transcripts\/TestAssessmentDataRemove
-""".format(
+Default assessment set : {assessment_id} Name : {assessment_name}
+Facts data is written to the file : /.*/TestAssessmentDataRemove/.*/""".format(
             path = falkonry_path,
             data = str(facts_data.text),
             assessment_id = str(assessment.get_id()),

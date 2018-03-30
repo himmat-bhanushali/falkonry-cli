@@ -19,11 +19,11 @@ files = os.listdir("{path}/tests/test_transcripts".format(path=falkonry_path))
 print("Testing Transcripts")
 
 
-with open("RunTransciptTest.sh",'w') as f:
+with open("RunTranscriptTest.sh",'w') as f:
     f.write('#!/usr/bin/env bash\n')
     for file in files:
         f.writelines("python {falkonry_path}/falkonry.py --test {falkonry_path}/tests/test_transcripts/{file}\n".format(file = file, falkonry_path=falkonry_path))
-subprocess.call("/bin/sh {falkonry_path}/tests/RunTransciptTest.sh".format(falkonry_path=falkonry_path),shell=True, stdout=subprocess.PIPE)
+subprocess.call("/bin/sh {falkonry_path}/tests/RunTranscriptTest.sh".format(falkonry_path=falkonry_path),shell=True, stdout=subprocess.PIPE)
 
 ############### Clean Up ##########################
 with open('{path}/tests/resources/datastreams.txt'.format(path=falkonry_path)) as f:
