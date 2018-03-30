@@ -1,0 +1,11 @@
+*.iml
+.idea
+*.pyc
+.DS_Store
+tests/out
+*.egg-info
+.pytest_cache
+tests/logs
+tests/resources/*.txt
+tests/test_transcripts/*.txt
+tests/RunTranscriptTest.sh

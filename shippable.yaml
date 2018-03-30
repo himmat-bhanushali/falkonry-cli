@@ -1,0 +1,30 @@
+language: python
+
+python:
+  - 3.6
+
+env:
+  global:
+    - secure: s2FeFmTseLUuuRiA39RzBTGt5DYMJRl0Ymj6wXiyFYgMVxtyJYACEjaYuOntqtZnZ5lsaImiiCjGYdi5db8Q1FAelUyqRzkoaW3a4j4UJXbn6Ax2e5tQPKhmyMMbFF6aS7qOdI1ROmZi8Y8ONgzuE3ib+mRTgKPO77w7TSW/TWUi9wfLgR5wc9Ngn7oC/Mv3KjD5mt4XJThUbkLkBrNbSnkDGOG+zWMs9DBCSwQVHx9LhZuuaXxDi0u4zRvEiEmizkgJgvbsCh5whTBapienQ0TBAaWBgEbSzdP2d0uRWrt1MyFwqCcdK1NKkH8Vi3cDURiDXc7xZiTAlUBC7FLILQ==
+    - secure: H4dwK6GeuIEdMUlXYzcnE0qaySG7ixZb5pOG5HU9+dZnHLUbFbihWamvPE+VbVyGe1hEng/mA4fWUcWTjb7NFNvpuTsqy5CKJfDNXazvK85XOcBC7tRKPYyVXICr1GWiItIwYHNlpQ0wtTVkYaU09KqjntDwj0nPnSUYNlDHwzVc2MnFFp6h23sSMm91RDzU9Pj9OJ+iEvFTUkVaC6J8XfGkqsBGpWxgY1Sf8yhw2cVEeRSih1sumQPbYU9/tXYVwhXwPhzuyp+mEezgPq+RzQc594oKIEOxLsPHE5jYpyw/MfRPvdMful3H2LNIvSXxlykBrQT7nTcSTFu7OIsJxA==
+
+build:
+  ci:
+    - pip -V
+    - python -V
+  post_ci:
+    - pip install -r requirements.txt
+    - cd tests; ./Test.sh; cd ..
+    - mkdir -p shippable/testresults
+    - cp tests/out/*.xml shippable/testresults/
+
+integrations:
+  notifications:
+    - integrationName: slack-notify
+      type: slack
+      recipients:
+        - "#builds"
+      on_success: never
+      on_failure: always
+      on_start: never
+      on_pull_request: never

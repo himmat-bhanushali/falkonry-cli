@@ -5,13 +5,15 @@ import io
 import os
 import datetime
 import argparse
+import unittest
+import xmlrunner
 
-from cmd2 import Cmd,options,with_argparser
+import cmd2
+from cmd2 import Cmd,options,with_argparser,Cmd2TestCase
 from falkonryclient import client as Falkonry
 from falkonryclient.helper.utils import exception_handler
 from falkonryclient.helper import schema as Schemas
 from pprint import pprint
-
 global _assessmentId
 global _datastreamId
 global _falkonry
@@ -778,19 +780,20 @@ def check_login():
 
 
 def print_info(msg):
-    print(_self.colorize(msg, "blue"))
+    Cmd.poutput(_self,msg=_self.colorize(msg, "blue"))
 
 
 def print_success(msg):
-    print(_self.colorize(msg, "green"))
+    Cmd.poutput(_self,msg=_self.colorize(msg, "green"))
+
 
 
 def print_error(msg):
-    print(_self.colorize(msg + "\n Try help <command> for info", "red"))
+    Cmd.poutput(_self,msg=_self.colorize(msg + "\n Try help <command> for info", "red"))
 
 
 def print_custom(msg, color):
-    print(_self.colorize(msg, color))
+    Cmd.poutput(_self,msg=_self.colorize(msg, color))
 
 
 def get_file_extension(path):
@@ -900,6 +903,23 @@ def print_assessment_details(assessment_str):
         print_info("Apriori Condition List : " + str(', '.join(assessment['aprioriConditionList'])))
     print_info("==================================================================================================================")
 
+def run_transcript_tests(self, callargs):
+    """Runs transcript tests for provided file(s).
+    This is called when either -t is provided on the command line or the transcript_files argument is provided
+    during construction of the cmd2.Cmd instance.
+    :param callargs: List[str] - list of transcript test file names
+    """
+
+    class TestMyAppCase(Cmd2TestCase):
+        cmdapp = self
+
+    self.__class__.testfiles = callargs
+    sys.argv = [sys.argv[0]]  # the --test argument upsets unittest.main()
+    testcase = TestMyAppCase()
+    runner = xmlrunner.XMLTestRunner(output='out')
+    runner.run(testcase)
+# Overriding for changing testrunner
+cmd2.Cmd.run_transcript_tests = run_transcript_tests
 
 def cli():
     app = REPL()
