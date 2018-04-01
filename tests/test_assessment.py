@@ -263,8 +263,23 @@ Default assessment set : {id} Name : {name}
         file_write("test_do_assessment_output_listen", self.login_data + self.default_datastream_data +self.default_assessment_data + data)
 
     def test_do_assessment_get_facts_with_path(self):
+        datastream = falkonry.get_datastream(os.environ.get("FALKONRY_DATASTREAM_SLIDING_ID")) if os.environ.get("FALKONRY_DATASTREAM_SLIDING_ID") else self.test_datastream
         assessment = falkonry.get_assessment(os.environ.get("FALKONRY_ASSESSMENT_SLIDING_ID")) if os.environ.get("FALKONRY_ASSESSMENT_SLIDING_ID") else self.test_assessment
         facts_data = falkonry.get_facts(assessment.get_id(),{})
+        default_datastream_data = """falkonry>> datastream_default_set --id {id}\nDefault datastream set : {id}\n""" \
+            .format(
+            id=str(datastream.get_id())
+        )
+        default_assessment_data = \
+"""falkonry>> assessment_default_set --id {assessment_id}
+Default datastream set : {datastream_id} Name : {datastream_name}
+/(Default assessment set : {assessment_id}|Assessment id : {assessment_id} does not belong to default datastream)/
+""".format(
+            assessment_id=str(assessment.get_id()),
+            datastream_id=str(datastream.get_id()),
+            datastream_name=str(datastream.get_name())
+        )
+
         data = \
 """falkonry>> assessment_get_facts --path {path}/test_transcripts/TestAssessmentDataRemove
 Default assessment set : {assessment_id} Name : {assessment_name}
@@ -274,12 +289,27 @@ Facts data is written to the file : /.*/TestAssessmentDataRemove/.*/""".format(
             assessment_id = str(assessment.get_id()),
             assessment_name = str(assessment.get_name())
         )
-        file_write("test_do_assessment_get_facts_with_path", self.login_data + self.default_datastream_data + self.default_assessment_data + data)
+        file_write("test_do_assessment_get_facts_with_path", self.login_data + default_datastream_data + default_assessment_data + data)
 
 
     def test_do_assessment_get_facts_without_path(self):
+        datastream = falkonry.get_datastream(os.environ.get("FALKONRY_DATASTREAM_SLIDING_ID")) if os.environ.get("FALKONRY_DATASTREAM_SLIDING_ID") else self.test_datastream
         assessment = falkonry.get_assessment(os.environ.get("FALKONRY_ASSESSMENT_SLIDING_ID")) if os.environ.get("FALKONRY_ASSESSMENT_SLIDING_ID") else self.test_assessment
         facts_data = falkonry.get_facts(assessment.get_id(),{})
+        default_datastream_data = """falkonry>> datastream_default_set --id {id}\nDefault datastream set : {id}\n""" \
+            .format(
+            id=str(datastream.get_id())
+        )
+        default_assessment_data = \
+"""falkonry>> assessment_default_set --id {assessment_id}
+Default datastream set : {datastream_id} Name : {datastream_name}
+/(Default assessment set : {assessment_id}|Assessment id : {assessment_id} does not belong to default datastream)/
+""".format(
+            assessment_id=str(assessment.get_id()),
+            datastream_id=str(datastream.get_id()),
+            datastream_name=str(datastream.get_name())
+        )
+
         data = \
 """falkonry>> assessment_get_facts
 Default assessment set : {assessment_id} Name : {assessment_name}
@@ -291,7 +321,7 @@ Facts Data :
             assessment_id = str(assessment.get_id()),
             assessment_name = str(assessment.get_name())
         )
-        file_write("check", self.login_data + self.default_datastream_data + self.default_assessment_data + data)
+        file_write("check", self.login_data + default_datastream_data + default_assessment_data + data)
 
 
     # todo:look for optimization
