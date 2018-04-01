@@ -101,14 +101,13 @@ Fetching assessment list of datastream : {datastream_id}...
  Assessment Name                               Id                   Created By           Live Status         
 ==================================================================================================================
 /.*/{assessment_name}/.*/{assessment_id}/.*/{created_by}/.*/{assessment_live_status}/.*/
-==================================================================================================================
 """.format(
     datastream_name = str(self.test_datastream.get_name()),
     datastream_id = str(self.test_datastream.get_id()),
-    assessment_name = str(assessmentList[0].get_name()),
-    assessment_id = str(assessmentList[0].get_id()),
-    created_by = str(assessmentList[0].get_created_by()),
-    assessment_live_status = str(assessmentList[0].get_live())
+    assessment_name = str(assessmentList[-1].get_name()),
+    assessment_id = str(assessmentList[-1].get_id()),
+    created_by = str(assessmentList[-1].get_created_by()),
+    assessment_live_status = str(assessmentList[-1].get_live())
 
 )
         else:
@@ -157,10 +156,39 @@ Rate : {assessment_rate}
         file_write("test_do_assessment_get_by_id", self.login_data + data)
 
     def test_do_assessment_create(self):
-        pass
+        datastream = self.test_datastream
+        with open("{path}/resources/AssessmentRequest.json".format(path=falkonry_path),'w') as f:
+            f.write("{"+\
+                    """
+  "name":"New Test Assessment",
+  "datastream": "{id}",
+  "rate": "PT0S"
+""".format(id=str(datastream.get_id()))+\
+                    "}")
+
+        data = \
+"""falkonry>> assessment_create --path {path}/resources/AssessmentRequest.json
+Default datastream set : {datastream_id} Name : {datastream_name}
+Assessment successfully created : /.*/
+""".format(
+        path = falkonry_path,
+        datastream_name = datastream.get_name(),
+        datastream_id = datastream.get_id()
+    )
+        file_write('test_do_assessment_create',self.login_data + self.default_datastream_data + data)
 
     def test_do_assessment_delete(self):
-        pass
+        assessment_req = Schemas.AssessmentRequest()
+        assessment_req.set_name("TestAssessmentDelete")
+        assessment_req.set_datastream(self.test_datastream.get_id())
+        assessment_req.set_rate('PTOS')
+        assessment = falkonry.create_assessment(assessment_req)
+
+        data = \
+"""falkonry>> assessment_delete --id {id}
+Assessment deleted successfully: {id}
+""".format(id=assessment.get_id())
+        file_write('test_do_assessment_delete', self.login_data + data)
 
 
     def test_do_assessment_default_set(self):
@@ -233,6 +261,68 @@ Default assessment set : {id} Name : {name}
             id = str(assessment.get_id())
         )
         file_write("test_do_assessment_output_listen", self.login_data + self.default_datastream_data +self.default_assessment_data + data)
+
+    def test_do_assessment_get_facts_with_path(self):
+        datastream = falkonry.get_datastream(os.environ.get("FALKONRY_DATASTREAM_SLIDING_ID")) if os.environ.get("FALKONRY_DATASTREAM_SLIDING_ID") else self.test_datastream
+        assessment = falkonry.get_assessment(os.environ.get("FALKONRY_ASSESSMENT_SLIDING_ID")) if os.environ.get("FALKONRY_ASSESSMENT_SLIDING_ID") else self.test_assessment
+        facts_data = falkonry.get_facts(assessment.get_id(),{})
+        default_datastream_data = """falkonry>> datastream_default_set --id {id}\nDefault datastream set : {id}\n""" \
+            .format(
+            id=str(datastream.get_id())
+        )
+        default_assessment_data = \
+"""falkonry>> assessment_default_set --id {assessment_id}
+Default datastream set : {datastream_id} Name : {datastream_name}
+/(Default assessment set : {assessment_id}|Assessment id : {assessment_id} does not belong to default datastream)/
+""".format(
+            assessment_id=str(assessment.get_id()),
+            datastream_id=str(datastream.get_id()),
+            datastream_name=str(datastream.get_name())
+        )
+
+        data = \
+"""falkonry>> assessment_get_facts --path {path}/test_transcripts/TestAssessmentDataRemove
+Default assessment set : {assessment_id} Name : {assessment_name}
+Facts data is written to the file : /.*/TestAssessmentDataRemove/.*/""".format(
+            path = falkonry_path,
+            data = str(facts_data.text),
+            assessment_id = str(assessment.get_id()),
+            assessment_name = str(assessment.get_name())
+        )
+        file_write("test_do_assessment_get_facts_with_path", self.login_data + default_datastream_data + default_assessment_data + data)
+
+
+    def test_do_assessment_get_facts_without_path(self):
+        datastream = falkonry.get_datastream(os.environ.get("FALKONRY_DATASTREAM_SLIDING_ID")) if os.environ.get("FALKONRY_DATASTREAM_SLIDING_ID") else self.test_datastream
+        assessment = falkonry.get_assessment(os.environ.get("FALKONRY_ASSESSMENT_SLIDING_ID")) if os.environ.get("FALKONRY_ASSESSMENT_SLIDING_ID") else self.test_assessment
+        facts_data = falkonry.get_facts(assessment.get_id(),{})
+        default_datastream_data = """falkonry>> datastream_default_set --id {id}\nDefault datastream set : {id}\n""" \
+            .format(
+            id=str(datastream.get_id())
+        )
+        default_assessment_data = \
+"""falkonry>> assessment_default_set --id {assessment_id}
+Default datastream set : {datastream_id} Name : {datastream_name}
+/(Default assessment set : {assessment_id}|Assessment id : {assessment_id} does not belong to default datastream)/
+""".format(
+            assessment_id=str(assessment.get_id()),
+            datastream_id=str(datastream.get_id()),
+            datastream_name=str(datastream.get_name())
+        )
+
+        data = \
+"""falkonry>> assessment_get_facts
+Default assessment set : {assessment_id} Name : {assessment_name}
+Facts Data : 
+==================================================================================================================
+{data}/.*/
+""".format(
+            data=str(facts_data.text),
+            assessment_id = str(assessment.get_id()),
+            assessment_name = str(assessment.get_name())
+        )
+        file_write("check", self.login_data + default_datastream_data + default_assessment_data + data)
+
 
     # todo:look for optimization
     def tearDown(self):

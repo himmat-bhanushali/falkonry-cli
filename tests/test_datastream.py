@@ -44,7 +44,6 @@ class TestDatastream(unittest.TestCase):
         datastream.set_datasource(datasource)
         datastream.set_field(field)
 ########################################################################################################################
-
         self.created_datastreams = []
         global created_datastreams
         created_datastreams = self.created_datastreams #Created a reference
@@ -210,8 +209,34 @@ falkonry>> datastream_get_entity_meta
         file_write("test_do_datastream_get_entity_meta", self.login_data + data)
 
     def test_do_datastream_delete(self):
-        #todo:Complete for delete
-        pass
+        ########################################################################################################################
+        # Initialising Dummy datastream for the tests
+        datastream = Schemas.Datastream()
+        datastream.set_name('TestDoDatastreamDeleteCli')
+
+        datasource = Schemas.Datasource()
+        field = Schemas.Field()
+        time = Schemas.Time()
+        signal = Schemas.Signal()
+
+        time.set_zone("GMT")
+        time.set_identifier("time")
+        time.set_format("YYYY-MM-DD HH:mm:ss")
+        signal.set_signalIdentifier("signal")
+        signal.set_valueIdentifier("value")
+        field.set_signal(signal)
+        datasource.set_type("STANDALONE")
+        field.set_time(time)
+        field.set_entityIdentifier('car')
+        datastream.set_datasource(datasource)
+        datastream.set_field(field)
+        ########################################################################################################################
+        datastream_delete = falkonry.create_datastream(datastream)
+        data = \
+"""falkonry>> datastream_delete --id {id}
+Datastream successfully deleted : {id}
+""".format(id = datastream_delete.get_id())
+        file_write("test_do_datastream_delete",self.login_data + data)
 
     def test_do_datastream_get_live_status(self):
         datastream = self.test_datastream
@@ -284,6 +309,37 @@ Default datastream set : {id} Name : {name}\n/(/.*/__$id/.*/|Datastream is not l
         #only __$id is matched coz there is no predefined pattern in which the rest of the response can be checked against
         file_write("test_do_datastream_add_live_data", self.login_data + self.default_datastream_data + data)
 
+    def test_do_datastream_get_data_with_path(self):
+        datastream = self.test_datastream
+        data = \
+"""falkonry>> datastream_get_data --path {path}/test_transcripts/TestDatastreamDataRemove
+Default datastream set : {id} Name : {name}
+Input data is written to the file : /.*/TestDatastreamDataRemove
+""".format(
+    path = falkonry_path,
+    id = str(datastream.get_id()),
+    name = str(datastream.get_name())
+)
+        file_write("test_do_datastream_get_data_with_path", self.login_data + self.default_datastream_data + data)
+
+
+    def test_do_datastream_get_data_without_path(self):
+        datastream = falkonry.get_datastream(os.environ.get("FALKONRY_DATASTREAM_SLIDING_ID")) if os.environ.get("FALKONRY_DATASTREAM_SLIDING_ID") else self.test_datastream
+        data = \
+"""falkonry>> datastream_default_set --id {id}
+Default datastream set : {id}
+falkonry>> datastream_get_data 
+Default datastream set : {id} Name : {name}
+Input Data : 
+==================================================================================================================
+/.*/{data}/.*/
+""".format(
+    id = str(datastream.get_id()),
+    name = str(datastream.get_name()),
+    data = str(falkonry.get_datastream_data(datastream.get_id(),'text/csv').text)
+
+)
+        file_write("test_do_datastream_get_data_without_path", self.login_data + self.default_datastream_data + data)
 
     # todo:look for optimization
     def tearDown(self):

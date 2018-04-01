@@ -7,5 +7,6 @@ tests/out
 .pytest_cache
 tests/logs
 tests/resources/*.txt
-tests/test_transcripts/*.txt
+tests/resources/AssessmentRequest.json
+tests/test_transcripts/*
 tests/RunTranscriptTest.sh
