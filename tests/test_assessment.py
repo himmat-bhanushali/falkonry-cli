@@ -330,3 +330,6 @@ Facts Data :
             for ds in created_datastreams:
                 file.write(ds)
                 file.write("\\")
+
+if __name__ == "__main__":
+    unittest.main()
