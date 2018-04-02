@@ -9,10 +9,12 @@ falkonry = Falkonry(host,token)
 falkonry_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 path_test_transcripts = falkonry_path + "/tests/test_transcripts"
 
-files = os.listdir(path_test_transcripts)
-
-if(len(files) > 1):
-    subprocess.call("rm -r {path}/tests/test_transcripts/*".format(path=falkonry_path),shell=True)
+try:
+    files = os.listdir(path_test_transcripts)
+    if(len(files) > 1):
+        subprocess.call("rm -r {path}/tests/test_transcripts/*".format(path=falkonry_path),shell=True)
+except Exception as e:
+    print(e)
 
 subprocess.call('pytest')
 files = os.listdir("{path}/tests/test_transcripts".format(path=falkonry_path))
