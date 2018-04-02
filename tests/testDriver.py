@@ -16,7 +16,9 @@ try:
 except Exception as e:
     print(e)
 
-subprocess.call('pytest')
+subprocess.call('python {path}/tests/test_assessment.py'.format(path=falkonry_path),shell=True)
+subprocess.call('python {path}/tests/test_datastream.py'.format(path=falkonry_path),shell=True)
+
 files = os.listdir("{path}/tests/test_transcripts".format(path=falkonry_path))
 print("Testing Transcripts")
 
