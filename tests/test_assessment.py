@@ -15,7 +15,7 @@ falkonry_path = os.path.dirname(os.path.abspath(__file__))
 path_assessment_add_facts = "{path}/resources/AddFacts.json".format(path=falkonry_path)
 path_datastream_add_historical_data = "tests/resources/Input.json"
 def file_write(file_name, data):
-    with open("test_transcripts/" + str(file_name) + '.txt', 'w') as file:
+    with open("{path}/tests/test_transcripts/" + str(file_name) + '.txt', 'w') as file:
         file.write(str(data))
 
 
