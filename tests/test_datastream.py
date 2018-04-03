@@ -15,7 +15,7 @@ falkonry_path = os.path.dirname(os.path.abspath(__file__))
 path_datastream_add_entity_meta_request = "{path}/resources/EntityMetaRequest.json".format(path=falkonry_path)
 path_datastream_add_historical_data = "{path}/resources/Input.json".format(path=falkonry_path)
 def file_write(file_name, data):
-    with open("{path}/tests/test_transcripts/".format(path=falkonry_path) + str(file_name) + '.txt', 'w') as file:
+    with open("{path}/test_transcripts/".format(path=falkonry_path) + str(file_name) + '.txt', 'w') as file:
         file.write(str(data))
 
 
