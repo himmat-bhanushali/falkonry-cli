@@ -10,7 +10,7 @@
       "format": "YYYY-MM-DD HH:mm:ss"
     },
   "signal": {
-    "keyIdentifier": "tag",
+    "keywordIdentifier": "tag",
     "valueIdentifier": "value",
     "delimiter": null,
     "isSignalPrefix": false
