@@ -1,4 +1,4 @@
 cmd2==0.8.0
 pprint==0.1
-falkonryclient==2.1.0
+falkonryclient==2.1.1
 xmlrunner==1.7.7
