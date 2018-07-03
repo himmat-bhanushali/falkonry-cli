@@ -246,30 +246,47 @@ class REPL(Cmd):
                 return
         return
 
+
+    datastream_start_live_argparser = argparse.ArgumentParser()
+    datastream_start_live_argparser.add_argument('--assessment', help="assessment id")
+    @with_argparser(datastream_start_live_argparser)
     def do_datastream_start_live(self, line):
         """ turn on live monitoring of datastream """
         global _datastreamId
         if check_login():
             try:
                 if check_default_datastream():
-                    print_info("Turning on Live monitoring for datastream : " + _datastreamId)
-                    res = _falkonry.on_datastream(_datastreamId)
-                    print_success("Datastream is ON for live monitoring")
+                    options = {}
+                    strAssessment = ""
+                    if args.assessment is not None and args.assessment != "":
+                        options['assessment'] = args.assessment
+                        strAssessment = " for assessment : " + args.assessment
+                    print_info("Turning on Live monitoring for datastream : " + _datastreamId + strAssessment)
+                    res = _falkonry.on_datastream(_datastreamId, options)
+                    print_success("Datastream is ON for live monitoring" + strAssessment)
                 return
             except Exception as error:
                 handle_error(error)
                 return
         return
 
+    datastream_stop_live_argparser = argparse.ArgumentParser()
+    datastream_stop_live_argparser.add_argument('--assessment', help="assessment id")
+    @with_argparser(datastream_stop_live_argparser)
     def do_datastream_stop_live(self, line):
         """ turn off live monitoring of datastream """
         global _datastreamId
         if check_login():
             try:
                 if check_default_datastream():
-                    print_info("Turning off Live monitoring for datastream : " + _datastreamId)
-                    _falkonry.off_datastream(_datastreamId)
-                    print_success("Datastream is OFF for live monitoring")
+                    options = {}
+                    strAssessment = ""
+                    if args.assessment is not None and args.assessment != "":
+                        options['assessment'] = args.assessment
+                        strAssessment = " for assessment : " + args.assessment
+                    print_info("Turning off Live monitoring for datastream : " + _datastreamId + strAssessment)
+                    _falkonry.off_datastream(_datastreamId, options)
+                    print_success("Datastream is OFF for live monitoring" + strAssessment)
                 return
             except Exception as error:
                 handle_error(error)
